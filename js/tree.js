@@ -3,6 +3,9 @@ import * as THREE from 'three';
 const canvas = document.getElementById('tree-canvas');
 if (canvas) {
 
+  /* DAY / NIGHT */
+  const IS_DAY = document.documentElement.dataset.theme === 'day';
+
   /* RENDERER */
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -18,14 +21,14 @@ if (canvas) {
   camera.lookAt(0, 11, 0);
 
   /* LIGHTS */
-  scene.add(new THREE.AmbientLight(0xfce8f4, 2.2));
-  const sun = new THREE.DirectionalLight(0xfff0f8, 4.0);
-  sun.position.set(12, 26, 14);
-  scene.add(sun);
-  const fill = new THREE.PointLight(0xff88cc, 3.0, 80);
+  scene.add(new THREE.AmbientLight(IS_DAY ? 0xfff8d8 : 0xfce8f4, IS_DAY ? 5.0 : 2.2));
+  const dirLight = new THREE.DirectionalLight(IS_DAY ? 0xfffcf0 : 0xfff0f8, IS_DAY ? 9.0 : 4.0);
+  dirLight.position.set(12, 26, 14);
+  scene.add(dirLight);
+  const fill = new THREE.PointLight(IS_DAY ? 0xffcc66 : 0xff88cc, IS_DAY ? 5.0 : 3.0, 80);
   fill.position.set(-16, 14, 10);
   scene.add(fill);
-  const bounce = new THREE.PointLight(0xffe0f0, 1.5, 60);
+  const bounce = new THREE.PointLight(IS_DAY ? 0xffeecc : 0xffe0f0, IS_DAY ? 2.5 : 1.5, 60);
   bounce.position.set(6, -4, 16);
   scene.add(bounce);
 
@@ -373,15 +376,18 @@ if (canvas) {
   });
 
   /* ══════════════════════════════════════════
-     MOON — upper-left, drifts slowly right
+     MOON (night, upper-left) / SUN (day, upper-right)
   ══════════════════════════════════════════ */
-  const MOON_START_X = -22;
+  const MOON_START_X = IS_DAY ? 22 : -22;
   const MOON_Y       =  17;
   const MOON_Z       =   2;
 
   // Core sphere
   const moonGeo = new THREE.SphereGeometry(1.6, 32, 24);
-  const moonMat = new THREE.MeshStandardMaterial({
+  const moonMat = new THREE.MeshStandardMaterial(IS_DAY ? {
+    color: 0xfffce0, emissive: 0xffee22, emissiveIntensity: 2.4,
+    roughness: 0.05, metalness: 0.0,
+  } : {
     color: 0xf0ecff, emissive: 0xddd8ff, emissiveIntensity: 1.1,
     roughness: 0.10, metalness: 0.0,
   });
@@ -391,13 +397,14 @@ if (canvas) {
   // Soft halo
   const haloGeo = new THREE.SphereGeometry(2.8, 24, 18);
   const haloMat = new THREE.MeshBasicMaterial({
-    color: 0xaabbff, transparent: true, opacity: 0.10, side: THREE.BackSide,
+    color: IS_DAY ? 0xffdd55 : 0xaabbff,
+    transparent: true, opacity: IS_DAY ? 0.16 : 0.10, side: THREE.BackSide,
   });
   const haloMesh = new THREE.Mesh(haloGeo, haloMat);
   scene.add(haloMesh);
 
-  // Dynamic light — cool blue contrasts with warm pink ambient so it reads clearly
-  const moonLight = new THREE.PointLight(0x3366ff, 14, 90, 1.4);
+  // Dynamic light
+  const moonLight = new THREE.PointLight(IS_DAY ? 0xff9933 : 0x3366ff, IS_DAY ? 20 : 14, 90, IS_DAY ? 1.2 : 1.4);
   scene.add(moonLight);
 
   /* ══════════════════════════════════════════
@@ -495,29 +502,34 @@ if (canvas) {
       moonPosY += moonVelY;
       moonVelX *= 0.93;
       moonVelY *= 0.93;
-      // Drift pasivo cuando la inercia casi para
-      if (Math.abs(moonVelX) < 0.001) moonPosX += 0.00029;
+      // Drift pasivo cuando la inercia casi para (sol va hacia la izq, luna hacia la der)
+      if (Math.abs(moonVelX) < 0.001) moonPosX += IS_DAY ? -0.00029 : 0.00029;
     }
 
-    const moonGlow = 0.9 + Math.sin(t * 0.38) * 0.12;
+    const baseGlow = IS_DAY ? 2.0 : 0.9;
+    const moonGlow = baseGlow + Math.sin(t * 0.38) * (IS_DAY ? 0.20 : 0.12);
     moonMesh.position.set(moonPosX, moonPosY, MOON_Z);
     moonMesh.material.emissiveIntensity = moonGlow;
     haloMesh.position.set(moonPosX, moonPosY, MOON_Z);
-    haloMesh.material.opacity = 0.07 + Math.sin(t * 0.38) * 0.025;
+    haloMesh.material.opacity = (IS_DAY ? 0.13 : 0.07) + Math.sin(t * 0.38) * 0.025;
     moonLight.position.set(moonPosX, moonPosY, MOON_Z);
-    moonLight.intensity = 13 + Math.sin(t * 0.38) * 2.5;
+    moonLight.intensity = (IS_DAY ? 18 : 13) + Math.sin(t * 0.38) * 2.5;
 
-    // Proyectar luna a coordenadas de pantalla → iluminar HTML
+    // Proyectar sol/luna a coordenadas de pantalla → iluminar HTML
     if (moonOverlay) {
       const proj = moonMesh.position.clone().project(camera);
       const sx = ((proj.x + 1) / 2 * window.innerWidth)  | 0;
       const sy = ((-proj.y + 1) / 2 * window.innerHeight) | 0;
       const alpha = (0.13 + Math.sin(t * 0.38) * 0.03).toFixed(3);
-      moonOverlay.style.background =
-        `radial-gradient(circle at ${sx}px ${sy}px,` +
-        `rgba(80,120,255,${alpha}) 0%,` +
-        `rgba(40,60,200,${(alpha * 0.4).toFixed(3)}) 18%,` +
-        `transparent 52%)`;
+      moonOverlay.style.background = IS_DAY
+        ? `radial-gradient(circle at ${sx}px ${sy}px,` +
+          `rgba(255,190,40,${alpha}) 0%,` +
+          `rgba(255,130,0,${(alpha * 0.4).toFixed(3)}) 18%,` +
+          `transparent 52%)`
+        : `radial-gradient(circle at ${sx}px ${sy}px,` +
+          `rgba(80,120,255,${alpha}) 0%,` +
+          `rgba(40,60,200,${(alpha * 0.4).toFixed(3)}) 18%,` +
+          `transparent 52%)`;
     }
 
     // Background grove sway

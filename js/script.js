@@ -7,10 +7,10 @@ gsap.registerPlugin(ScrollTrigger);
    CANVAS — partículas ceniza (blanco + rosa pastel)
    ============================================ */
 const canvas = document.getElementById('particles');
-const ctx    = canvas.getContext('2d');
+const ctx = canvas.getContext('2d');
 
 function resize() {
-  canvas.width  = window.innerWidth;
+  canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 }
 resize();
@@ -20,15 +20,15 @@ class Particle {
   constructor() { this.reset(true); }
 
   reset(initial = false) {
-    this.x      = Math.random() * canvas.width;
-    this.y      = initial ? Math.random() * canvas.height : -6;
-    this.size   = Math.random() * 1.8 + 0.3;
+    this.x = Math.random() * canvas.width;
+    this.y = initial ? Math.random() * canvas.height : -6;
+    this.size = Math.random() * 1.8 + 0.3;
     this.speedX = (Math.random() - 0.5) * 0.14;
     this.speedY = Math.random() * 0.18 + 0.02;
-    this.alpha  = Math.random() * 0.32 + 0.05;
-    this.drift  = Math.random() * 0.004;
+    this.alpha = Math.random() * 0.32 + 0.05;
+    this.drift = Math.random() * 0.004;
     this.offset = Math.random() * Math.PI * 2;
-    this.tick   = 0;
+    this.tick = 0;
     const r = Math.random();
     this.color = r > 0.55 ? '#f0b8d0' : r > 0.25 ? '#ff8ec8' : '#f5eff2';
   }
@@ -44,7 +44,7 @@ class Particle {
   draw() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle   = this.color;
+    ctx.fillStyle = this.color;
     ctx.globalAlpha = this.alpha;
     ctx.fill();
   }
@@ -64,7 +64,7 @@ animateParticles();
 /* ============================================
    CURSOR
    ============================================ */
-const cursorDot   = document.querySelector('.cursor');
+const cursorDot = document.querySelector('.cursor');
 const cursorTrail = document.querySelector('.cursor-trail');
 let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
 let trailX = mouseX, trailY = mouseY;
@@ -72,23 +72,23 @@ let trailX = mouseX, trailY = mouseY;
 document.addEventListener('mousemove', e => {
   mouseX = e.clientX; mouseY = e.clientY;
   cursorDot.style.left = mouseX + 'px';
-  cursorDot.style.top  = mouseY + 'px';
+  cursorDot.style.top = mouseY + 'px';
 });
 
 (function trail() {
   trailX += (mouseX - trailX) * 0.1;
   trailY += (mouseY - trailY) * 0.1;
   cursorTrail.style.left = trailX + 'px';
-  cursorTrail.style.top  = trailY + 'px';
+  cursorTrail.style.top = trailY + 'px';
   requestAnimationFrame(trail);
 })();
 
 document.querySelectorAll('a, button, .tilt').forEach(el => {
   el.addEventListener('mouseenter', () => {
-    cursorDot.style.width      = '16px';
-    cursorDot.style.height     = '16px';
+    cursorDot.style.width = '16px';
+    cursorDot.style.height = '16px';
     cursorDot.style.background = '#f5eff2';
-    cursorDot.style.boxShadow  = '0 0 12px #f5eff2, 0 0 30px rgba(245,239,242,.35)';
+    cursorDot.style.boxShadow = '0 0 12px #f5eff2, 0 0 30px rgba(245,239,242,.35)';
   });
   el.addEventListener('mouseleave', () => {
     cursorDot.style.cssText = '';
@@ -137,20 +137,20 @@ window.addEventListener('scroll', () => {
 const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' }, delay: 0.1 });
 
 heroTl
-  .from('.nav-logo',     { y: -20, opacity: 0, duration: 0.5 })
+  .from('.nav-logo', { y: -20, opacity: 0, duration: 0.5 })
   .from('.nav-links li', { y: -14, opacity: 0, stagger: 0.08, duration: 0.4 }, '-=0.3')
-  .from('.bg-rose-bl',   { x: -40, opacity: 0, duration: 1.2, ease: 'power2.out' }, '-=0.4')
-  .from('.bg-rose-br',   { x:  40, opacity: 0, duration: 1.2, ease: 'power2.out' }, '-=0.9')
-  .from('.bg-rose-ml',   { x: -30, opacity: 0, duration: 1.0, ease: 'power2.out' }, '-=0.8')
-  .from('.bg-rose-mr',   { x:  30, opacity: 0, duration: 1.0, ease: 'power2.out' }, '-=0.8')
-  .from('.bg-rose-tl',   { y: -20, opacity: 0, duration: 0.9, ease: 'power2.out' }, '-=0.7')
-  .from('.bg-rose-tr',   { y: -20, opacity: 0, duration: 0.8, ease: 'power2.out' }, '-=0.6')
-  .to('.sm-greeting',    { opacity: 1, duration: 0.5 }, '-=0.6')
-  .to('.sm-name',        { opacity: 1, duration: 0.7 }, '-=0.35')
-  .to('.sm-title',       { opacity: 1, duration: 0.5 }, '-=0.3')
-  .to('.xp-bar-wrap',      { opacity: 1, duration: 0.4 }, '-=0.2')
-  .to('.discord-widget',   { opacity: 1, duration: 0.5 }, '-=0.1')
-  .to('.sm-card',          { opacity: 1, duration: 0.6, ease: 'power2.out' }, '-=0.4');
+  .from('.bg-rose-bl', { x: -40, opacity: 0, duration: 1.2, ease: 'power2.out' }, '-=0.4')
+  .from('.bg-rose-br', { x: 40, opacity: 0, duration: 1.2, ease: 'power2.out' }, '-=0.9')
+  .from('.bg-rose-ml', { x: -30, opacity: 0, duration: 1.0, ease: 'power2.out' }, '-=0.8')
+  .from('.bg-rose-mr', { x: 30, opacity: 0, duration: 1.0, ease: 'power2.out' }, '-=0.8')
+  .from('.bg-rose-tl', { y: -20, opacity: 0, duration: 0.9, ease: 'power2.out' }, '-=0.7')
+  .from('.bg-rose-tr', { y: -20, opacity: 0, duration: 0.8, ease: 'power2.out' }, '-=0.6')
+  .to('.sm-greeting', { opacity: 1, duration: 0.5 }, '-=0.6')
+  .to('.sm-name', { opacity: 1, duration: 0.7 }, '-=0.35')
+  .to('.sm-title', { opacity: 1, duration: 0.5 }, '-=0.3')
+  .to('.xp-bar-wrap', { opacity: 1, duration: 0.4 }, '-=0.2')
+  .to('.discord-widget', { opacity: 1, duration: 0.5 }, '-=0.1')
+  .to('.sm-card', { opacity: 1, duration: 0.6, ease: 'power2.out' }, '-=0.4');
 
 // XP fill + counter
 heroTl.to('.xp-fill', { width: '72%', duration: 2, ease: 'power2.inOut' }, '-=0.5');
@@ -265,9 +265,9 @@ gsap.utils.toArray('.card-rose-corner').forEach(el => {
    ============================================ */
 document.querySelectorAll('.tilt').forEach(card => {
   card.addEventListener('mousemove', e => {
-    const r  = card.getBoundingClientRect();
-    const rx = ((e.clientY - r.top  - r.height / 2) / r.height) * -8;
-    const ry = ((e.clientX - r.left - r.width  / 2) / r.width)  *  8;
+    const r = card.getBoundingClientRect();
+    const rx = ((e.clientY - r.top - r.height / 2) / r.height) * -8;
+    const ry = ((e.clientX - r.left - r.width / 2) / r.width) * 8;
     gsap.to(card, { rotateX: rx, rotateY: ry, z: 8, transformPerspective: 900, duration: 0.1, ease: 'none' });
   });
   card.addEventListener('mouseleave', () => {
@@ -279,8 +279,8 @@ document.querySelectorAll('.tilt').forEach(card => {
    HAMBURGER
    ============================================ */
 const hamburger = document.querySelector('.hamburger');
-const navLinks  = document.querySelector('.nav-links');
-let menuOpen    = false;
+const navLinks = document.querySelector('.nav-links');
+let menuOpen = false;
 
 hamburger.addEventListener('click', () => {
   menuOpen = !menuOpen;
@@ -311,15 +311,6 @@ document.querySelectorAll('section[id]').forEach(s => {
   }, { threshold: 0.4 }).observe(s);
 });
 
-/* ============================================
-   DISCORD — Lanyard presence (tiempo real)
-
-   SETUP (una vez):
-   1. Entra a discord.gg/lanyard con tu cuenta de Discord
-   2. Activa Modo Desarrollador en Discord (Ajustes → Avanzado)
-   3. Click derecho en tu nombre → "Copiar ID de usuario"
-   4. Reemplaza el string de abajo con ese ID
-   ============================================ */
 const DISCORD_ID = '857777819324121098';
 
 const DW_COLORS = { online: '#23a55a', idle: '#f0b232', dnd: '#f23f43', offline: '#80848e' };
@@ -332,38 +323,38 @@ async function updateDiscord() {
     const { data } = await r.json();
 
     const displayName = data.discord_user.global_name || data.discord_user.username;
-    const avatarHash  = data.discord_user.avatar;
-    const avatarUrl   = avatarHash
+    const avatarHash = data.discord_user.avatar;
+    const avatarUrl = avatarHash
       ? `https://cdn.discordapp.com/avatars/${data.discord_user.id}/${avatarHash}.webp?size=128&animated=true`
       : '';
 
-    const playing   = data.activities?.find(a => a.type === 0);
+    const playing = data.activities?.find(a => a.type === 0);
     const listening = data.activities?.find(a => a.type === 2);
-    const custom    = data.activities?.find(a => a.type === 4);
+    const custom = data.activities?.find(a => a.type === 4);
     let actText;
-    if (playing)        actText = `▶ jugando ${playing.name}`;
+    if (playing) actText = `▶ jugando ${playing.name}`;
     else if (listening) actText = `♪ ${listening.details ?? listening.name}`;
     else if (custom?.state) actText = custom.state;
-    else                actText = DW_LABELS[data.discord_status] ?? 'offline';
+    else actText = DW_LABELS[data.discord_status] ?? 'offline';
 
     /* ─ small widget (sm-identity) ─ */
     const dot = document.getElementById('dw-status-dot');
     if (dot) {
       dot.style.background = DW_COLORS[data.discord_status] ?? DW_COLORS.offline;
       const dwName = document.getElementById('dw-name');
-      const dwAct  = document.getElementById('dw-activity');
-      const dwImg  = document.getElementById('dw-avatar-img');
+      const dwAct = document.getElementById('dw-activity');
+      const dwImg = document.getElementById('dw-avatar-img');
       if (dwName) dwName.textContent = displayName;
-      if (dwAct)  dwAct.textContent  = actText;
+      if (dwAct) dwAct.textContent = actText;
       if (dwImg) { dwImg.src = avatarUrl || ''; console.log('[Discord] avatar URL:', avatarUrl); }
     }
 
     /* ─ featured card (El Brujo) ─ */
-    const dcStatus   = document.getElementById('dc-status');
+    const dcStatus = document.getElementById('dc-status');
     const dcUsername = document.getElementById('dc-username');
     const dcActivity = document.getElementById('dc-activity');
-    const dcAvatar   = document.getElementById('dc-avatar');
-    if (dcStatus)   dcStatus.style.background = DW_COLORS[data.discord_status] ?? DW_COLORS.offline;
+    const dcAvatar = document.getElementById('dc-avatar');
+    if (dcStatus) dcStatus.style.background = DW_COLORS[data.discord_status] ?? DW_COLORS.offline;
     if (dcUsername) dcUsername.textContent = displayName;
     if (dcActivity) dcActivity.textContent = actText;
     if (dcAvatar) { dcAvatar.src = avatarUrl || ''; }
