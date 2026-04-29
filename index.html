@@ -670,12 +670,65 @@
       const feedback = document.getElementById('queja-feedback');
       let adminKey = null;
 
+      function esc(str) {
+        return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      }
+
+      function renderReplyInput(card, qId) {
+        const wrap = document.createElement('div');
+        wrap.className = 'queja-reply-form';
+        wrap.innerHTML = `<input class="queja-input queja-reply-input" type="text" placeholder="responder..." maxlength="280" autocomplete="off"><button class="btn btn-ghost queja-reply-btn">↩</button>`;
+        wrap.querySelector('.queja-reply-btn').addEventListener('click', () => {
+          const text = wrap.querySelector('.queja-reply-input').value.trim();
+          if (!text) return;
+          fetch('/api/quejas', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ key: adminKey, id: qId, reply: text }),
+          }).then(r => r.json()).then(d => {
+            if (d.ok) {
+              appendReply(card, text);
+              wrap.querySelector('.queja-reply-input').value = '';
+            } else alert(d.error);
+          });
+        });
+        card.appendChild(wrap);
+      }
+
+      function appendReply(card, text) {
+        let repliesWrap = card.querySelector('.queja-replies');
+        if (!repliesWrap) {
+          repliesWrap = document.createElement('div');
+          repliesWrap.className = 'queja-replies';
+          const replyForm = card.querySelector('.queja-reply-form');
+          if (replyForm) card.insertBefore(repliesWrap, replyForm);
+          else card.appendChild(repliesWrap);
+        }
+        const r = document.createElement('div');
+        r.className = 'queja-reply';
+        r.innerHTML = `<span class="queja-reply-author">GO</span><span class="queja-reply-text">${esc(text)}</span>`;
+        repliesWrap.appendChild(r);
+      }
+
       function renderQueja(q, prepend = false) {
         const card = document.createElement('div');
         card.className = 'queja-card g-card';
         const initial = (q.name[0] ?? '?').toUpperCase();
-        card.dataset.id = q.id ?? q.ts ?? '';
-        card.innerHTML = `<div class="queja-avatar">${initial}</div><div class="queja-body"><span class="queja-name">${q.name}</span><span class="queja-text">${q.text}</span></div>${adminKey ? `<button class="queja-del" data-id="${q.id ?? q.ts}">×</button>` : ''}`;
+        const qId = q.id ?? q.ts ?? '';
+        card.dataset.id = qId;
+        card.innerHTML = `<div class="queja-avatar">${esc(initial)}</div><div class="queja-body"><span class="queja-name">${esc(q.name)}</span><span class="queja-text">${esc(q.text)}</span></div>${adminKey ? `<button class="queja-del" data-id="${esc(qId)}">×</button>` : ''}`;
+        if (q.replies && q.replies.length) {
+          const repliesWrap = document.createElement('div');
+          repliesWrap.className = 'queja-replies';
+          q.replies.forEach(rep => {
+            const r = document.createElement('div');
+            r.className = 'queja-reply';
+            r.innerHTML = `<span class="queja-reply-author">GO</span><span class="queja-reply-text">${esc(rep.text)}</span>`;
+            repliesWrap.appendChild(r);
+          });
+          card.appendChild(repliesWrap);
+        }
+        if (adminKey) renderReplyInput(card, qId);
         if (prepend) list.insertBefore(card, list.children[1]);
         else list.appendChild(card);
       }
@@ -762,6 +815,7 @@
               btn.textContent = '×';
               card.appendChild(btn);
             }
+            if (!card.querySelector('.queja-reply-form')) renderReplyInput(card, Number(id));
           });
           addDeleteListeners();
         }).catch(() => {

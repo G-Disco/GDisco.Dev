@@ -28,25 +28,36 @@ export async function onRequest(context) {
   }
 
   if (request.method === 'POST') {
-    const ip = request.headers.get('CF-Connecting-IP') ?? 'unknown';
-    const rlKey = `rl:${ip}`;
-
-    const throttled = await env.VISITORS.get(rlKey);
-    if (throttled) return json({ error: 'Espera un momento antes de volver a quejar.' }, 429);
-
     let body;
     try { body = await request.json(); } catch { return json({ error: 'JSON inválido' }, 400); }
 
+    if (body.key !== undefined) {
+      if (!env.ADMIN_KEY || body.key !== env.ADMIN_KEY) return json({ error: 'No autorizado' }, 403);
+      const reply = (body.reply ?? '').trim().slice(0, 280);
+      if (!reply || !body.id) return json({ error: 'Faltan campos' }, 400);
+      const raw = await env.VISITORS.get('quejas');
+      const quejas = raw ? JSON.parse(raw) : [];
+      const q = quejas.find(q => q.id === body.id || q.ts === body.id);
+      if (!q) return json({ error: 'Queja no encontrada' }, 404);
+      if (!q.replies) q.replies = [];
+      q.replies.push({ text: reply, ts: Date.now() });
+      await env.VISITORS.put('quejas', JSON.stringify(quejas));
+      return json({ ok: true });
+    }
+
+    const ip = request.headers.get('CF-Connecting-IP') ?? 'unknown';
+    const rlKey = `rl:${ip}`;
+    const throttled = await env.VISITORS.get(rlKey);
+    if (throttled) return json({ error: 'Espera un momento antes de volver a quejar.' }, 429);
+
     const name = (body.name ?? '').trim().slice(0, 32);
     const text = (body.text ?? '').trim().slice(0, 280);
-
     if (!name || !text) return json({ error: 'Faltan campos' }, 400);
 
     const raw = await env.VISITORS.get('quejas');
     const quejas = raw ? JSON.parse(raw) : [];
-
     const id = Date.now();
-    quejas.unshift({ id, name, text, ts: id });
+    quejas.unshift({ id, name, text, ts: id, replies: [] });
     if (quejas.length > 50) quejas.length = 50;
 
     await Promise.all([
