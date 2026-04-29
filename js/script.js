@@ -239,12 +239,12 @@ document.querySelectorAll('.attr-fill').forEach(bar => {
 /* ============================================
    GSAP — ACHIEVEMENT COUNTERS
    ============================================ */
-document.querySelectorAll('.ach-num[data-target]').forEach(el => {
+document.querySelectorAll('.ach-chip-num[data-target]').forEach(el => {
   const target = parseInt(el.dataset.target);
   const obj = { val: 0 };
   gsap.to(obj, {
     scrollTrigger: { trigger: el, start: 'top 92%', once: true },
-    val: target, duration: 1.4, ease: 'power2.out',
+    val: target, duration: 1.8, ease: 'power2.out',
     onUpdate() { el.textContent = Math.round(obj.val); },
   });
 });
@@ -289,10 +289,10 @@ hamburger.addEventListener('click', () => {
     top:100%; left:0; right:0; padding:1.1rem 7%; gap:.8rem;
     background:rgba(8,6,8,.97); backdrop-filter:blur(20px);
     border-bottom:1px solid rgba(245,239,242,.07);
-  ` : 'display:none;';
+  ` : '';
 });
 navLinks.querySelectorAll('a').forEach(a => {
-  a.addEventListener('click', () => { menuOpen = false; navLinks.style.cssText = 'display:none;'; });
+  a.addEventListener('click', () => { menuOpen = false; navLinks.style.cssText = ''; });
 });
 
 
@@ -332,8 +332,9 @@ async function updateDiscord() {
     const { data } = await r.json();
 
     const displayName = data.discord_user.global_name || data.discord_user.username;
-    const avatarUrl   = data.discord_user.avatar
-      ? `https://cdn.discordapp.com/avatars/${data.discord_user.id}/${data.discord_user.avatar}.webp?size=128`
+    const avatarHash  = data.discord_user.avatar;
+    const avatarUrl   = avatarHash
+      ? `https://cdn.discordapp.com/avatars/${data.discord_user.id}/${avatarHash}.webp?size=128&animated=true`
       : '';
 
     const playing   = data.activities?.find(a => a.type === 0);
@@ -354,7 +355,7 @@ async function updateDiscord() {
       const dwImg  = document.getElementById('dw-avatar-img');
       if (dwName) dwName.textContent = displayName;
       if (dwAct)  dwAct.textContent  = actText;
-      if (dwImg && avatarUrl) dwImg.src = avatarUrl;
+      if (dwImg) { dwImg.src = avatarUrl || ''; console.log('[Discord] avatar URL:', avatarUrl); }
     }
 
     /* ─ featured card (El Brujo) ─ */
@@ -365,9 +366,9 @@ async function updateDiscord() {
     if (dcStatus)   dcStatus.style.background = DW_COLORS[data.discord_status] ?? DW_COLORS.offline;
     if (dcUsername) dcUsername.textContent = displayName;
     if (dcActivity) dcActivity.textContent = actText;
-    if (dcAvatar && avatarUrl) dcAvatar.src = avatarUrl;
+    if (dcAvatar) { dcAvatar.src = avatarUrl || ''; }
 
-  } catch { /* silencioso */ }
+  } catch (e) { console.warn('[Discord]', e); }
 }
 
 updateDiscord();

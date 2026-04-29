@@ -15,7 +15,8 @@
 
 <body>
 
-  <div class="cursor"></div>
+<div id="moon-light-overlay"></div>
+<div class="cursor"></div>
   <div class="cursor-trail"></div>
   <canvas id="particles"></canvas>
   <canvas id="tree-canvas"></canvas>
@@ -165,7 +166,7 @@
       <a class="discord-widget" href="https://discord.com/users/857777819324121098" target="_blank"
         rel="noopener noreferrer" id="discord-widget">
         <div class="dw-avatar-wrap">
-          <img id="dw-avatar-img" src="" alt="" class="dw-avatar">
+          <img id="dw-avatar-img" alt="" class="dw-avatar">
           <span class="dw-status-dot" id="dw-status-dot"></span>
         </div>
         <div class="dw-right">
@@ -182,20 +183,10 @@
     <div class="sm-card g-card">
       <span class="sm-tag">// sobre_mi.exe</span>
       <p class="sm-about">
-        Desarrollador fullstack con <em>obsesión por el tabaco, CSS y las morras</em>.<br>
-        Gamer poco profesional desde los 13, Dev desde los 17.<br>
+        19 años. Desarrollador fullstack con <em>obsesión por el tabaco, CSS y las morras</em>.<br>
+        Gamer poco profesional desde los 13, Dev desde los 15.<br>
         Si se ve coqueto, lo puedo hacer.
       </p>
-      <div class="sm-stack">
-        <span class="stack-item">PHP</span>
-        <span class="stack-item">Laravel</span>
-        <span class="stack-item">MySQL</span>
-        <span class="stack-item">JavaScript</span>
-        <span class="stack-item">GSAP</span>
-        <span class="stack-item">Canvas</span>
-        <span class="stack-item">CSS</span>
-        <span class="stack-item">Linux</span>
-      </div>
       <div class="sm-buttons">
         <a href="#stats" class="btn btn-primary">▶ ver stats</a>
         <a href="mailto:gabriel16ortega@gmail.com" class="btn btn-ghost">escribeme</a>
@@ -258,7 +249,7 @@
           </svg>
           <div class="dc-top">
             <div class="dc-avatar-wrap">
-              <img id="dc-avatar" class="dc-avatar" src="" alt="Gabriel">
+              <img id="dc-avatar" class="dc-avatar" alt="Gabriel">
               <span class="dc-status" id="dc-status"></span>
             </div>
             <div class="dc-identity">
@@ -273,7 +264,7 @@
         <div class="brujo-bio">
           <p>Dev fullstack. Me pagan con un cigarro — <em>A veces la mitad de uno.</em>.</p>
           <p>Adicto a Genshin, ZZZ, Valorant y LoL en ese orden de destrucción de vida social.</p>
-          <p>También administro servidores. Por amor al arte.</p>
+          <p>También administro servidores. Por amor al arte — y me defiendo con todo esto:</p>
           <div class="about-tags">
             <span class="tag">JavaScript</span>
             <span class="tag">PHP</span>
@@ -342,7 +333,7 @@
       <div class="ach-chip">
         <span class="ach-chip-icon accent">◈</span>
         <div class="ach-chip-count">
-          <span class="ach-chip-num accent" data-target="20">0</span><span class="ach-chip-sfx accent">+</span>
+          <span class="ach-chip-num accent" data-target="67">0</span><span class="ach-chip-sfx accent">+</span>
         </div>
         <span class="ach-chip-label">misiones completadas</span>
       </div>
@@ -495,13 +486,71 @@
         <circle cx="18" cy="15" r="2" fill="#601830" />
       </svg>
     </div>
-    <p class="footer-name">GABRIEL<span class="accent">ORTEGA</span></p>
-    <p class="footer-sub">// GSAP · Canvas · CSS · amor y espinas</p>
+    <!-- Espinas izquierda -->
+    <div class="footer-thorns footer-thorns-l" aria-hidden="true">
+      <svg viewBox="0 0 200 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M200 28 C168 26 135 30 103 27 C75 24 45 29 14 27" stroke="#5a1030" stroke-width="1.9" stroke-linecap="round"/>
+        <path d="M178 27 L174 10 L180 26" fill="#5a1030" opacity=".85"/>
+        <path d="M150 26 L146  8 L152 25" fill="#5a1030" opacity=".78"/>
+        <path d="M120 26 L116 10 L122 25" fill="#5a1030" opacity=".85"/>
+        <path d="M90  26 L86   9 L92  25" fill="#5a1030" opacity=".78"/>
+        <path d="M60  27 L56  11 L62  26" fill="#5a1030" opacity=".85"/>
+        <path d="M30  27 L26  13 L32  26" fill="#5a1030" opacity=".72"/>
+        <path d="M188 29 L184 45 L190 30" fill="#5a1030" opacity=".65"/>
+        <path d="M163 28 L159 43 L165 29" fill="#5a1030" opacity=".58"/>
+        <path d="M135 27 L131 42 L137 28" fill="#5a1030" opacity=".65"/>
+        <path d="M107 27 L103 41 L109 28" fill="#5a1030" opacity=".58"/>
+        <path d="M77  27 L73  41 L79  28" fill="#5a1030" opacity=".65"/>
+        <path d="M47  27 L43  41 L49  28" fill="#5a1030" opacity=".58"/>
+        <path d="M19  27 L15  41 L21  28" fill="#5a1030" opacity=".52"/>
+        <path d="M154 25 Q144 19 140 25 Q147 24 154 25" fill="#5a1030" opacity=".42"/>
+        <path d="M96  25 Q86  19 82  25 Q89  24 96  25"  fill="#5a1030" opacity=".42"/>
+        <path d="M52  26 Q42  20 38  26 Q45  25 52  26"  fill="#5a1030" opacity=".42"/>
+      </svg>
+    </div>
+
+    <!-- Espinas derecha (espejo) -->
+    <div class="footer-thorns footer-thorns-r" aria-hidden="true">
+      <svg viewBox="0 0 200 56" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform:scaleX(-1)">
+        <path d="M200 28 C168 26 135 30 103 27 C75 24 45 29 14 27" stroke="#5a1030" stroke-width="1.9" stroke-linecap="round"/>
+        <path d="M178 27 L174 10 L180 26" fill="#5a1030" opacity=".85"/>
+        <path d="M150 26 L146  8 L152 25" fill="#5a1030" opacity=".78"/>
+        <path d="M120 26 L116 10 L122 25" fill="#5a1030" opacity=".85"/>
+        <path d="M90  26 L86   9 L92  25" fill="#5a1030" opacity=".78"/>
+        <path d="M60  27 L56  11 L62  26" fill="#5a1030" opacity=".85"/>
+        <path d="M30  27 L26  13 L32  26" fill="#5a1030" opacity=".72"/>
+        <path d="M188 29 L184 45 L190 30" fill="#5a1030" opacity=".65"/>
+        <path d="M163 28 L159 43 L165 29" fill="#5a1030" opacity=".58"/>
+        <path d="M135 27 L131 42 L137 28" fill="#5a1030" opacity=".65"/>
+        <path d="M107 27 L103 41 L109 28" fill="#5a1030" opacity=".58"/>
+        <path d="M77  27 L73  41 L79  28" fill="#5a1030" opacity=".65"/>
+        <path d="M47  27 L43  41 L49  28" fill="#5a1030" opacity=".58"/>
+        <path d="M19  27 L15  41 L21  28" fill="#5a1030" opacity=".52"/>
+        <path d="M154 25 Q144 19 140 25 Q147 24 154 25" fill="#5a1030" opacity=".42"/>
+        <path d="M96  25 Q86  19 82  25 Q89  24 96  25"  fill="#5a1030" opacity=".42"/>
+        <path d="M52  26 Q42  20 38  26 Q45  25 52  26"  fill="#5a1030" opacity=".42"/>
+      </svg>
+    </div>
+
+    <p class="footer-name">GABRIEL<span class="footer-accent">ORTEGA</span></p>
+    <p class="footer-sub">Full Stack Developer · El Brujo · Builder de experiencias</p>
+
+    <div class="footer-links">
+      <a href="mailto:gabriel16ortega@gmail.com" class="footer-link">
+        <span class="fl-icon">✉</span>gabriel16ortega@gmail.com
+      </a>
+      <span class="fl-sep">✦</span>
+      <a href="https://discord.com/users/857777819324121098" target="_blank" rel="noopener noreferrer" class="footer-link">
+        <span class="fl-icon">◈</span>discord
+      </a>
+    </div>
+
+    <p class="footer-copy">// GSAP · Three.js · CSS · amor y espinas</p>
     <p class="footer-gg pink">GG WP</p>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-  <script src="js/tree.js"></script>
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js"}}</script>
+  <script type="module" src="js/tree.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <script src="js/script.js"></script>
