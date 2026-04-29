@@ -23,14 +23,13 @@
 
 <body>
 
-<div id="moon-light-overlay"></div>
-<div class="cursor"></div>
+  <div id="moon-light-overlay"></div>
+  <div class="cursor"></div>
   <div class="cursor-trail"></div>
   <canvas id="particles"></canvas>
   <canvas id="tree-canvas"></canvas>
   <div class="scanlines"></div>
 
-  <!-- ROSAS DE FONDO — fixed, z-index 3 -->
   <div class="bg-rose bg-rose-bl">
     <svg viewBox="0 0 90 240" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M45 105 C43 148 45 182 44 240" stroke="#5a1030" stroke-width="3" stroke-linecap="round" />
@@ -135,30 +134,29 @@
       <circle cx="25" cy="28" r="4" fill="#842058" />
     </svg>
   </div>
-  <!-- Kanji sakura flotantes — decoración de fondo -->
   <div class="bg-kanji bg-kanji-1">桜</div>
   <div class="bg-kanji bg-kanji-2">花</div>
   <div class="bg-kanji bg-kanji-3">散</div>
 
-  <!-- NAVBAR -->
   <nav class="navbar">
     <div class="nav-logo">G<span class="accent">O</span><span class="logo-sub">.exe</span></div>
     <ul class="nav-links">
       <li><a href="#inicio">inicio</a></li>
-      <li><a href="#stats">stats</a></li>
     </ul>
     <div class="hamburger"><span></span><span></span><span></span></div>
   </nav>
 
 
-  <!-- ══════════════════ SOBRE MÍ ══════════════════ -->
   <section id="inicio" class="sobre-mi">
 
     <div class="sm-identity">
       <p class="sm-greeting">// hola, soy</p>
       <div class="sm-name-row">
         <h1 class="sm-name glitch" data-text="Gabriel Ortega">Gabriel Ortega</h1>
-        <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()"></button>
+        <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">
+          <span class="toggle-icon" id="toggle-icon"></span>
+          <span class="toggle-label" id="toggle-label"></span>
+        </button>
       </div>
       <h2 class="sm-title">
         <span class="typewriter"></span><span class="cursor-blink">_</span>
@@ -173,7 +171,14 @@
         </div>
       </div>
 
-      <!-- Discord presence widget -->
+      <div class="visitor-card-wrap">
+        <div class="visitor-card g-card">
+          <span class="visitor-smile">Sonríe~</span>
+          <span class="visitor-text">Eres el visitante no:</span>
+          <span class="visitor-num" id="visitor-count">—</span>
+        </div>
+      </div>
+
       <a class="discord-widget" href="https://discord.com/users/857777819324121098" target="_blank"
         rel="noopener noreferrer" id="discord-widget">
         <div class="dw-avatar-wrap">
@@ -191,27 +196,39 @@
       </a>
 
       <div class="social-mini-links">
-        <a href="https://www.instagram.com/g._disco/" target="_blank" rel="noopener noreferrer" class="social-mini social-mini--ig">
+        <a href="https://www.instagram.com/g._disco/" target="_blank" rel="noopener noreferrer"
+          class="social-mini social-mini--ig">
           <span class="sm-icon">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+              <path
+                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+            </svg>
           </span>
           <span class="sm-body">
             <span class="sm-plat">instagram</span>
             <span class="sm-handle">g._disco</span>
           </span>
         </a>
-        <a href="https://open.spotify.com/user/31mmoahummftq3u7u6xwl4xyp7ay?si=1bd5184f65b64962" target="_blank" rel="noopener noreferrer" class="social-mini social-mini--sp">
+        <a href="https://open.spotify.com/user/31mmoahummftq3u7u6xwl4xyp7ay?si=1bd5184f65b64962" target="_blank"
+          rel="noopener noreferrer" class="social-mini social-mini--sp">
           <span class="sm-icon">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+              <path
+                d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
+            </svg>
           </span>
           <span class="sm-body">
             <span class="sm-plat">spotify</span>
             <span class="sm-handle">GDisco</span>
           </span>
         </a>
-        <a href="https://steamcommunity.com/profiles/76561199206260941/" target="_blank" rel="noopener noreferrer" class="social-mini social-mini--st">
+        <a href="https://steamcommunity.com/profiles/76561199206260941/" target="_blank" rel="noopener noreferrer"
+          class="social-mini social-mini--st">
           <span class="sm-icon">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.029 4.524 4.524s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.497 1.009 2.455-.397.957-1.494 1.409-2.454 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.252 0-2.265-1.014-2.265-2.265z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+              <path
+                d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.029 4.524 4.524s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.497 1.009 2.455-.397.957-1.494 1.409-2.454 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.252 0-2.265-1.014-2.265-2.265z" />
+            </svg>
           </span>
           <span class="sm-body">
             <span class="sm-plat">steam</span>
@@ -223,9 +240,9 @@
       <div class="sm-card g-card">
         <span class="sm-tag">// sobre_mi.exe</span>
         <p class="sm-about">
-          19 años. Desarrollador fullstack con <em>obsesión por el tabaco, CSS y las morras</em>.<br>
-          Gamer poco profesional desde los 13, Dev desde los 15.<br>
-          Si se ve coqueto, lo puedo hacer.
+          Desarrollador fullstack con <em>obsesión por el CSS, comentar código y el tabaco</em>.<br>
+          Gamer no-profesional desde los 13, Dev desde los 17.<br>
+          Si puedo fumar mientras lo hago <em>*tal vez*</em> lo puedo hacer.
         </p>
         <div class="sm-buttons">
           <a href="#stats" class="btn btn-primary">▶ ver stats</a>
@@ -237,54 +254,20 @@
   </section>
 
 
-  <!-- ══ VINE DIVIDER ══ -->
-  <div class="vine-divider">
-    <svg viewBox="0 0 900 44" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 22 Q112 10 224 22 Q280 28 338 22" stroke="#6a2040" stroke-width="1.5" fill="none" />
-      <path d="M900 22 Q788 34 676 22 Q620 16 562 22" stroke="#6a2040" stroke-width="1.5" fill="none" />
-      <line x1="60" y1="19" x2="50" y2="10" stroke="#6a2040" stroke-width="1.2" />
-      <line x1="130" y1="25" x2="140" y2="34" stroke="#6a2040" stroke-width="1.2" />
-      <line x1="200" y1="19" x2="190" y2="10" stroke="#6a2040" stroke-width="1.2" />
-      <line x1="265" y1="25" x2="275" y2="34" stroke="#6a2040" stroke-width="1.2" />
-      <line x1="840" y1="25" x2="850" y2="34" stroke="#6a2040" stroke-width="1.2" />
-      <line x1="770" y1="19" x2="760" y2="10" stroke="#6a2040" stroke-width="1.2" />
-      <line x1="700" y1="25" x2="710" y2="34" stroke="#6a2040" stroke-width="1.2" />
-      <line x1="635" y1="19" x2="625" y2="10" stroke="#6a2040" stroke-width="1.2" />
-      <path d="M338 22 Q366 16 390 22 Q410 26 450 22" stroke="#6a2040" stroke-width="1" fill="none" opacity="0.6" />
-      <path d="M562 22 Q534 28 510 22 Q490 18 450 22" stroke="#6a2040" stroke-width="1" fill="none" opacity="0.6" />
-      <!-- Rose central -->
-      <ellipse cx="450" cy="22" rx="14" ry="18" fill="#f4c0d4" opacity="0.75" />
-      <ellipse cx="450" cy="22" rx="14" ry="18" fill="#f0b4cc" opacity="0.65" transform="rotate(72 450 22)" />
-      <ellipse cx="450" cy="22" rx="14" ry="18" fill="#ecacc6" opacity="0.65" transform="rotate(144 450 22)" />
-      <ellipse cx="450" cy="22" rx="14" ry="18" fill="#f0b4cc" opacity="0.65" transform="rotate(216 450 22)" />
-      <ellipse cx="450" cy="22" rx="14" ry="18" fill="#f4c0d4" opacity="0.65" transform="rotate(288 450 22)" />
-      <ellipse cx="450" cy="22" rx="9" ry="12" fill="#cc6898" opacity="0.92" transform="rotate(36 450 22)" />
-      <ellipse cx="450" cy="22" rx="9" ry="12" fill="#c46090" opacity="0.9" transform="rotate(108 450 22)" />
-      <ellipse cx="450" cy="22" rx="9" ry="12" fill="#cc6898" opacity="0.9" transform="rotate(180 450 22)" />
-      <ellipse cx="450" cy="22" rx="6" ry="8" fill="#aa4878" opacity="0.96" transform="rotate(54 450 22)" />
-      <ellipse cx="450" cy="22" rx="6" ry="8" fill="#a04070" opacity="0.96" transform="rotate(126 450 22)" />
-      <circle cx="450" cy="22" r="5" fill="#882850" />
-      <circle cx="450" cy="21" r="2.5" fill="#601830" />
-      <line x1="450" y1="40" x2="450" y2="44" stroke="#6a2040" stroke-width="1.5" />
-    </svg>
-  </div>
-
-
-  <!-- ══════════════════ STATS ══════════════════ -->
   <section id="stats" class="stats-section">
     <div class="section-header">
       <div class="sh-ornament">✦</div>
-      <h2>El viejo lobo</h2>
+      <h2>// más_detalles</h2>
       <div class="section-line"></div>
     </div>
 
-    <!-- ══ TOP: Discord card + bio | Skill bars ══ -->
     <div class="brujo-top">
-
       <div class="brujo-left">
         <div class="brujo-bio">
-          <p>Dev fullstack. Me pagan con un cigarro — <em>A veces la mitad de uno.</em>.</p>
-          <p>Adicto a Genshin, ZZZ, Valorant y LoL en ese orden de destrucción de vida social.</p>
+          <p>Me pagan con un cigarro — <em>A veces la mitad de uno.</em></p>
+          <p>Paso la mayor parte del tiempo jugando o rediseñando esta página.</p>
+          <p>Me apasiona ser naco — hablar corriente es mi don. Disfruto de la música, mi anime favorito (y el mejor) es
+            Gurren Lagann. <span style="color:#e53935;font-weight:bold;">No negociable.</span></p>
           <p>También administro servidores. Por amor al arte — y me defiendo con todo esto:</p>
           <div class="about-tags">
             <span class="tag">JavaScript</span>
@@ -299,143 +282,228 @@
         </div>
       </div>
 
-      <div class="brujo-right">
-        <div class="attr-list">
-          <div class="attr-row g-card">
-            <div class="attr-info"><span class="attr-name">FRONTEND</span><span class="attr-val accent">92</span></div>
-            <div class="attr-bar">
-              <div class="attr-fill" data-w="92"></div>
+      <div class="timeline">
+        <div class="tl-items-row">
+          <div class="tl-item">
+            <div class="tl-year">2023</div>
+            <div class="tl-dot"></div>
+            <div class="tl-body">
+              <span class="tl-role">Creciendo</span>
+              <span class="tl-desc">Puro HTML al principio, ni sabía lo que había afuera. Luego PHP, apenas volviéndome
+                un don.</span>
             </div>
           </div>
-          <div class="attr-row g-card">
-            <div class="attr-info"><span class="attr-name">BACKEND</span><span class="attr-val accent">78</span></div>
-            <div class="attr-bar">
-              <div class="attr-fill" data-w="78"></div>
+          <div class="tl-item">
+            <div class="tl-year">2024</div>
+            <div class="tl-dot tl-dot--company"></div>
+            <div class="tl-body">
+              <span class="tl-company">AviHel MRO</span>
+              <span class="tl-role">Practicante</span>
+              <span class="tl-desc">Mantener lo que había y construir sobre ello.</span>
             </div>
           </div>
-          <div class="attr-row g-card">
-            <div class="attr-info"><span class="attr-name">CSS MAGIC</span><span class="attr-val accent">95</span></div>
-            <div class="attr-bar">
-              <div class="attr-fill" data-w="95"></div>
+          <div class="tl-item">
+            <div class="tl-year">2025</div>
+            <div class="tl-dot tl-dot--company"></div>
+            <div class="tl-body">
+              <span class="tl-company">AviHel</span>
+              <span class="tl-role">Full Stack Dev</span>
+              <span class="tl-desc">Reconstruí <a href="https://avihel.com.mx" target="_blank" rel="noopener noreferrer"
+                  class="tl-link">↗ avihel.com.mx</a> desde cero. Ese sí es mío. <em class="tl-shade">Me siguen pagando
+                  como practicante.</em></span>
             </div>
           </div>
-          <div class="attr-row g-card">
-            <div class="attr-info"><span class="attr-name">DEBUGGING</span><span class="attr-val accent">85</span></div>
-            <div class="attr-bar">
-              <div class="attr-fill" data-w="85"></div>
-            </div>
-          </div>
-          <div class="attr-row g-card">
-            <div class="attr-info"><span class="attr-name">SERVERS</span><span class="attr-val accent">74</span></div>
-            <div class="attr-bar">
-              <div class="attr-fill" data-w="74"></div>
-            </div>
-          </div>
-          <div class="attr-row g-card coffee-row">
-            <div class="attr-info"><span class="attr-name">COFFEE</span><span class="attr-val pink">MAX</span></div>
-            <div class="attr-bar">
-              <div class="attr-fill pink-bar" data-w="100"></div>
+          <div class="tl-item tl-item--active">
+            <div class="tl-year">ahora</div>
+            <div class="tl-dot tl-dot--active"></div>
+            <div class="tl-body">
+              <span class="tl-company">AviHel MRO</span>
+              <span class="tl-role">FS + Enc. Sistemas</span>
+              <span class="tl-desc">Dos roles, un cigarro. <em class="tl-shade">Aún me pagan como
+                  practicante.</em></span>
             </div>
           </div>
         </div>
       </div>
-
     </div>
 
-    <!-- ══ Achievement strip ══ -->
-    <div class="ach-strip">
-      <div class="ach-chip">
-        <span class="ach-chip-icon accent">✦</span>
-        <div class="ach-chip-count">
-          <span class="ach-chip-num accent" data-target="3">0</span><span class="ach-chip-sfx accent">+</span>
-        </div>
-        <span class="ach-chip-label">años en batalla</span>
-      </div>
-      <div class="ach-chip">
-        <span class="ach-chip-icon accent">◈</span>
-        <div class="ach-chip-count">
-          <span class="ach-chip-num accent" data-target="67">0</span><span class="ach-chip-sfx accent">+</span>
-        </div>
-        <span class="ach-chip-label">misiones completadas</span>
-      </div>
-      <div class="ach-chip">
-        <span class="ach-chip-icon pink">❧</span>
-        <div class="ach-chip-count">
-          <span class="ach-chip-num pink">∞</span>
-        </div>
-        <span class="ach-chip-label">cafés tomados</span>
-      </div>
-      <div class="ach-chip">
-        <span class="ach-chip-icon accent">✦</span>
-        <div class="ach-chip-count">
-          <span class="ach-chip-num accent" data-target="0">0</span>
-        </div>
-        <span class="ach-chip-label">bugs en prod*</span>
-      </div>
-      <div class="ach-chip">
-        <span class="ach-chip-icon pink">◉</span>
-        <div class="ach-chip-count">
-          <span class="ach-chip-num pink" id="visitor-count">—</span>
-        </div>
-        <span class="ach-chip-label">eres el visitante no :</span>
-      </div>
-    </div>
-    <p class="disclaimer">*en mi máquina, que es lo que importa</p>
 
-    <!-- ══ GAMES ══ -->
     <div class="games-area">
       <p class="games-label">// cosas que me gusta jugar</p>
-      <div class="games-grid">
+      <div class="games-carousel-wrap">
+        <button class="carousel-btn carousel-btn--prev" id="carousel-prev" aria-label="anterior">‹</button>
+        <div class="games-carousel" id="games-carousel">
 
-        <div class="game-card game-genshin tilt">
-          <div class="game-thumb">
-            <img src="assets/games/genshin.gif" alt="Genshin Impact" class="game-gif">
+          <div class="game-card game-genshin tilt">
+            <div class="game-thumb">
+              <img src="assets/games/genshin.gif" alt="Genshin Impact" class="game-gif">
+            </div>
+            <div class="game-info">
+              <span class="game-name">Genshin Impact</span>
+              <span class="game-detail">AR 60 · Scenery enjoyer</span>
+              <span class="game-desc">Mi mayor adicción desde 2020. ~4000 horas registradas, catador de monas chinas
+                profesional.</span>
+            </div>
           </div>
-          <div class="game-info">
-            <span class="game-name">Genshin Impact</span>
-            <span class="game-detail">AR 58 · Mondstadt enjoyer</span>
+
+          <div class="game-card game-zzz tilt">
+            <div class="game-thumb">
+              <img src="assets/games/zzz.gif" alt="Zenless Zone Zero" class="game-gif">
+            </div>
+            <div class="game-info">
+              <span class="game-name">Zenless Zone Zero</span>
+              <span class="game-detail">Proxy · New Eridu</span>
+              <span class="game-desc">Lo mismo que Genshin pero aquí se mueven más rico.</span>
+            </div>
           </div>
+
+          <div class="game-card game-valorant tilt">
+            <div class="game-thumb">
+              <img src="assets/games/valorant.gif" alt="Valorant" class="game-gif">
+            </div>
+            <div class="game-info">
+              <span class="game-name">Valorant</span>
+              <span class="game-detail">Bronce · Duelist</span>
+              <span class="game-desc">La desgracia de mi paciencia y mi cordura.</span>
+            </div>
+          </div>
+
+          <div class="game-card game-lol tilt">
+            <div class="game-thumb">
+              <img src="assets/games/lol.gif" alt="League of Legends" class="game-gif">
+            </div>
+            <div class="game-info">
+              <span class="game-name">League of Legends</span>
+              <span class="game-detail">Plata · Mid / Top</span>
+              <span class="game-desc">Lo mismo que Valorant, pero esto es más como una relación abusiva.</span>
+            </div>
+          </div>
+
+          <div class="game-card game-warframe tilt">
+            <div class="game-thumb">
+              <img src="assets/games/warframe.gif" alt="Warframe" class="game-gif">
+            </div>
+            <div class="game-info">
+              <span class="game-name">Warframe</span>
+              <span class="game-detail">Tenno · MR 16</span>
+              <span class="game-desc">El grind eterno. Lo dejo y vuelvo cada 3 meses como si nada.</span>
+            </div>
+          </div>
+
+          <div class="game-card game-vrchat tilt">
+            <div class="game-thumb">
+              <img src="assets/games/vrchat.gif" alt="VRChat" class="game-gif">
+            </div>
+            <div class="game-info">
+              <span class="game-name">VRChat</span>
+              <span class="game-detail">Quest 2</span>
+              <span class="game-desc">El lugar más extraño de internet y aun así me quedo.</span>
+            </div>
+          </div>
+
+          <div class="game-card game-gta tilt">
+            <div class="game-thumb">
+              <img src="assets/games/gta.gif" alt="GTA V" class="game-gif">
+            </div>
+            <div class="game-info">
+              <span class="game-name">GTA V</span>
+              <span class="game-detail">Online</span>
+              <span class="game-desc">Clásico. Nunca se va, nunca se va.</span>
+            </div>
+          </div>
+
+          <div class="game-card game-halo tilt">
+            <div class="game-thumb">
+              <img src="assets/games/halo.gif" alt="Halo" class="game-gif">
+            </div>
+            <div class="game-info">
+              <span class="game-name">Halo</span>
+              <span class="game-detail">MCC</span>
+              <span class="game-desc">El shooter que me hizo amar los shooters antes que Valorant los arruinara.</span>
+            </div>
+          </div>
+
         </div>
-
-        <div class="game-card game-zzz tilt">
-          <div class="game-thumb">
-            <img src="assets/games/zzz.gif" alt="Zenless Zone Zero" class="game-gif">
-          </div>
-          <div class="game-info">
-            <span class="game-name">Zenless Zone Zero</span>
-            <span class="game-detail">Proxy · New Eridu</span>
-          </div>
-        </div>
-
-        <div class="game-card game-valorant tilt">
-          <div class="game-thumb">
-            <img src="assets/games/valorant.gif" alt="Valorant" class="game-gif">
-          </div>
-          <div class="game-info">
-            <span class="game-name">Valorant</span>
-            <span class="game-detail">Gold III · Duelist</span>
-          </div>
-        </div>
-
-        <div class="game-card game-lol tilt">
-          <div class="game-thumb">
-            <img src="assets/games/lol.gif" alt="League of Legends" class="game-gif">
-          </div>
-          <div class="game-info">
-            <span class="game-name">League of Legends</span>
-            <span class="game-detail">Plat IV · Mid / Support</span>
-          </div>
-        </div>
-
+        <button class="carousel-btn carousel-btn--next" id="carousel-next" aria-label="siguiente">›</button>
       </div>
+      <div class="carousel-dots" id="carousel-dots"></div>
     </div>
 
   </section>
 
+  <section class="quejas-section">
+    <div class="section-header">
+      <div class="sh-ornament">✦</div>
+      <h2>// quejas</h2>
+      <span class="quejas-sub">— Son anónimas, deja tu huella.</span>
+      <div class="section-line"></div>
+    </div>
 
+    <div class="quejas-list" id="quejas-list">
+      <div class="queja-card g-card">
+        <div class="queja-avatar">C</div>
+        <div class="queja-body">
+          <span class="queja-name">Chiriwillo</span>
+          <span class="queja-text">Borra tu mamada</span>
+        </div>
+      </div>
+    </div>
 
+    <form class="queja-form g-card" id="queja-form">
+      <p class="queja-form-title">// deja tu queja</p>
+      <div class="queja-form-fields">
+        <input class="queja-input" id="queja-name" type="text" placeholder="nombre" maxlength="32" autocomplete="off">
+        <input class="queja-input queja-input--msg" id="queja-text" type="text" placeholder="tu queja aquí..." maxlength="280" autocomplete="off">
+        <button class="btn btn-primary queja-submit" type="submit">enviar</button>
+      </div>
+      <p class="queja-feedback" id="queja-feedback"></p>
+    </form>
 
-  <!-- FOOTER -->
+    <div class="admin-panel" id="admin-panel">
+      <div class="admin-key-wrap">
+        <input class="queja-input admin-key-input" id="admin-key" type="password" placeholder="// admin key" autocomplete="off">
+        <button class="admin-eye" id="admin-eye" type="button" title="mostrar/ocultar">👁</button>
+      </div>
+      <button class="btn btn-ghost admin-key-btn" id="admin-key-btn">entrar</button>
+      <span class="admin-flag" id="admin-flag"></span>
+    </div>
+  </section>
+
+  <section class="contact-section" id="contacto">
+    <div class="section-header">
+      <div class="sh-ornament">✦</div>
+      <h2>Contacto</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-cards">
+      <a href="mailto:gabriel16ortega@gmail.com" class="contact-card">
+        <span class="contact-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+            <path
+              d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+          </svg>
+        </span>
+        <span class="contact-body">
+          <span class="contact-label">correo</span>
+          <span class="contact-value">gabriel16ortega@gmail.com</span>
+        </span>
+      </a>
+      <a href="https://discord.com/users/857777819324121098" target="_blank" rel="noopener noreferrer"
+        class="contact-card">
+        <span class="contact-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+            <path
+              d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.878 19.878 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
+          </svg>
+        </span>
+        <span class="contact-body">
+          <span class="contact-label">discord</span>
+          <span class="contact-value">discord.com/users/Gabriel</span>
+        </span>
+      </a>
+    </div>
+  </section>
+
   <footer class="footer">
     <div class="footer-roses">
       <svg width="36" height="80" viewBox="0 0 36 80" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -472,61 +540,62 @@
         <circle cx="18" cy="15" r="2" fill="#601830" />
       </svg>
     </div>
-    <!-- Espinas izquierda -->
     <div class="footer-thorns footer-thorns-l" aria-hidden="true">
       <svg viewBox="0 0 200 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M200 28 C168 26 135 30 103 27 C75 24 45 29 14 27" stroke="#5a1030" stroke-width="1.9" stroke-linecap="round"/>
-        <path d="M178 27 L174 10 L180 26" fill="#5a1030" opacity=".85"/>
-        <path d="M150 26 L146  8 L152 25" fill="#5a1030" opacity=".78"/>
-        <path d="M120 26 L116 10 L122 25" fill="#5a1030" opacity=".85"/>
-        <path d="M90  26 L86   9 L92  25" fill="#5a1030" opacity=".78"/>
-        <path d="M60  27 L56  11 L62  26" fill="#5a1030" opacity=".85"/>
-        <path d="M30  27 L26  13 L32  26" fill="#5a1030" opacity=".72"/>
-        <path d="M188 29 L184 45 L190 30" fill="#5a1030" opacity=".65"/>
-        <path d="M163 28 L159 43 L165 29" fill="#5a1030" opacity=".58"/>
-        <path d="M135 27 L131 42 L137 28" fill="#5a1030" opacity=".65"/>
-        <path d="M107 27 L103 41 L109 28" fill="#5a1030" opacity=".58"/>
-        <path d="M77  27 L73  41 L79  28" fill="#5a1030" opacity=".65"/>
-        <path d="M47  27 L43  41 L49  28" fill="#5a1030" opacity=".58"/>
-        <path d="M19  27 L15  41 L21  28" fill="#5a1030" opacity=".52"/>
-        <path d="M154 25 Q144 19 140 25 Q147 24 154 25" fill="#5a1030" opacity=".42"/>
-        <path d="M96  25 Q86  19 82  25 Q89  24 96  25"  fill="#5a1030" opacity=".42"/>
-        <path d="M52  26 Q42  20 38  26 Q45  25 52  26"  fill="#5a1030" opacity=".42"/>
+        <path d="M200 28 C168 26 135 30 103 27 C75 24 45 29 14 27" stroke="#5a1030" stroke-width="1.9"
+          stroke-linecap="round" />
+        <path d="M178 27 L174 10 L180 26" fill="#5a1030" opacity=".85" />
+        <path d="M150 26 L146  8 L152 25" fill="#5a1030" opacity=".78" />
+        <path d="M120 26 L116 10 L122 25" fill="#5a1030" opacity=".85" />
+        <path d="M90  26 L86   9 L92  25" fill="#5a1030" opacity=".78" />
+        <path d="M60  27 L56  11 L62  26" fill="#5a1030" opacity=".85" />
+        <path d="M30  27 L26  13 L32  26" fill="#5a1030" opacity=".72" />
+        <path d="M188 29 L184 45 L190 30" fill="#5a1030" opacity=".65" />
+        <path d="M163 28 L159 43 L165 29" fill="#5a1030" opacity=".58" />
+        <path d="M135 27 L131 42 L137 28" fill="#5a1030" opacity=".65" />
+        <path d="M107 27 L103 41 L109 28" fill="#5a1030" opacity=".58" />
+        <path d="M77  27 L73  41 L79  28" fill="#5a1030" opacity=".65" />
+        <path d="M47  27 L43  41 L49  28" fill="#5a1030" opacity=".58" />
+        <path d="M19  27 L15  41 L21  28" fill="#5a1030" opacity=".52" />
+        <path d="M154 25 Q144 19 140 25 Q147 24 154 25" fill="#5a1030" opacity=".42" />
+        <path d="M96  25 Q86  19 82  25 Q89  24 96  25" fill="#5a1030" opacity=".42" />
+        <path d="M52  26 Q42  20 38  26 Q45  25 52  26" fill="#5a1030" opacity=".42" />
       </svg>
     </div>
 
-    <!-- Espinas derecha (espejo) -->
     <div class="footer-thorns footer-thorns-r" aria-hidden="true">
       <svg viewBox="0 0 200 56" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform:scaleX(-1)">
-        <path d="M200 28 C168 26 135 30 103 27 C75 24 45 29 14 27" stroke="#5a1030" stroke-width="1.9" stroke-linecap="round"/>
-        <path d="M178 27 L174 10 L180 26" fill="#5a1030" opacity=".85"/>
-        <path d="M150 26 L146  8 L152 25" fill="#5a1030" opacity=".78"/>
-        <path d="M120 26 L116 10 L122 25" fill="#5a1030" opacity=".85"/>
-        <path d="M90  26 L86   9 L92  25" fill="#5a1030" opacity=".78"/>
-        <path d="M60  27 L56  11 L62  26" fill="#5a1030" opacity=".85"/>
-        <path d="M30  27 L26  13 L32  26" fill="#5a1030" opacity=".72"/>
-        <path d="M188 29 L184 45 L190 30" fill="#5a1030" opacity=".65"/>
-        <path d="M163 28 L159 43 L165 29" fill="#5a1030" opacity=".58"/>
-        <path d="M135 27 L131 42 L137 28" fill="#5a1030" opacity=".65"/>
-        <path d="M107 27 L103 41 L109 28" fill="#5a1030" opacity=".58"/>
-        <path d="M77  27 L73  41 L79  28" fill="#5a1030" opacity=".65"/>
-        <path d="M47  27 L43  41 L49  28" fill="#5a1030" opacity=".58"/>
-        <path d="M19  27 L15  41 L21  28" fill="#5a1030" opacity=".52"/>
-        <path d="M154 25 Q144 19 140 25 Q147 24 154 25" fill="#5a1030" opacity=".42"/>
-        <path d="M96  25 Q86  19 82  25 Q89  24 96  25"  fill="#5a1030" opacity=".42"/>
-        <path d="M52  26 Q42  20 38  26 Q45  25 52  26"  fill="#5a1030" opacity=".42"/>
+        <path d="M200 28 C168 26 135 30 103 27 C75 24 45 29 14 27" stroke="#5a1030" stroke-width="1.9"
+          stroke-linecap="round" />
+        <path d="M178 27 L174 10 L180 26" fill="#5a1030" opacity=".85" />
+        <path d="M150 26 L146  8 L152 25" fill="#5a1030" opacity=".78" />
+        <path d="M120 26 L116 10 L122 25" fill="#5a1030" opacity=".85" />
+        <path d="M90  26 L86   9 L92  25" fill="#5a1030" opacity=".78" />
+        <path d="M60  27 L56  11 L62  26" fill="#5a1030" opacity=".85" />
+        <path d="M30  27 L26  13 L32  26" fill="#5a1030" opacity=".72" />
+        <path d="M188 29 L184 45 L190 30" fill="#5a1030" opacity=".65" />
+        <path d="M163 28 L159 43 L165 29" fill="#5a1030" opacity=".58" />
+        <path d="M135 27 L131 42 L137 28" fill="#5a1030" opacity=".65" />
+        <path d="M107 27 L103 41 L109 28" fill="#5a1030" opacity=".58" />
+        <path d="M77  27 L73  41 L79  28" fill="#5a1030" opacity=".65" />
+        <path d="M47  27 L43  41 L49  28" fill="#5a1030" opacity=".58" />
+        <path d="M19  27 L15  41 L21  28" fill="#5a1030" opacity=".52" />
+        <path d="M154 25 Q144 19 140 25 Q147 24 154 25" fill="#5a1030" opacity=".42" />
+        <path d="M96  25 Q86  19 82  25 Q89  24 96  25" fill="#5a1030" opacity=".42" />
+        <path d="M52  26 Q42  20 38  26 Q45  25 52  26" fill="#5a1030" opacity=".42" />
       </svg>
     </div>
 
     <p class="footer-name">GABRIEL<span class="footer-accent">ORTEGA</span></p>
-    <p class="footer-sub">Full Stack Developer · El Brujo · Builder de experiencias</p>
+    <p class="footer-sub">Gamer poco profesional · Profanador de JS· Builder de experiencias · Comentador compulsivo</p>
 
     <div class="footer-links">
       <a href="mailto:gabriel16ortega@gmail.com" class="footer-link">
         <span class="fl-icon">✉</span>gabriel16ortega@gmail.com
       </a>
       <span class="fl-sep">✦</span>
-      <a href="https://discord.com/users/857777819324121098" target="_blank" rel="noopener noreferrer" class="footer-link">
+      <a href="https://discord.com/users/857777819324121098" target="_blank" rel="noopener noreferrer"
+        class="footer-link">
         <span class="fl-icon">◈</span>discord
       </a>
     </div>
@@ -535,17 +604,19 @@
     <p class="footer-gg pink">GG WP</p>
   </footer>
 
-  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js"}}</script>
+  <script
+    type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js"}}</script>
   <script type="module" src="js/tree.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <script src="js/script.js"></script>
   <script>
     function updateToggleLabel() {
-      var btn = document.getElementById('theme-toggle');
-      if (!btn) return;
       var isDay = document.documentElement.dataset.theme === 'day';
-      btn.textContent = isDay ? '¿Prefieres la oscuridad? Tócame ~' : '¿Prefieres la luz? Tócame ~';
+      var icon = document.getElementById('toggle-icon');
+      var label = document.getElementById('toggle-label');
+      if (icon) icon.textContent = isDay ? '☽' : '☀';
+      if (label) label.textContent = isDay ? '¿Prefieres la oscuridad? Tócame ~' : '¿Prefieres la luz? Tócame ~';
     }
     function toggleTheme() {
       var root = document.documentElement;
@@ -558,18 +629,156 @@
   </script>
   <script>
     (function () {
+      const carousel = document.getElementById('games-carousel');
+      const btnPrev = document.getElementById('carousel-prev');
+      const btnNext = document.getElementById('carousel-next');
+      const dotsWrap = document.getElementById('carousel-dots');
+      if (!carousel) return;
+
+      const VISIBLE = 4;
+      const cards = Array.from(carousel.querySelectorAll('.game-card'));
+      const total = cards.length;
+      const steps = total - VISIBLE;
+      let current = 0;
+
+      cards.forEach((_, i) => {
+        const d = document.createElement('button');
+        d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+        d.addEventListener('click', () => goTo(i));
+        dotsWrap.appendChild(d);
+      });
+
+      function goTo(idx) {
+        current = ((idx % total) + total) % total;
+        if (current > steps) current = 0;
+        const cardW = cards[0].offsetWidth + 8;
+        carousel.scrollLeft = current * cardW;
+        dotsWrap.querySelectorAll('.carousel-dot').forEach((d, i) => {
+          d.classList.toggle('active', i === current);
+        });
+      }
+
+      btnPrev.addEventListener('click', () => goTo(current === 0 ? steps : current - 1));
+      btnNext.addEventListener('click', () => goTo(current >= steps ? 0 : current + 1));
+      goTo(0);
+    })();
+  </script>
+  <script>
+    (function () {
+      const list = document.getElementById('quejas-list');
+      const form = document.getElementById('queja-form');
+      const feedback = document.getElementById('queja-feedback');
+      let adminKey = null;
+
+      function renderQueja(q, prepend = false) {
+        const card = document.createElement('div');
+        card.className = 'queja-card g-card';
+        const initial = (q.name[0] ?? '?').toUpperCase();
+        card.dataset.id = q.id ?? q.ts ?? '';
+        card.innerHTML = `<div class="queja-avatar">${initial}</div><div class="queja-body"><span class="queja-name">${q.name}</span><span class="queja-text">${q.text}</span></div>${adminKey ? `<button class="queja-del" data-id="${q.id ?? q.ts}">×</button>` : ''}`;
+        if (prepend) list.insertBefore(card, list.children[1]);
+        else list.appendChild(card);
+      }
+
+      function addDeleteListeners() {
+        list.querySelectorAll('.queja-del').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = Number(btn.dataset.id);
+            fetch('/api/quejas', {
+              method: 'DELETE',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id, key: adminKey }),
+            }).then(r => r.json()).then(d => {
+              if (d.ok) btn.closest('.queja-card').remove();
+              else alert(d.error);
+            });
+          });
+        });
+      }
+
+      fetch('/api/quejas').then(r => r.json()).then(d => {
+        (d.quejas ?? []).forEach(q => renderQueja(q));
+      }).catch(() => {});
+
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const name = document.getElementById('queja-name').value.trim();
+        const text = document.getElementById('queja-text').value.trim();
+        if (!name || !text) { feedback.textContent = 'faltan campos.'; return; }
+        fetch('/api/quejas', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, text }),
+        }).then(r => r.json()).then(d => {
+          if (d.ok) {
+            renderQueja({ id: d.id, name, text }, true);
+            if (adminKey) addDeleteListeners();
+            form.reset();
+            feedback.textContent = 'queja registrada.';
+            setTimeout(() => { feedback.textContent = ''; }, 3000);
+          } else {
+            feedback.textContent = d.error ?? 'error.';
+          }
+        }).catch(() => { feedback.textContent = 'error de red.'; });
+      });
+
+      const eyeBtn = document.getElementById('admin-eye');
+      const keyInput = document.getElementById('admin-key');
+      const flag = document.getElementById('admin-flag');
+
+      eyeBtn.addEventListener('click', () => {
+        const show = keyInput.type === 'password';
+        keyInput.type = show ? 'text' : 'password';
+        eyeBtn.textContent = show ? '🙈' : '👁';
+      });
+
+      document.getElementById('admin-key-btn').addEventListener('click', () => {
+        const key = keyInput.value.trim();
+        if (!key) return;
+        flag.textContent = '...';
+        flag.className = 'admin-flag';
+        fetch('/api/quejas', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: -1, key }),
+        }).then(r => r.json()).then(d => {
+          if (d.error === 'No autorizado') {
+            flag.textContent = '✗ incorrecta';
+            flag.className = 'admin-flag admin-flag--err';
+            return;
+          }
+          flag.textContent = '✓ correcta';
+          flag.className = 'admin-flag admin-flag--ok';
+          adminKey = key;
+          setTimeout(() => {
+            document.getElementById('admin-panel').style.display = 'none';
+          }, 800);
+          list.querySelectorAll('.queja-card:not(:first-child)').forEach(card => {
+            const id = card.dataset.id;
+            if (!card.querySelector('.queja-del')) {
+              const btn = document.createElement('button');
+              btn.className = 'queja-del';
+              btn.dataset.id = id;
+              btn.textContent = '×';
+              card.appendChild(btn);
+            }
+          });
+          addDeleteListeners();
+        }).catch(() => {
+          flag.textContent = '✗ error de red';
+          flag.className = 'admin-flag admin-flag--err';
+        });
+      });
+    })();
+
+    (function () {
       const KEY = 'gdisco_visited';
-      const el  = document.getElementById('visitor-count');
-
-      function show(n) { if (el) el.textContent = n.toLocaleString(); }
-
+      const el = document.getElementById('visitor-count');
       const isNew = !localStorage.getItem(KEY);
-      const endpoint = isNew ? '/api/counter?hit=1' : '/api/counter';
-
-      fetch(endpoint)
-        .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      fetch(isNew ? '/api/counter?hit=1' : '/api/counter')
+        .then(r => r.json())
         .then(d => {
-          show(d.count ?? 0);
+          if (el) el.textContent = (d.count ?? 0).toLocaleString();
           if (isNew) localStorage.setItem(KEY, '1');
         })
         .catch(() => { if (el) el.textContent = '—'; });

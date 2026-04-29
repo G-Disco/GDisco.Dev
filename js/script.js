@@ -1,11 +1,5 @@
-/* ============================================
-   GSAP SETUP
-   ============================================ */
 gsap.registerPlugin(ScrollTrigger);
 
-/* ============================================
-   CANVAS — partículas ceniza (blanco + rosa pastel)
-   ============================================ */
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
 
@@ -35,7 +29,6 @@ class Particle {
 
   update() {
     this.tick += 0.015;
-    // movimiento orgánico — como ceniza en el viento
     this.x += this.speedX + Math.sin(this.tick + this.offset) * 0.3;
     this.y += this.speedY;
     if (this.y > canvas.height + 6) this.reset();
@@ -61,9 +54,6 @@ function animateParticles() {
 }
 animateParticles();
 
-/* ============================================
-   CURSOR
-   ============================================ */
 const cursorDot = document.querySelector('.cursor');
 const cursorTrail = document.querySelector('.cursor-trail');
 let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
@@ -95,9 +85,6 @@ document.querySelectorAll('a, button, .tilt').forEach(el => {
   });
 });
 
-/* ============================================
-   TYPEWRITER
-   ============================================ */
 const phrases = [
   'Full Stack Developer',
   'CSS Wizard nivel S+',
@@ -123,17 +110,11 @@ function typeWriter() {
 }
 typeWriter();
 
-/* ============================================
-   NAVBAR SCROLL
-   ============================================ */
 const navbar = document.querySelector('.navbar');
 window.addEventListener('scroll', () => {
   navbar.classList.toggle('scrolled', window.scrollY > 50);
 }, { passive: true });
 
-/* ============================================
-   GSAP — ENTRANCE
-   ============================================ */
 const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' }, delay: 0.1 });
 
 heroTl
@@ -152,7 +133,6 @@ heroTl
   .to('.discord-widget', { opacity: 1, duration: 0.5 }, '-=0.1')
   .to('.sm-card', { opacity: 1, duration: 0.6, ease: 'power2.out' }, '-=0.4');
 
-// XP fill + counter
 heroTl.to('.xp-fill', { width: '72%', duration: 2, ease: 'power2.inOut' }, '-=0.5');
 heroTl.to({ val: 0 }, {
   val: 7056, duration: 2, ease: 'power2.out',
@@ -162,9 +142,6 @@ heroTl.to({ val: 0 }, {
   }
 }, '<');
 
-/* ============================================
-   GSAP — BACKGROUND ROSES SWAY
-   ============================================ */
 gsap.to('.bg-rose-bl', {
   rotate: 2.5, duration: 4, ease: 'sine.inOut',
   repeat: -1, yoyo: true, transformOrigin: 'bottom center',
@@ -195,20 +172,6 @@ gsap.to('.footer-roses svg', {
   stagger: 1,
 });
 
-/* ============================================
-   GSAP — VINE DIVIDERS
-   ============================================ */
-gsap.utils.toArray('.vine-divider').forEach(el => {
-  gsap.from(el, {
-    scrollTrigger: { trigger: el, start: 'top 92%', once: true },
-    opacity: 0, scaleX: 0.6, duration: 1.2, ease: 'power3.out',
-    transformOrigin: 'center',
-  });
-});
-
-/* ============================================
-   GSAP — SECTION REVEALS
-   ============================================ */
 gsap.utils.toArray('.section-header').forEach(el => {
   gsap.from(el, {
     scrollTrigger: { trigger: el, start: 'top 88%', once: true },
@@ -224,45 +187,6 @@ gsap.utils.toArray('.g-card').forEach((el, i) => {
   });
 });
 
-/* ============================================
-   GSAP — ATTR BARS
-   ============================================ */
-document.querySelectorAll('.attr-fill').forEach(bar => {
-  gsap.to(bar, {
-    scrollTrigger: { trigger: bar, start: 'top 92%', once: true },
-    width: bar.dataset.w + '%',
-    duration: 1.6, ease: 'power2.out',
-    delay: Math.random() * 0.15,
-  });
-});
-
-/* ============================================
-   GSAP — ACHIEVEMENT COUNTERS
-   ============================================ */
-document.querySelectorAll('.ach-chip-num[data-target]').forEach(el => {
-  const target = parseInt(el.dataset.target);
-  const obj = { val: 0 };
-  gsap.to(obj, {
-    scrollTrigger: { trigger: el, start: 'top 92%', once: true },
-    val: target, duration: 1.8, ease: 'power2.out',
-    onUpdate() { el.textContent = Math.round(obj.val); },
-  });
-});
-
-/* ============================================
-   GSAP — CARD ROSE CORNERS
-   ============================================ */
-gsap.utils.toArray('.card-rose-corner').forEach(el => {
-  gsap.from(el, {
-    scrollTrigger: { trigger: el, start: 'top 90%', once: true },
-    scale: 0, rotation: -20, duration: 0.8, ease: 'back.out(1.7)',
-    transformOrigin: 'top center',
-  });
-});
-
-/* ============================================
-   3D TILT
-   ============================================ */
 document.querySelectorAll('.tilt').forEach(card => {
   card.addEventListener('mousemove', e => {
     const r = card.getBoundingClientRect();
@@ -275,9 +199,6 @@ document.querySelectorAll('.tilt').forEach(card => {
   });
 });
 
-/* ============================================
-   HAMBURGER
-   ============================================ */
 const hamburger = document.querySelector('.hamburger');
 const navLinks = document.querySelector('.nav-links');
 let menuOpen = false;
@@ -295,10 +216,6 @@ navLinks.querySelectorAll('a').forEach(a => {
   a.addEventListener('click', () => { menuOpen = false; navLinks.style.cssText = ''; });
 });
 
-
-/* ============================================
-   ACTIVE NAV ON SCROLL
-   ============================================ */
 const navAs = document.querySelectorAll('.nav-links a');
 document.querySelectorAll('section[id]').forEach(s => {
   new IntersectionObserver(entries => {
@@ -337,7 +254,6 @@ async function updateDiscord() {
     else if (custom?.state) actText = custom.state;
     else actText = DW_LABELS[data.discord_status] ?? 'offline';
 
-    /* ─ small widget (sm-identity) ─ */
     const dot = document.getElementById('dw-status-dot');
     if (dot) {
       dot.style.background = DW_COLORS[data.discord_status] ?? DW_COLORS.offline;
@@ -346,7 +262,7 @@ async function updateDiscord() {
       const dwImg = document.getElementById('dw-avatar-img');
       if (dwName) dwName.textContent = displayName;
       if (dwAct) dwAct.textContent = actText;
-      if (dwImg) { dwImg.src = avatarUrl || ''; console.log('[Discord] avatar URL:', avatarUrl); }
+      if (dwImg) dwImg.src = avatarUrl || '';
     }
 
   } catch (e) { console.warn('[Discord]', e); }
