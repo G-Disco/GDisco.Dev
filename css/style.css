@@ -1489,6 +1489,7 @@ html[data-theme="day"] .theme-toggle:hover {
   color: rgba(220, 205, 230, .88);
   margin-top: .5rem;
   text-align: right;
+  padding-right: calc(20% + .5rem);
   letter-spacing: 1px;
   animation: disclaimer-flicker 5s ease-in-out infinite;
 }

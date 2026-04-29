@@ -548,20 +548,18 @@
   <script>
     (function () {
       const KEY = 'gdisco_visited';
-      const API = 'https://api.countapi.xyz/';
-      const NS  = 'gdisco.dev';
-      const K   = 'visitors';
       const el  = document.getElementById('visitor-count');
 
       function show(n) { if (el) el.textContent = n.toLocaleString(); }
 
       const isNew = !localStorage.getItem(KEY);
-      const endpoint = isNew ? `${API}hit/${NS}/${K}` : `${API}get/${NS}/${K}`;
+      const base  = 'https://api.counterapi.dev/v1/gdisco-dev/visitors';
+      const endpoint = isNew ? `${base}/up` : base;
 
       fetch(endpoint)
         .then(r => r.json())
         .then(d => {
-          show(d.value ?? 0);
+          show(d.count ?? 0);
           if (isNew) localStorage.setItem(KEY, '1');
         })
         .catch(() => { if (el) el.textContent = '—'; });
