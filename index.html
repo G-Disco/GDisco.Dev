@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gabriel Ortega</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Pirata+One&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <div class="cursor"></div>
+  <div class="cursor-trail"></div>
+  <canvas id="particles"></canvas>
+  <canvas id="tree-canvas"></canvas>
+  <div class="scanlines"></div>
+
+  <!-- ROSAS DE FONDO — fixed, z-index 3 -->
+  <div class="bg-rose bg-rose-bl">
+    <svg viewBox="0 0 90 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M45 105 C43 148 45 182 44 240" stroke="#5a1030" stroke-width="3" stroke-linecap="round" />
+      <path d="M44 130 L30 121" stroke="#5a1030" stroke-width="2" stroke-linecap="round" />
+      <path d="M44 158 L60 149" stroke="#5a1030" stroke-width="2" stroke-linecap="round" />
+      <path d="M44 186 L30 177" stroke="#5a1030" stroke-width="2" stroke-linecap="round" />
+      <path d="M43 138 Q16 124 23 108 Q38 115 43 136" fill="#5a1030" opacity="0.9" />
+      <path d="M44 165 Q72 151 65 135 Q50 142 44 163" fill="#5a1030" opacity="0.9" />
+      <path d="M45 105 Q52 97 59 93 Q54 101 45 105" fill="#5a1030" opacity="0.75" />
+      <path d="M45 105 Q38 97 31 93 Q36 101 45 105" fill="#5a1030" opacity="0.75" />
+      <ellipse cx="45" cy="50" rx="21" ry="30" fill="#ffb8d8" opacity="0.80" />
+      <ellipse cx="45" cy="50" rx="21" ry="30" fill="#ffa8cc" opacity="0.72" transform="rotate(72 45 50)" />
+      <ellipse cx="45" cy="50" rx="21" ry="30" fill="#ff9cc4" opacity="0.72" transform="rotate(144 45 50)" />
+      <ellipse cx="45" cy="50" rx="21" ry="30" fill="#ffa8cc" opacity="0.72" transform="rotate(216 45 50)" />
+      <ellipse cx="45" cy="50" rx="21" ry="30" fill="#ffb8d8" opacity="0.72" transform="rotate(288 45 50)" />
+      <ellipse cx="45" cy="50" rx="15" ry="21" fill="#ff78b0" opacity="0.90" transform="rotate(36 45 50)" />
+      <ellipse cx="45" cy="50" rx="15" ry="21" fill="#f060a8" opacity="0.90" transform="rotate(108 45 50)" />
+      <ellipse cx="45" cy="50" rx="15" ry="21" fill="#ff78b0" opacity="0.88" transform="rotate(180 45 50)" />
+      <ellipse cx="45" cy="50" rx="10" ry="15" fill="#d04888" opacity="0.96" transform="rotate(18 45 50)" />
+      <ellipse cx="45" cy="50" rx="10" ry="15" fill="#c04080" opacity="0.96" transform="rotate(90 45 50)" />
+      <circle cx="45" cy="50" r="7.5" fill="#801848" />
+      <circle cx="45" cy="49" r="4" fill="#601030" />
+    </svg>
+  </div>
+  <div class="bg-rose bg-rose-br">
+    <svg viewBox="0 0 90 240" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform:scaleX(-1)">
+      <path d="M45 105 C43 148 45 182 44 240" stroke="#5a1030" stroke-width="3" stroke-linecap="round" />
+      <path d="M44 130 L30 121" stroke="#5a1030" stroke-width="2" stroke-linecap="round" />
+      <path d="M44 158 L60 149" stroke="#5a1030" stroke-width="2" stroke-linecap="round" />
+      <path d="M44 186 L30 177" stroke="#5a1030" stroke-width="2" stroke-linecap="round" />
+      <path d="M43 138 Q16 124 23 108 Q38 115 43 136" fill="#5a1030" opacity="0.9" />
+      <path d="M44 165 Q72 151 65 135 Q50 142 44 163" fill="#5a1030" opacity="0.9" />
+      <path d="M45 105 Q52 97 59 93 Q54 101 45 105" fill="#5a1030" opacity="0.75" />
+      <path d="M45 105 Q38 97 31 93 Q36 101 45 105" fill="#5a1030" opacity="0.75" />
+      <ellipse cx="45" cy="50" rx="21" ry="30" fill="#ffb8d8" opacity="0.78" />
+      <ellipse cx="45" cy="50" rx="21" ry="30" fill="#ffa8cc" opacity="0.70" transform="rotate(72 45 50)" />
+      <ellipse cx="45" cy="50" rx="21" ry="30" fill="#ff9cc4" opacity="0.70" transform="rotate(144 45 50)" />
+      <ellipse cx="45" cy="50" rx="15" ry="21" fill="#ff78b0" opacity="0.88" transform="rotate(36 45 50)" />
+      <ellipse cx="45" cy="50" rx="15" ry="21" fill="#f060a8" opacity="0.88" transform="rotate(108 45 50)" />
+      <ellipse cx="45" cy="50" rx="10" ry="15" fill="#d04888" opacity="0.95" transform="rotate(18 45 50)" />
+      <circle cx="45" cy="50" r="7.5" fill="#801848" />
+      <circle cx="45" cy="49" r="4" fill="#601030" />
+    </svg>
+  </div>
+  <div class="bg-rose bg-rose-ml">
+    <svg viewBox="0 0 60 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M30 75 C28 105 30 135 29 180" stroke="#5a1030" stroke-width="2" stroke-linecap="round" />
+      <path d="M29 93 L18 86" stroke="#5a1030" stroke-width="1.5" stroke-linecap="round" />
+      <path d="M29 115 L41 108" stroke="#5a1030" stroke-width="1.5" stroke-linecap="round" />
+      <path d="M28 100 Q10 91 15 78 Q25 84 28 98" fill="#5a1030" opacity="0.9" />
+      <path d="M30 125 Q48 116 43 103 Q33 109 30 123" fill="#5a1030" opacity="0.9" />
+      <ellipse cx="30" cy="34" rx="14" ry="20" fill="#ffb0d4" opacity="0.78" />
+      <ellipse cx="30" cy="34" rx="14" ry="20" fill="#ffa0c8" opacity="0.70" transform="rotate(72 30 34)" />
+      <ellipse cx="30" cy="34" rx="14" ry="20" fill="#ff90be" opacity="0.70" transform="rotate(144 30 34)" />
+      <ellipse cx="30" cy="34" rx="9" ry="13" fill="#e0609c" opacity="0.92" transform="rotate(36 30 34)" />
+      <ellipse cx="30" cy="34" rx="9" ry="13" fill="#d05090" opacity="0.92" transform="rotate(108 30 34)" />
+      <ellipse cx="30" cy="34" rx="6" ry="9" fill="#b83c78" opacity="0.97" transform="rotate(54 30 34)" />
+      <circle cx="30" cy="34" r="5" fill="#822050" />
+    </svg>
+  </div>
+  <div class="bg-rose bg-rose-mr">
+    <svg viewBox="0 0 75 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M37 92 C35 128 37 160 36 210" stroke="#5a1030" stroke-width="2.5" stroke-linecap="round" />
+      <path d="M36 114 L22 105" stroke="#5a1030" stroke-width="1.8" stroke-linecap="round" />
+      <path d="M36 140 L51 131" stroke="#5a1030" stroke-width="1.8" stroke-linecap="round" />
+      <path d="M35 120 Q12 108 18 93 Q31 100 35 118" fill="#5a1030" opacity="0.9" />
+      <path d="M36 147 Q60 135 53 120 Q40 127 36 145" fill="#5a1030" opacity="0.9" />
+      <ellipse cx="37" cy="43" rx="18" ry="26" fill="#ff90c8" opacity="0.82" />
+      <ellipse cx="37" cy="43" rx="18" ry="26" fill="#ff80bc" opacity="0.74" transform="rotate(72 37 43)" />
+      <ellipse cx="37" cy="43" rx="18" ry="26" fill="#ff70b4" opacity="0.74" transform="rotate(144 37 43)" />
+      <ellipse cx="37" cy="43" rx="12" ry="17" fill="#e860a0" opacity="0.92" transform="rotate(36 37 43)" />
+      <ellipse cx="37" cy="43" rx="12" ry="17" fill="#d85098" opacity="0.92" transform="rotate(108 37 43)" />
+      <ellipse cx="37" cy="43" rx="7.5" ry="12" fill="#c04080" opacity="0.97" transform="rotate(54 37 43)" />
+      <circle cx="37" cy="43" r="6.5" fill="#8a2050" />
+    </svg>
+  </div>
+  <div class="bg-rose bg-rose-tl">
+    <svg viewBox="0 0 50 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M25 62 C23 88 25 112 24 150" stroke="#5a1030" stroke-width="1.8" stroke-linecap="round" />
+      <path d="M24 78 L14 72" stroke="#5a1030" stroke-width="1.3" stroke-linecap="round" />
+      <path d="M24 98 L34 92" stroke="#5a1030" stroke-width="1.3" stroke-linecap="round" />
+      <path d="M23 82 Q8 75 12 64 Q21 69 23 80" fill="#5a1030" opacity="0.9" />
+      <ellipse cx="25" cy="28" rx="12" ry="17" fill="#ffb8d8" opacity="0.75" />
+      <ellipse cx="25" cy="28" rx="12" ry="17" fill="#ffa8cc" opacity="0.67" transform="rotate(72 25 28)" />
+      <ellipse cx="25" cy="28" rx="12" ry="17" fill="#ff98c2" opacity="0.67" transform="rotate(144 25 28)" />
+      <ellipse cx="25" cy="28" rx="8" ry="11" fill="#e870a8" opacity="0.90" transform="rotate(36 25 28)" />
+      <ellipse cx="25" cy="28" rx="8" ry="11" fill="#d860a0" opacity="0.90" transform="rotate(108 25 28)" />
+      <ellipse cx="25" cy="28" rx="5" ry="8" fill="#b84080" opacity="0.96" transform="rotate(54 25 28)" />
+      <circle cx="25" cy="28" r="4" fill="#842058" />
+    </svg>
+  </div>
+  <div class="bg-rose bg-rose-tr">
+    <svg viewBox="0 0 50 150" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform:scaleX(-1)">
+      <path d="M25 62 C23 88 25 112 24 150" stroke="#5a1030" stroke-width="1.8" stroke-linecap="round" />
+      <path d="M24 78 L14 72" stroke="#5a1030" stroke-width="1.3" stroke-linecap="round" />
+      <path d="M24 98 L34 92" stroke="#5a1030" stroke-width="1.3" stroke-linecap="round" />
+      <path d="M23 82 Q8 75 12 64 Q21 69 23 80" fill="#5a1030" opacity="0.9" />
+      <ellipse cx="25" cy="28" rx="12" ry="17" fill="#ffb8d8" opacity="0.75" />
+      <ellipse cx="25" cy="28" rx="12" ry="17" fill="#ffa8cc" opacity="0.67" transform="rotate(72 25 28)" />
+      <ellipse cx="25" cy="28" rx="8" ry="11" fill="#e870a8" opacity="0.90" transform="rotate(36 25 28)" />
+      <ellipse cx="25" cy="28" rx="5" ry="8" fill="#b84080" opacity="0.96" transform="rotate(54 25 28)" />
+      <circle cx="25" cy="28" r="4" fill="#842058" />
+    </svg>
+  </div>
+  <!-- Kanji sakura flotantes — decoración de fondo -->
+  <div class="bg-kanji bg-kanji-1">桜</div>
+  <div class="bg-kanji bg-kanji-2">花</div>
+  <div class="bg-kanji bg-kanji-3">散</div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-logo">G<span class="accent">O</span><span class="logo-sub">.exe</span></div>
+    <ul class="nav-links">
+      <li><a href="#inicio">inicio</a></li>
+      <li><a href="#stats">stats</a></li>
+    </ul>
+    <div class="hamburger"><span></span><span></span><span></span></div>
+  </nav>
+
+
+  <!-- ══════════════════ SOBRE MÍ ══════════════════ -->
+  <section id="inicio" class="sobre-mi">
+
+    <div class="sm-identity">
+      <p class="sm-greeting">// hola, soy</p>
+      <h1 class="sm-name glitch" data-text="Gabriel Ortega">Gabriel Ortega</h1>
+      <h2 class="sm-title">
+        <span class="typewriter"></span><span class="cursor-blink">_</span>
+      </h2>
+      <div class="xp-bar-wrap">
+        <div class="xp-label">
+          <span>XP — <span class="xp-counter">0</span> / 9800</span>
+          <span class="accent">LVL 12</span>
+        </div>
+        <div class="xp-bar">
+          <div class="xp-fill"></div>
+        </div>
+      </div>
+
+      <!-- Discord presence widget -->
+      <a class="discord-widget" href="https://discord.com/users/857777819324121098" target="_blank"
+        rel="noopener noreferrer" id="discord-widget">
+        <div class="dw-avatar-wrap">
+          <img id="dw-avatar-img" src="" alt="" class="dw-avatar">
+          <span class="dw-status-dot" id="dw-status-dot"></span>
+        </div>
+        <div class="dw-right">
+          <span class="dw-name" id="dw-name">gabriel</span>
+          <span class="dw-activity" id="dw-activity">Discord</span>
+        </div>
+        <svg class="dw-logo" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.878 19.878 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="sm-card g-card">
+      <span class="sm-tag">// sobre_mi.exe</span>
+      <p class="sm-about">
+        Desarrollador fullstack con <em>obsesión por el tabaco, CSS y las morras</em>.<br>
+        Gamer poco profesional desde los 13, Dev desde los 17.<br>
+        Si se ve coqueto, lo puedo hacer.
+      </p>
+      <div class="sm-stack">
+        <span class="stack-item">PHP</span>
+        <span class="stack-item">Laravel</span>
+        <span class="stack-item">MySQL</span>
+        <span class="stack-item">JavaScript</span>
+        <span class="stack-item">GSAP</span>
+        <span class="stack-item">Canvas</span>
+        <span class="stack-item">CSS</span>
+        <span class="stack-item">Linux</span>
+      </div>
+      <div class="sm-buttons">
+        <a href="#stats" class="btn btn-primary">▶ ver stats</a>
+        <a href="mailto:gabriel16ortega@gmail.com" class="btn btn-ghost">escribeme</a>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ══ VINE DIVIDER ══ -->
+  <div class="vine-divider">
+    <svg viewBox="0 0 900 44" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 22 Q112 10 224 22 Q280 28 338 22" stroke="#6a2040" stroke-width="1.5" fill="none" />
+      <path d="M900 22 Q788 34 676 22 Q620 16 562 22" stroke="#6a2040" stroke-width="1.5" fill="none" />
+      <line x1="60" y1="19" x2="50" y2="10" stroke="#6a2040" stroke-width="1.2" />
+      <line x1="130" y1="25" x2="140" y2="34" stroke="#6a2040" stroke-width="1.2" />
+      <line x1="200" y1="19" x2="190" y2="10" stroke="#6a2040" stroke-width="1.2" />
+      <line x1="265" y1="25" x2="275" y2="34" stroke="#6a2040" stroke-width="1.2" />
+      <line x1="840" y1="25" x2="850" y2="34" stroke="#6a2040" stroke-width="1.2" />
+      <line x1="770" y1="19" x2="760" y2="10" stroke="#6a2040" stroke-width="1.2" />
+      <line x1="700" y1="25" x2="710" y2="34" stroke="#6a2040" stroke-width="1.2" />
+      <line x1="635" y1="19" x2="625" y2="10" stroke="#6a2040" stroke-width="1.2" />
+      <path d="M338 22 Q366 16 390 22 Q410 26 450 22" stroke="#6a2040" stroke-width="1" fill="none" opacity="0.6" />
+      <path d="M562 22 Q534 28 510 22 Q490 18 450 22" stroke="#6a2040" stroke-width="1" fill="none" opacity="0.6" />
+      <!-- Rose central -->
+      <ellipse cx="450" cy="22" rx="14" ry="18" fill="#f4c0d4" opacity="0.75" />
+      <ellipse cx="450" cy="22" rx="14" ry="18" fill="#f0b4cc" opacity="0.65" transform="rotate(72 450 22)" />
+      <ellipse cx="450" cy="22" rx="14" ry="18" fill="#ecacc6" opacity="0.65" transform="rotate(144 450 22)" />
+      <ellipse cx="450" cy="22" rx="14" ry="18" fill="#f0b4cc" opacity="0.65" transform="rotate(216 450 22)" />
+      <ellipse cx="450" cy="22" rx="14" ry="18" fill="#f4c0d4" opacity="0.65" transform="rotate(288 450 22)" />
+      <ellipse cx="450" cy="22" rx="9" ry="12" fill="#cc6898" opacity="0.92" transform="rotate(36 450 22)" />
+      <ellipse cx="450" cy="22" rx="9" ry="12" fill="#c46090" opacity="0.9" transform="rotate(108 450 22)" />
+      <ellipse cx="450" cy="22" rx="9" ry="12" fill="#cc6898" opacity="0.9" transform="rotate(180 450 22)" />
+      <ellipse cx="450" cy="22" rx="6" ry="8" fill="#aa4878" opacity="0.96" transform="rotate(54 450 22)" />
+      <ellipse cx="450" cy="22" rx="6" ry="8" fill="#a04070" opacity="0.96" transform="rotate(126 450 22)" />
+      <circle cx="450" cy="22" r="5" fill="#882850" />
+      <circle cx="450" cy="21" r="2.5" fill="#601830" />
+      <line x1="450" y1="40" x2="450" y2="44" stroke="#6a2040" stroke-width="1.5" />
+    </svg>
+  </div>
+
+
+  <!-- ══════════════════ STATS ══════════════════ -->
+  <section id="stats" class="stats-section">
+    <div class="section-header">
+      <div class="sh-ornament">✦</div>
+      <h2>El viejo lobo</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <!-- ══ TOP: Discord card + bio | Skill bars ══ -->
+    <div class="brujo-top">
+
+      <div class="brujo-left">
+        <a class="discord-card tilt" href="https://discord.com/users/857777819324121098" target="_blank"
+          rel="noopener noreferrer">
+          <svg class="dc-watermark" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.878 19.878 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
+          </svg>
+          <div class="dc-top">
+            <div class="dc-avatar-wrap">
+              <img id="dc-avatar" class="dc-avatar" src="" alt="Gabriel">
+              <span class="dc-status" id="dc-status"></span>
+            </div>
+            <div class="dc-identity">
+              <span class="dc-username" id="dc-username">Gabriel</span>
+              <span class="dc-tag-line">discord.com/users/Gabriel</span>
+            </div>
+          </div>
+          <div class="dc-activity-line" id="dc-activity">Discord</div>
+          <div class="dc-cta">Ver perfil en Discord →</div>
+        </a>
+
+        <div class="brujo-bio">
+          <p>Dev fullstack. Me pagan con un cigarro — <em>A veces la mitad de uno.</em>.</p>
+          <p>Adicto a Genshin, ZZZ, Valorant y LoL en ese orden de destrucción de vida social.</p>
+          <p>También administro servidores. Por amor al arte.</p>
+          <div class="about-tags">
+            <span class="tag">JavaScript</span>
+            <span class="tag">PHP</span>
+            <span class="tag">MySQL</span>
+            <span class="tag">CSS</span>
+            <span class="tag">HTML</span>
+            <span class="tag">Git</span>
+            <span class="tag">Linux</span>
+            <span class="tag">Servers</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="brujo-right">
+        <div class="attr-list">
+          <div class="attr-row g-card">
+            <div class="attr-info"><span class="attr-name">FRONTEND</span><span class="attr-val accent">92</span></div>
+            <div class="attr-bar">
+              <div class="attr-fill" data-w="92"></div>
+            </div>
+          </div>
+          <div class="attr-row g-card">
+            <div class="attr-info"><span class="attr-name">BACKEND</span><span class="attr-val accent">78</span></div>
+            <div class="attr-bar">
+              <div class="attr-fill" data-w="78"></div>
+            </div>
+          </div>
+          <div class="attr-row g-card">
+            <div class="attr-info"><span class="attr-name">CSS MAGIC</span><span class="attr-val accent">95</span></div>
+            <div class="attr-bar">
+              <div class="attr-fill" data-w="95"></div>
+            </div>
+          </div>
+          <div class="attr-row g-card">
+            <div class="attr-info"><span class="attr-name">DEBUGGING</span><span class="attr-val accent">85</span></div>
+            <div class="attr-bar">
+              <div class="attr-fill" data-w="85"></div>
+            </div>
+          </div>
+          <div class="attr-row g-card">
+            <div class="attr-info"><span class="attr-name">SERVERS</span><span class="attr-val accent">74</span></div>
+            <div class="attr-bar">
+              <div class="attr-fill" data-w="74"></div>
+            </div>
+          </div>
+          <div class="attr-row g-card coffee-row">
+            <div class="attr-info"><span class="attr-name">COFFEE</span><span class="attr-val pink">MAX</span></div>
+            <div class="attr-bar">
+              <div class="attr-fill pink-bar" data-w="100"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══ Achievement strip ══ -->
+    <div class="ach-strip">
+      <div class="ach-chip">
+        <span class="ach-chip-icon accent">✦</span>
+        <div class="ach-chip-count">
+          <span class="ach-chip-num accent" data-target="3">0</span><span class="ach-chip-sfx accent">+</span>
+        </div>
+        <span class="ach-chip-label">años en batalla</span>
+      </div>
+      <div class="ach-chip">
+        <span class="ach-chip-icon accent">◈</span>
+        <div class="ach-chip-count">
+          <span class="ach-chip-num accent" data-target="20">0</span><span class="ach-chip-sfx accent">+</span>
+        </div>
+        <span class="ach-chip-label">misiones completadas</span>
+      </div>
+      <div class="ach-chip">
+        <span class="ach-chip-icon pink">❧</span>
+        <div class="ach-chip-count">
+          <span class="ach-chip-num pink">∞</span>
+        </div>
+        <span class="ach-chip-label">cafés tomados</span>
+      </div>
+      <div class="ach-chip">
+        <span class="ach-chip-icon accent">✦</span>
+        <div class="ach-chip-count">
+          <span class="ach-chip-num accent" data-target="0">0</span>
+        </div>
+        <span class="ach-chip-label">bugs en prod*</span>
+      </div>
+    </div>
+    <p class="disclaimer">*en mi máquina, que es lo que importa</p>
+
+    <!-- ══ GAMES ══ -->
+    <div class="games-area">
+      <p class="games-label">// off-duty · currently playing</p>
+      <div class="games-grid">
+
+        <div class="game-card game-genshin tilt">
+          <div class="game-thumb">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="32" cy="32" r="27" stroke="#F5C842" stroke-width="0.5" opacity="0.25" />
+              <circle cx="32" cy="32" r="20" stroke="#F5C842" stroke-width="0.4" opacity="0.15" />
+              <polygon
+                points="32,6 35.2,21.8 49.2,15.6 40.2,28.2 56,32 40.2,35.8 49.2,48.4 35.2,42.2 32,58 28.8,42.2 14.8,48.4 23.8,35.8 8,32 23.8,28.2 14.8,15.6 28.8,21.8"
+                fill="none" stroke="#F5C842" stroke-width="1.4" stroke-linejoin="round" />
+              <circle cx="32" cy="32" r="5" fill="none" stroke="#F5C842" stroke-width="1" opacity="0.6" />
+              <circle cx="32" cy="32" r="2.5" fill="#F5C842" opacity="0.9" />
+            </svg>
+          </div>
+          <div class="game-info">
+            <span class="game-name">Genshin Impact</span>
+            <span class="game-detail">AR 58 · Mondstadt enjoyer</span>
+          </div>
+        </div>
+
+        <div class="game-card game-zzz tilt">
+          <div class="game-thumb">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="9" y="17" width="46" height="31" rx="3" stroke="#ECC94B" stroke-width="1.5" />
+              <rect x="15" y="22" width="34" height="21" rx="1" stroke="#ECC94B" stroke-width="0.7" opacity="0.45" />
+              <line x1="23" y1="17" x2="17" y2="7" stroke="#ECC94B" stroke-width="1.5" stroke-linecap="round" />
+              <line x1="41" y1="17" x2="47" y2="7" stroke="#ECC94B" stroke-width="1.5" stroke-linecap="round" />
+              <circle cx="17" cy="6.5" r="1.5" fill="#ECC94B" opacity="0.7" />
+              <circle cx="47" cy="6.5" r="1.5" fill="#ECC94B" opacity="0.7" />
+              <line x1="26" y1="48" x2="22" y2="57" stroke="#ECC94B" stroke-width="1.5" stroke-linecap="round" />
+              <line x1="38" y1="48" x2="42" y2="57" stroke="#ECC94B" stroke-width="1.5" stroke-linecap="round" />
+              <text x="32" y="37.5" text-anchor="middle" font-size="12" fill="#ECC94B" font-weight="700"
+                font-family="monospace" letter-spacing="2">ZZZ</text>
+            </svg>
+          </div>
+          <div class="game-info">
+            <span class="game-name">Zenless Zone Zero</span>
+            <span class="game-detail">Proxy · New Eridu</span>
+          </div>
+        </div>
+
+        <div class="game-card game-valorant tilt">
+          <div class="game-thumb">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="32,7 54,57 32,46 10,57" fill="rgba(255,70,85,0.06)" stroke="#FF4655" stroke-width="1.5"
+                stroke-linejoin="round" />
+              <polygon points="32,17 46,53 32,44 18,53" fill="rgba(255,70,85,0.08)" stroke="#FF4655" stroke-width="0.7"
+                stroke-linejoin="round" opacity="0.55" />
+              <line x1="20" y1="32" x2="27" y2="32" stroke="#FF4655" stroke-width="1" stroke-linecap="round"
+                opacity="0.6" />
+              <line x1="37" y1="32" x2="44" y2="32" stroke="#FF4655" stroke-width="1" stroke-linecap="round"
+                opacity="0.6" />
+              <line x1="32" y1="25" x2="32" y2="27" stroke="#FF4655" stroke-width="1" stroke-linecap="round"
+                opacity="0.6" />
+              <circle cx="32" cy="32" r="2.5" fill="#FF4655" opacity="0.95" />
+            </svg>
+          </div>
+          <div class="game-info">
+            <span class="game-name">Valorant</span>
+            <span class="game-detail">Gold III · Duelist</span>
+          </div>
+        </div>
+
+        <div class="game-card game-lol tilt">
+          <div class="game-thumb">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="32,4 57,18.5 57,45.5 32,60 7,45.5 7,18.5" fill="none" stroke="#C89B3C"
+                stroke-width="1.5" />
+              <polygon points="32,13 49,22.5 49,41.5 32,51 15,41.5 15,22.5" fill="none" stroke="#C89B3C"
+                stroke-width="0.7" opacity="0.5" />
+              <line x1="32" y1="19" x2="32" y2="45" stroke="#C89B3C" stroke-width="0.6" opacity="0.35" />
+              <line x1="18" y1="27" x2="46" y2="37" stroke="#C89B3C" stroke-width="0.6" opacity="0.35" />
+              <line x1="46" y1="27" x2="18" y2="37" stroke="#C89B3C" stroke-width="0.6" opacity="0.35" />
+              <polygon points="32,22 40,32 32,42 24,32" fill="rgba(200,155,60,0.15)" stroke="#C89B3C"
+                stroke-width="1.2" />
+              <circle cx="32" cy="32" r="3" fill="#C89B3C" opacity="0.85" />
+            </svg>
+          </div>
+          <div class="game-info">
+            <span class="game-name">League of Legends</span>
+            <span class="game-detail">Plat IV · Mid / Support</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+
+
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-roses">
+      <svg width="36" height="80" viewBox="0 0 36 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18 34 C17 50 18 62 17 80" stroke="#5a1030" stroke-width="1.8" stroke-linecap="round" />
+        <path d="M17.5 45 L10 40" stroke="#5a1030" stroke-width="1.2" stroke-linecap="round" />
+        <path d="M17.5 58 L26 53" stroke="#5a1030" stroke-width="1.2" stroke-linecap="round" />
+        <path d="M17 48 Q6 43 9 36 Q16 39 17 46" fill="#5a1030" opacity="0.85" />
+        <ellipse cx="18" cy="16" rx="9" ry="12" fill="#f4c0d4" opacity="0.7" />
+        <ellipse cx="18" cy="16" rx="9" ry="12" fill="#f0b4cc" opacity="0.6" transform="rotate(72 18 16)" />
+        <ellipse cx="18" cy="16" rx="9" ry="12" fill="#ecacc6" opacity="0.6" transform="rotate(144 18 16)" />
+        <ellipse cx="18" cy="16" rx="9" ry="12" fill="#f0b4cc" opacity="0.6" transform="rotate(216 18 16)" />
+        <ellipse cx="18" cy="16" rx="9" ry="12" fill="#f4c0d4" opacity="0.6" transform="rotate(288 18 16)" />
+        <ellipse cx="18" cy="16" rx="6" ry="8" fill="#cc6898" opacity="0.88" transform="rotate(36 18 16)" />
+        <ellipse cx="18" cy="16" rx="6" ry="8" fill="#c46090" opacity="0.88" transform="rotate(108 18 16)" />
+        <ellipse cx="18" cy="16" rx="6" ry="8" fill="#cc6898" opacity="0.85" transform="rotate(180 18 16)" />
+        <circle cx="18" cy="16" r="4" fill="#882850" />
+        <circle cx="18" cy="15" r="2" fill="#601830" />
+      </svg>
+      <svg width="36" height="80" viewBox="0 0 36 80" fill="none" xmlns="http://www.w3.org/2000/svg"
+        style="transform:scaleX(-1)">
+        <path d="M18 34 C17 50 18 62 17 80" stroke="#5a1030" stroke-width="1.8" stroke-linecap="round" />
+        <path d="M17.5 45 L10 40" stroke="#5a1030" stroke-width="1.2" stroke-linecap="round" />
+        <path d="M17.5 58 L26 53" stroke="#5a1030" stroke-width="1.2" stroke-linecap="round" />
+        <path d="M17 48 Q6 43 9 36 Q16 39 17 46" fill="#5a1030" opacity="0.85" />
+        <ellipse cx="18" cy="16" rx="9" ry="12" fill="#f4c0d4" opacity="0.7" />
+        <ellipse cx="18" cy="16" rx="9" ry="12" fill="#f0b4cc" opacity="0.6" transform="rotate(72 18 16)" />
+        <ellipse cx="18" cy="16" rx="9" ry="12" fill="#ecacc6" opacity="0.6" transform="rotate(144 18 16)" />
+        <ellipse cx="18" cy="16" rx="9" ry="12" fill="#f0b4cc" opacity="0.6" transform="rotate(216 18 16)" />
+        <ellipse cx="18" cy="16" rx="9" ry="12" fill="#f4c0d4" opacity="0.6" transform="rotate(288 18 16)" />
+        <ellipse cx="18" cy="16" rx="6" ry="8" fill="#cc6898" opacity="0.88" transform="rotate(36 18 16)" />
+        <ellipse cx="18" cy="16" rx="6" ry="8" fill="#c46090" opacity="0.88" transform="rotate(108 18 16)" />
+        <ellipse cx="18" cy="16" rx="6" ry="8" fill="#cc6898" opacity="0.85" transform="rotate(180 18 16)" />
+        <circle cx="18" cy="16" r="4" fill="#882850" />
+        <circle cx="18" cy="15" r="2" fill="#601830" />
+      </svg>
+    </div>
+    <p class="footer-name">GABRIEL<span class="accent">ORTEGA</span></p>
+    <p class="footer-sub">// GSAP · Canvas · CSS · amor y espinas</p>
+    <p class="footer-gg pink">GG WP</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script src="js/tree.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="js/script.js"></script>
+</body>
+
+</html>
