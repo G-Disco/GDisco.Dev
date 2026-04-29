@@ -2734,8 +2734,9 @@ html[data-theme="day"] .visitor-num   { color: #e91e8c; text-shadow: 0 0 14px rg
 
 .queja-reply {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: .55rem;
+  padding: .25rem 0;
 }
 
 .queja-reply-avatar {
@@ -2750,7 +2751,7 @@ html[data-theme="day"] .visitor-num   { color: #e91e8c; text-shadow: 0 0 14px rg
 
 .queja-reply-author {
   font-family: var(--font-mono);
-  font-size: .75rem;
+  font-size: .90rem;
   color: var(--rose);
   text-shadow: 0 0 8px var(--glow-pink);
   flex-shrink: 0;
@@ -2774,7 +2775,7 @@ html[data-theme="day"] .visitor-num   { color: #e91e8c; text-shadow: 0 0 14px rg
 
 .queja-reply-input {
   flex: 1;
-  font-size: .85rem;
+  font-size: .90rem;
 }
 
 .queja-card {
