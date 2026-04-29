@@ -1,0 +1,11 @@
+{
+  "name": "gdisco",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler pages dev . --kv VISITORS --port 8080"
+  },
+  "devDependencies": {
+    "wrangler": "^4.86.0"
+  }
+}

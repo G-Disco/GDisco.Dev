@@ -2738,6 +2738,16 @@ html[data-theme="day"] .visitor-num   { color: #e91e8c; text-shadow: 0 0 14px rg
   gap: .55rem;
 }
 
+.queja-reply-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--rose);
+  box-shadow: 0 0 6px var(--glow-pink);
+}
+
 .queja-reply-author {
   font-family: var(--font-mono);
   font-size: .75rem;

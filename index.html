@@ -706,7 +706,7 @@
         }
         const r = document.createElement('div');
         r.className = 'queja-reply';
-        r.innerHTML = `<span class="queja-reply-author">GO</span><span class="queja-reply-text">${esc(text)}</span>`;
+        r.innerHTML = `<img class="queja-reply-avatar" src="/SGDaiGurren.webp" alt="Gabriel O."><span class="queja-reply-author">Gabriel O.</span><span class="queja-reply-text">${esc(text)}</span>`;
         repliesWrap.appendChild(r);
       }
 
@@ -723,7 +723,7 @@
           q.replies.forEach(rep => {
             const r = document.createElement('div');
             r.className = 'queja-reply';
-            r.innerHTML = `<span class="queja-reply-author">GO</span><span class="queja-reply-text">${esc(rep.text)}</span>`;
+            r.innerHTML = `<img class="queja-reply-avatar" src="/SGDaiGurren.webp" alt="Gabriel O."><span class="queja-reply-author">Gabriel O.</span><span class="queja-reply-text">${esc(rep.text)}</span>`;
             repliesWrap.appendChild(r);
           });
           card.appendChild(repliesWrap);
