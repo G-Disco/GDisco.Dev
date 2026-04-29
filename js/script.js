@@ -332,8 +332,8 @@ async function updateDiscord() {
     const listening = data.activities?.find(a => a.type === 2);
     const custom = data.activities?.find(a => a.type === 4);
     let actText;
-    if (playing) actText = `▶ jugando ${playing.name}`;
-    else if (listening) actText = `♪ ${listening.details ?? listening.name}`;
+    if (playing) actText = `▶ playing ${playing.name}`;
+    else if (listening) actText = `♪ listening to ${listening.details ?? listening.name}`;
     else if (custom?.state) actText = custom.state;
     else actText = DW_LABELS[data.discord_status] ?? 'offline';
 
@@ -348,16 +348,6 @@ async function updateDiscord() {
       if (dwAct) dwAct.textContent = actText;
       if (dwImg) { dwImg.src = avatarUrl || ''; console.log('[Discord] avatar URL:', avatarUrl); }
     }
-
-    /* ─ featured card (El Brujo) ─ */
-    const dcStatus = document.getElementById('dc-status');
-    const dcUsername = document.getElementById('dc-username');
-    const dcActivity = document.getElementById('dc-activity');
-    const dcAvatar = document.getElementById('dc-avatar');
-    if (dcStatus) dcStatus.style.background = DW_COLORS[data.discord_status] ?? DW_COLORS.offline;
-    if (dcUsername) dcUsername.textContent = displayName;
-    if (dcActivity) dcActivity.textContent = actText;
-    if (dcAvatar) { dcAvatar.src = avatarUrl || ''; }
 
   } catch (e) { console.warn('[Discord]', e); }
 }

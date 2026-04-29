@@ -4,7 +4,7 @@ const canvas = document.getElementById('tree-canvas');
 if (canvas) {
 
   /* DAY / NIGHT */
-  const IS_DAY = document.documentElement.dataset.theme === 'day';
+  let IS_DAY = document.documentElement.dataset.theme === 'day';
 
   /* RENDERER */
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
@@ -21,7 +21,8 @@ if (canvas) {
   camera.lookAt(0, 11, 0);
 
   /* LIGHTS */
-  scene.add(new THREE.AmbientLight(IS_DAY ? 0xfff8d8 : 0xfce8f4, IS_DAY ? 5.0 : 2.2));
+  const ambientLight = new THREE.AmbientLight(IS_DAY ? 0xfff8d8 : 0xfce8f4, IS_DAY ? 5.0 : 2.2);
+  scene.add(ambientLight);
   const dirLight = new THREE.DirectionalLight(IS_DAY ? 0xfffcf0 : 0xfff0f8, IS_DAY ? 9.0 : 4.0);
   dirLight.position.set(12, 26, 14);
   scene.add(dirLight);
@@ -557,4 +558,41 @@ if (canvas) {
     renderer.render(scene, camera);
   }
   animate();
+
+  /* ══════════════════════════════════════════
+     SWAP CELESTIAL — called by toggleTheme()
+     Flips IS_DAY and updates moon/sun visuals
+  ══════════════════════════════════════════ */
+  window.swapCelestial = function () {
+    IS_DAY = !IS_DAY;
+
+    // Scene lights
+    ambientLight.color.setHex(IS_DAY ? 0xfff8d8 : 0xfce8f4);
+    ambientLight.intensity = IS_DAY ? 5.0 : 2.2;
+    dirLight.color.setHex(IS_DAY ? 0xfffcf0 : 0xfff0f8);
+    dirLight.intensity = IS_DAY ? 9.0 : 4.0;
+    fill.color.setHex(IS_DAY ? 0xffcc66 : 0xff88cc);
+    fill.intensity = IS_DAY ? 5.0 : 3.0;
+    bounce.color.setHex(IS_DAY ? 0xffeecc : 0xffe0f0);
+    bounce.intensity = IS_DAY ? 2.5 : 1.5;
+
+    // Core sphere
+    moonMesh.material.color.setHex(IS_DAY ? 0xfffce0 : 0xf0ecff);
+    moonMesh.material.emissive.setHex(IS_DAY ? 0xffee22 : 0xddd8ff);
+    moonMesh.material.emissiveIntensity = IS_DAY ? 2.4 : 1.1;
+    moonMesh.material.roughness = IS_DAY ? 0.05 : 0.10;
+
+    // Halo
+    haloMesh.material.color.setHex(IS_DAY ? 0xffdd55 : 0xaabbff);
+    haloMesh.material.opacity = IS_DAY ? 0.16 : 0.10;
+
+    // Celestial point light
+    moonLight.color.setHex(IS_DAY ? 0xff9933 : 0x3366ff);
+    moonLight.intensity  = IS_DAY ? 20 : 14;
+    moonLight.decay      = IS_DAY ? 1.2 : 1.4;
+
+    // Teleport sun/moon to opposite side, reset inertia
+    moonPosX = IS_DAY ? 22 : -22;
+    moonVelX = 0; moonVelY = 0;
+  };
 }
