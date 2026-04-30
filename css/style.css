@@ -780,6 +780,25 @@ em {
   width: 100%;
 }
 
+.lang-toggle {
+  font-family: var(--font-mono);
+  font-size: .62rem;
+  letter-spacing: 2px;
+  background: none;
+  border: 1px solid rgba(240, 184, 208, .28);
+  color: var(--dim);
+  padding: .22rem .52rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: color .2s, border-color .2s;
+  flex-shrink: 0;
+}
+
+.lang-toggle:hover {
+  color: var(--pink);
+  border-color: var(--pink);
+}
+
 .hamburger {
   display: none;
   flex-direction: column;
@@ -1481,6 +1500,16 @@ html[data-theme="day"] .social-mini--sp:hover {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.dw-activity-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(240, 184, 208, .22);
+  box-shadow: 0 0 8px rgba(88, 101, 242, .25);
 }
 
 .dw-logo {

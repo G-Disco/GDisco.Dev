@@ -85,17 +85,17 @@ document.querySelectorAll('a, button, .tilt').forEach(el => {
   });
 });
 
-const phrases = [
-  'Full Stack Developer',
-  'CSS Wizard nivel S+',
-  'Bug Hunter Profesional',
-  'Cafeinómano crónico',
-  'Builder de experiencias',
-  'Player One',
-];
+let phrases = (window.GDISCO_T && window.GDISCO_LANG)
+  ? window.GDISCO_T[window.GDISCO_LANG].phrases
+  : ['Full Stack Developer', 'CSS Wizard nivel S+', 'Bug Hunter Profesional', 'Cafeinómano crónico', 'Builder de experiencias', 'Player One'];
 
 const typeEl = document.querySelector('.typewriter');
 let pIdx = 0, cIdx = 0, deleting = false;
+
+window.setPhrases = function (newPhrases) {
+  phrases = newPhrases;
+  pIdx = 0; cIdx = 0; deleting = false;
+};
 
 function typeWriter() {
   const cur = phrases[pIdx];
@@ -254,15 +254,40 @@ async function updateDiscord() {
     else if (custom?.state) actText = custom.state;
     else actText = DW_LABELS[data.discord_status] ?? 'offline';
 
+    // Activity thumbnail: Spotify album art or game icon
+    let actImgUrl = '';
+    if (data.spotify?.album_art_url) {
+      actImgUrl = data.spotify.album_art_url;
+    } else if (playing?.assets?.large_image) {
+      const img = playing.assets.large_image;
+      if (img.startsWith('mp:external/')) {
+        actImgUrl = `https://media.discordapp.net/external/${img.slice('mp:external/'.length)}`;
+      } else if (playing.application_id) {
+        actImgUrl = `https://cdn.discordapp.com/app-assets/${playing.application_id}/${img}.webp?size=64`;
+      }
+    }
+
     const dot = document.getElementById('dw-status-dot');
     if (dot) {
       dot.style.background = DW_COLORS[data.discord_status] ?? DW_COLORS.offline;
       const dwName = document.getElementById('dw-name');
       const dwAct = document.getElementById('dw-activity');
       const dwImg = document.getElementById('dw-avatar-img');
+      const dwActImg = document.getElementById('dw-activity-img');
+      const dwLogoSvg = document.getElementById('dw-logo-svg');
       if (dwName) dwName.textContent = displayName;
       if (dwAct) dwAct.textContent = actText;
       if (dwImg) dwImg.src = avatarUrl || '';
+      if (dwActImg && dwLogoSvg) {
+        if (actImgUrl) {
+          dwActImg.src = actImgUrl;
+          dwActImg.style.display = 'block';
+          dwLogoSvg.style.display = 'none';
+        } else {
+          dwActImg.style.display = 'none';
+          dwLogoSvg.style.display = '';
+        }
+      }
     }
 
   } catch (e) { console.warn('[Discord]', e); }
