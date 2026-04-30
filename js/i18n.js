@@ -47,8 +47,6 @@
       footer_sub: 'Gamer poco profesional · Profanador de JS · Builder de experiencias · Comentador compulsivo',
       footer_copy: '// GSAP · Three.js · CSS · amor y espinas',
       nnp_idle_label: 'durmiendo',
-      toggle_day: '¿Prefieres la oscuridad? Tócame ~',
-      toggle_night: '¿Prefieres la luz? Tócame ~',
       phrases: [
         'Full Stack Developer',
         'CSS Wizard nivel S+',
@@ -105,8 +103,6 @@
       footer_sub: 'Unprofessional gamer · JS profaner · Experience builder · Compulsive commenter',
       footer_copy: '// GSAP · Three.js · CSS · love and thorns',
       nnp_idle_label: 'idling',
-      toggle_day: 'Dark mode lover? Touch me ~',
-      toggle_night: 'Light mode lover? Touch me ~',
       phrases: [
         'Full Stack Developer',
         'CSS Wizard S+ Tier',
@@ -143,7 +139,6 @@
     if (btn) btn.textContent = lang === 'es' ? 'EN' : 'ES';
     document.documentElement.lang = lang;
     if (typeof window.setPhrases === 'function') window.setPhrases(t.phrases);
-    if (typeof window.updateToggleLabel === 'function') window.updateToggleLabel();
     localStorage.setItem('gdisco_lang', lang);
   }
 

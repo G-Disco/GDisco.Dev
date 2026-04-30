@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="night">
 
 <head>
   <meta charset="UTF-8">
@@ -12,17 +12,6 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Pirata+One&family=Share+Tech+Mono&display=swap"
     rel="stylesheet">
-  <script>
-    (function () {
-      var saved = localStorage.getItem('gdisco_theme');
-      if (saved === 'day' || saved === 'night') {
-        document.documentElement.setAttribute('data-theme', saved);
-      } else {
-        var h = new Date().getHours();
-        document.documentElement.setAttribute('data-theme', (h >= 6 && h < 18) ? 'day' : 'night');
-      }
-    })();
-  </script>
   <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -183,10 +172,6 @@
       <p class="sm-greeting" data-i18n="greeting">// hola, soy</p>
       <div class="sm-name-row">
         <h1 class="sm-name glitch" data-text="Gabriel Ortega">Gabriel Ortega</h1>
-        <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">
-          <span class="toggle-icon" id="toggle-icon"></span>
-          <span class="toggle-label" id="toggle-label"></span>
-        </button>
       </div>
       <h2 class="sm-title">
         <span class="typewriter"></span><span class="cursor-blink">_</span>
@@ -632,30 +617,6 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/script.js"></script>
-  <script>
-    function updateToggleLabel() {
-      var isDay = document.documentElement.dataset.theme === 'day';
-      var icon = document.getElementById('toggle-icon');
-      var label = document.getElementById('toggle-label');
-      if (icon) icon.textContent = isDay ? '☽' : '☀';
-      if (label) {
-        var lang = window.GDISCO_LANG || 'es';
-        var T = window.GDISCO_T;
-        label.textContent = T ? (isDay ? T[lang].toggle_day : T[lang].toggle_night)
-          : (isDay ? '¿Prefieres la oscuridad? Tócame ~' : '¿Prefieres la luz? Tócame ~');
-      }
-    }
-    function toggleTheme() {
-      var root = document.documentElement;
-      var isDay = root.dataset.theme === 'day';
-      var newTheme = isDay ? 'night' : 'day';
-      root.setAttribute('data-theme', newTheme);
-      localStorage.setItem('gdisco_theme', newTheme);
-      updateToggleLabel();
-      if (typeof window.swapCelestial === 'function') window.swapCelestial();
-    }
-    updateToggleLabel();
-  </script>
   <script>
     (function () {
       const carousel = document.getElementById('games-carousel');

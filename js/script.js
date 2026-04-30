@@ -207,7 +207,7 @@ gsap.to('.bg-rose-tr', {
   rotate: -2, duration: 4.8, ease: 'sine.inOut',
   repeat: -1, yoyo: true, transformOrigin: 'top center', delay: 2.5,
 });
-gsap.to('.footer-roses svg', {
+gsap.to('.sakura-tree', {
   rotate: 1.5, duration: 3.5, ease: 'sine.inOut',
   repeat: -1, yoyo: true, transformOrigin: 'bottom center',
   stagger: 1,
