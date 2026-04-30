@@ -144,10 +144,34 @@
   <div class="bg-kanji bg-kanji-3">散</div>
 
   <nav class="navbar">
-    <div class="nav-logo">G<span class="accent">O</span><span class="logo-sub">.exe</span></div>
+    <div class="nav-logo-wrap">
+      <div class="nav-logo">G<span class="accent">O</span><span class="logo-sub">.exe</span></div>
+      <span class="nav-version">v2.5</span>
+      <span class="nav-dot" id="nav-status-dot"></span>
+    </div>
+    <div class="nav-now-playing" id="nav-now-playing">
+      <!-- Playing state -->
+      <span class="nnp-icon" id="nnp-music-icon" style="display:none">♪</span>
+      <div class="nnp-track-wrap" id="nnp-track-wrap" style="display:none">
+        <span class="nnp-track" id="nnp-track"></span>
+      </div>
+      <!-- Idle state -->
+      <div class="nnp-idle" id="nnp-idle">
+        <span class="nnp-cloud">☁</span>
+        <span class="nnp-zchar">z</span>
+        <span class="nnp-zchar nnp-z2">z</span>
+        <span class="nnp-zchar nnp-z3">Z</span>
+        <span class="nnp-cloud nnp-cloud2">☁</span>
+        <span class="nnp-idle-label" data-i18n="nnp_idle_label">durmiendo</span>
+      </div>
+    </div>
     <ul class="nav-links">
       <li><a href="#inicio" data-i18n="nav_home">inicio</a></li>
+      <li><a href="#stats" data-i18n="nav_stats">stats</a></li>
+      <li><a href="#quejas" data-i18n="nav_quejas">quejas</a></li>
+      <li><a href="#contacto" data-i18n="nav_contact">contacto</a></li>
     </ul>
+    <span class="nav-clock" id="nav-clock"></span>
     <button class="lang-toggle" id="lang-toggle" onclick="toggleLang()">EN</button>
     <div class="hamburger"><span></span><span></span><span></span></div>
   </nav>
@@ -182,6 +206,11 @@
           <span class="visitor-smile" data-i18n="visitor_smile">Sonríe~</span>
           <span class="visitor-text" data-i18n="visitor_text">Eres el visitante no:</span>
           <span class="visitor-num" id="visitor-count">—</span>
+        </div>
+        <div class="visitor-card cigarro-card g-card">
+          <span class="visitor-smile">🚬</span>
+          <span class="visitor-text" data-i18n="cigarro_text">cigarros fumados codeando</span>
+          <span class="visitor-num" id="cigarro-count">—</span>
         </div>
       </div>
 
@@ -433,7 +462,7 @@
 
   </section>
 
-  <section class="quejas-section">
+  <section class="quejas-section" id="quejas">
     <div class="section-header">
       <div class="sh-ornament">✦</div>
       <h2 data-i18n="quejas_title">// quejas</h2>
@@ -441,15 +470,20 @@
       <div class="section-line"></div>
     </div>
 
-    <div class="quejas-list" id="quejas-list">
-      <div class="queja-card g-card">
-        <div class="queja-avatar">C</div>
-        <div class="queja-body">
-          <span class="queja-name">Chiriwillo</span>
+    <div class="quejas-carousel-wrap">
+      <button class="carousel-btn carousel-btn--prev" id="quejas-prev" aria-label="anterior">‹</button>
+      <div class="quejas-carousel" id="quejas-list">
+        <div class="queja-card g-card">
+          <div class="qc-top">
+            <div class="queja-avatar">C</div>
+            <span class="queja-name">Chiriwillo</span>
+          </div>
           <span class="queja-text">Borra tu mamada</span>
         </div>
       </div>
+      <button class="carousel-btn carousel-btn--next" id="quejas-next" aria-label="siguiente">›</button>
     </div>
+    <div class="carousel-dots" id="quejas-dots"></div>
 
     <form class="queja-form g-card" id="queja-form">
       <p class="queja-form-title" data-i18n="queja_form_title">// deja tu queja</p>
@@ -471,76 +505,60 @@
     </div>
   </section>
 
-  <section class="contact-section" id="contacto">
-    <div class="section-header">
-      <div class="sh-ornament">✦</div>
-      <h2 data-i18n="contact_title">Contacto</h2>
-      <div class="section-line"></div>
-    </div>
-    <div class="contact-cards">
-      <a href="mailto:gabriel16ortega@gmail.com" class="contact-card">
-        <span class="contact-icon">
-          <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
-            <path
-              d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-          </svg>
-        </span>
-        <span class="contact-body">
-          <span class="contact-label" data-i18n="contact_email_label">correo</span>
-          <span class="contact-value">gabriel16ortega@gmail.com</span>
-        </span>
-      </a>
-      <a href="https://discord.com/users/857777819324121098" target="_blank" rel="noopener noreferrer"
-        class="contact-card">
-        <span class="contact-icon">
-          <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
-            <path
-              d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.878 19.878 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
-          </svg>
-        </span>
-        <span class="contact-body">
-          <span class="contact-label">discord</span>
-          <span class="contact-value">discord.com/users/Gabriel</span>
-        </span>
-      </a>
-    </div>
-  </section>
-
-  <footer class="footer">
-    <div class="footer-roses">
-      <svg width="36" height="80" viewBox="0 0 36 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M18 34 C17 50 18 62 17 80" stroke="#5a1030" stroke-width="1.8" stroke-linecap="round" />
-        <path d="M17.5 45 L10 40" stroke="#5a1030" stroke-width="1.2" stroke-linecap="round" />
-        <path d="M17.5 58 L26 53" stroke="#5a1030" stroke-width="1.2" stroke-linecap="round" />
-        <path d="M17 48 Q6 43 9 36 Q16 39 17 46" fill="#5a1030" opacity="0.85" />
-        <ellipse cx="18" cy="16" rx="9" ry="12" fill="#f4c0d4" opacity="0.7" />
-        <ellipse cx="18" cy="16" rx="9" ry="12" fill="#f0b4cc" opacity="0.6" transform="rotate(72 18 16)" />
-        <ellipse cx="18" cy="16" rx="9" ry="12" fill="#ecacc6" opacity="0.6" transform="rotate(144 18 16)" />
-        <ellipse cx="18" cy="16" rx="9" ry="12" fill="#f0b4cc" opacity="0.6" transform="rotate(216 18 16)" />
-        <ellipse cx="18" cy="16" rx="9" ry="12" fill="#f4c0d4" opacity="0.6" transform="rotate(288 18 16)" />
-        <ellipse cx="18" cy="16" rx="6" ry="8" fill="#cc6898" opacity="0.88" transform="rotate(36 18 16)" />
-        <ellipse cx="18" cy="16" rx="6" ry="8" fill="#c46090" opacity="0.88" transform="rotate(108 18 16)" />
-        <ellipse cx="18" cy="16" rx="6" ry="8" fill="#cc6898" opacity="0.85" transform="rotate(180 18 16)" />
-        <circle cx="18" cy="16" r="4" fill="#882850" />
-        <circle cx="18" cy="15" r="2" fill="#601830" />
-      </svg>
-      <svg width="36" height="80" viewBox="0 0 36 80" fill="none" xmlns="http://www.w3.org/2000/svg"
-        style="transform:scaleX(-1)">
-        <path d="M18 34 C17 50 18 62 17 80" stroke="#5a1030" stroke-width="1.8" stroke-linecap="round" />
-        <path d="M17.5 45 L10 40" stroke="#5a1030" stroke-width="1.2" stroke-linecap="round" />
-        <path d="M17.5 58 L26 53" stroke="#5a1030" stroke-width="1.2" stroke-linecap="round" />
-        <path d="M17 48 Q6 43 9 36 Q16 39 17 46" fill="#5a1030" opacity="0.85" />
-        <ellipse cx="18" cy="16" rx="9" ry="12" fill="#f4c0d4" opacity="0.7" />
-        <ellipse cx="18" cy="16" rx="9" ry="12" fill="#f0b4cc" opacity="0.6" transform="rotate(72 18 16)" />
-        <ellipse cx="18" cy="16" rx="9" ry="12" fill="#ecacc6" opacity="0.6" transform="rotate(144 18 16)" />
-        <ellipse cx="18" cy="16" rx="9" ry="12" fill="#f0b4cc" opacity="0.6" transform="rotate(216 18 16)" />
-        <ellipse cx="18" cy="16" rx="9" ry="12" fill="#f4c0d4" opacity="0.6" transform="rotate(288 18 16)" />
-        <ellipse cx="18" cy="16" rx="6" ry="8" fill="#cc6898" opacity="0.88" transform="rotate(36 18 16)" />
-        <ellipse cx="18" cy="16" rx="6" ry="8" fill="#c46090" opacity="0.88" transform="rotate(108 18 16)" />
-        <ellipse cx="18" cy="16" rx="6" ry="8" fill="#cc6898" opacity="0.85" transform="rotate(180 18 16)" />
-        <circle cx="18" cy="16" r="4" fill="#882850" />
-        <circle cx="18" cy="15" r="2" fill="#601830" />
-      </svg>
+  <footer class="footer" id="contacto">
+    <!-- Cherry blossom tree -->
+    <div class="footer-sakura" aria-hidden="true">
+      <div class="sakura-tree-wrap">
+        <svg class="sakura-tree" width="90" height="100" viewBox="0 0 90 100" fill="none" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+          <!-- Trunk -->
+          <path d="M45 100 C44 86 43 76 44 66" stroke="#7a3848" stroke-width="5" stroke-linecap="round"/>
+          <!-- Main branches -->
+          <path d="M44 66 C35 59 21 48 11 36" stroke="#7a3848" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M44 66 C53 59 67 48 77 36" stroke="#7a3848" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M44 66 C44 55 44 44 44 32" stroke="#7a3848" stroke-width="3" stroke-linecap="round"/>
+          <!-- Sub-branches -->
+          <path d="M25 55 C17 48 9 42 5 32" stroke="#7a3848" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M63 55 C71 48 79 42 83 32" stroke="#7a3848" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M29 50 C27 43 25 36 24 28" stroke="#7a3848" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M59 50 C61 43 63 36 64 28" stroke="#7a3848" stroke-width="1.6" stroke-linecap="round"/>
+          <!-- Blossom clusters — center -->
+          <circle cx="44" cy="28" r="9"  fill="#f4c0d4" opacity="0.82"/>
+          <circle cx="36" cy="24" r="7"  fill="#f0b4cc" opacity="0.78"/>
+          <circle cx="52" cy="24" r="7"  fill="#ecacc6" opacity="0.78"/>
+          <circle cx="44" cy="17" r="6"  fill="#f4c0d4" opacity="0.74"/>
+          <circle cx="38" cy="36" r="4"  fill="#f0b4cc" opacity="0.68"/>
+          <circle cx="50" cy="36" r="4"  fill="#f4c0d4" opacity="0.68"/>
+          <!-- Blossom clusters — left tip -->
+          <circle cx="11" cy="34" r="8"  fill="#f0b4cc" opacity="0.80"/>
+          <circle cx="4"  cy="30" r="6"  fill="#f4c0d4" opacity="0.75"/>
+          <circle cx="18" cy="30" r="6"  fill="#ecacc6" opacity="0.75"/>
+          <circle cx="9"  cy="42" r="3"  fill="#f0b4cc" opacity="0.62"/>
+          <!-- Blossom clusters — right tip -->
+          <circle cx="77" cy="34" r="8"  fill="#f0b4cc" opacity="0.80"/>
+          <circle cx="84" cy="30" r="6"  fill="#f4c0d4" opacity="0.75"/>
+          <circle cx="70" cy="30" r="6"  fill="#ecacc6" opacity="0.75"/>
+          <circle cx="79" cy="42" r="3"  fill="#f0b4cc" opacity="0.62"/>
+          <!-- Blossom clusters — left sub -->
+          <circle cx="5"  cy="30" r="6"  fill="#f4c0d4" opacity="0.78"/>
+          <circle cx="24" cy="26" r="5"  fill="#f0b4cc" opacity="0.74"/>
+          <!-- Blossom clusters — right sub -->
+          <circle cx="83" cy="30" r="6"  fill="#f4c0d4" opacity="0.78"/>
+          <circle cx="64" cy="26" r="5"  fill="#f0b4cc" opacity="0.74"/>
+          <!-- Stamen accents -->
+          <circle cx="44" cy="28" r="3"  fill="#e0749a" opacity="0.70"/>
+          <circle cx="44" cy="17" r="2"  fill="#e0749a" opacity="0.60"/>
+          <circle cx="11" cy="34" r="2.5" fill="#e0749a" opacity="0.60"/>
+          <circle cx="77" cy="34" r="2.5" fill="#e0749a" opacity="0.60"/>
+        </svg>
+        <!-- Falling petals -->
+        <span class="sk-petal" style="--dur:4.2s; --delay:0s;   --drift:14px;  left:40px; top:15px;"></span>
+        <span class="sk-petal" style="--dur:3.6s; --delay:1.3s; --drift:-16px; left:9px;  top:26px;"></span>
+        <span class="sk-petal" style="--dur:4.8s; --delay:2.6s; --drift:18px;  left:69px; top:26px;"></span>
+        <span class="sk-petal" style="--dur:3.9s; --delay:0.7s; --drift:-12px; left:46px; top:10px;"></span>
+        <span class="sk-petal" style="--dur:4.4s; --delay:2.0s; --drift:10px;  left:22px; top:22px;"></span>
+        <span class="sk-petal" style="--dur:3.4s; --delay:3.5s; --drift:-8px;  left:60px; top:20px;"></span>
+        <span class="sk-petal" style="--dur:5.0s; --delay:1.0s; --drift:20px;  left:3px;  top:24px;"></span>
+      </div>
     </div>
     <div class="footer-thorns footer-thorns-l" aria-hidden="true">
       <svg viewBox="0 0 200 56" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -611,6 +629,7 @@
   <script type="module" src="js/tree.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/script.js"></script>
   <script>
@@ -726,7 +745,7 @@
         const initial = (q.name[0] ?? '?').toUpperCase();
         const qId = q.id ?? q.ts ?? '';
         card.dataset.id = qId;
-        card.innerHTML = `<div class="queja-avatar">${esc(initial)}</div><div class="queja-body"><span class="queja-name">${esc(q.name)}</span><span class="queja-text">${esc(q.text)}</span></div>${adminKey ? `<button class="queja-del" data-id="${esc(qId)}">×</button>` : ''}`;
+        card.innerHTML = `<div class="qc-top"><div class="queja-avatar">${esc(initial)}</div><span class="queja-name">${esc(q.name)}</span></div><span class="queja-text">${esc(q.text)}</span>${adminKey ? `<button class="queja-del" data-id="${esc(qId)}">×</button>` : ''}`;
         if (q.replies && q.replies.length) {
           const repliesWrap = document.createElement('div');
           repliesWrap.className = 'queja-replies';
@@ -739,8 +758,9 @@
           card.appendChild(repliesWrap);
         }
         if (adminKey) renderReplyInput(card, qId);
-        if (prepend) list.insertBefore(card, list.children[1]);
+        if (prepend) list.insertBefore(card, list.firstChild);
         else list.appendChild(card);
+        if (typeof window.refreshQuejasDots === 'function') window.refreshQuejasDots();
       }
 
       function addDeleteListeners() {
@@ -779,6 +799,12 @@
             form.reset();
             feedback.textContent = 'queja registrada.';
             setTimeout(() => { feedback.textContent = ''; }, 3000);
+            if (typeof confetti === 'function') confetti({
+              particleCount: 80,
+              spread: 70,
+              origin: { y: 0.7 },
+              colors: ['#f0b8d0', '#e91e8c', '#c084fc', '#f472b6', '#ffffff'],
+            });
           } else {
             feedback.textContent = d.error ?? 'error.';
           }
@@ -833,6 +859,42 @@
           flag.className = 'admin-flag admin-flag--err';
         });
       });
+    })();
+
+    (function () {
+      const carousel = document.getElementById('quejas-list');
+      const btnPrev = document.getElementById('quejas-prev');
+      const btnNext = document.getElementById('quejas-next');
+      const dotsWrap = document.getElementById('quejas-dots');
+      if (!carousel) return;
+      let qCurrent = 0;
+
+      function getCards() { return Array.from(carousel.querySelectorAll('.queja-card')); }
+
+      function buildDots() {
+        if (!dotsWrap) return;
+        dotsWrap.innerHTML = '';
+        getCards().forEach((_, i) => {
+          const d = document.createElement('button');
+          d.className = 'carousel-dot' + (i === qCurrent ? ' active' : '');
+          d.addEventListener('click', () => goTo(i));
+          dotsWrap.appendChild(d);
+        });
+      }
+
+      function goTo(idx) {
+        const cards = getCards();
+        if (!cards.length) return;
+        qCurrent = ((idx % cards.length) + cards.length) % cards.length;
+        carousel.scrollTo({ left: qCurrent * (cards[0].offsetWidth + 12), behavior: 'smooth' });
+        if (dotsWrap) dotsWrap.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === qCurrent));
+      }
+
+      if (btnPrev) btnPrev.addEventListener('click', () => { const c = getCards(); goTo(qCurrent === 0 ? c.length - 1 : qCurrent - 1); });
+      if (btnNext) btnNext.addEventListener('click', () => { const c = getCards(); goTo(qCurrent >= c.length - 1 ? 0 : qCurrent + 1); });
+
+      window.refreshQuejasDots = function () { buildDots(); };
+      buildDots();
     })();
 
     (function () {

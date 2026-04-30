@@ -2,6 +2,9 @@
   const T = {
     es: {
       nav_home: 'inicio',
+      nav_stats: 'timeline',
+      nav_quejas: 'quejas',
+      nav_contact: 'contacto',
       greeting: '// hola, soy',
       visitor_smile: 'Sonríe~',
       visitor_text: 'Eres el visitante no:',
@@ -31,9 +34,10 @@
       game_vrchat_desc: 'El lugar más extraño de internet y aun así me quedo.',
       game_gta_desc: 'Clásico. Nunca se va, nunca se va.',
       game_halo_desc: 'El shooter que me hizo amar los shooters antes que Valorant los arruinara.',
-      quejas_title: '// quejas',
+      quejas_title: '// quejas o confesiones',
       quejas_sub: '— Son anónimas, deja tu huella.',
-      queja_form_title: '// deja tu queja',
+      queja_form_title: '// deja tu queja o confesión',
+      cigarro_text: 'cigarros fumados codeando',
       queja_name_ph: 'nombre',
       queja_text_ph: 'tu queja aquí...',
       queja_submit: 'enviar',
@@ -42,6 +46,7 @@
       contact_email_label: 'correo',
       footer_sub: 'Gamer poco profesional · Profanador de JS · Builder de experiencias · Comentador compulsivo',
       footer_copy: '// GSAP · Three.js · CSS · amor y espinas',
+      nnp_idle_label: 'durmiendo',
       toggle_day: '¿Prefieres la oscuridad? Tócame ~',
       toggle_night: '¿Prefieres la luz? Tócame ~',
       phrases: [
@@ -55,6 +60,9 @@
     },
     en: {
       nav_home: 'home',
+      nav_stats: 'timeline',
+      nav_quejas: 'complaints',
+      nav_contact: 'contact',
       greeting: '// hey, I\'m',
       visitor_smile: 'Smile~',
       visitor_text: 'You\'re visitor no:',
@@ -84,9 +92,10 @@
       game_vrchat_desc: 'The strangest place on the internet and yet I stay.',
       game_gta_desc: 'Classic. It never leaves, it never leaves.',
       game_halo_desc: 'The shooter that made me love shooters before Valorant ruined them.',
-      quejas_title: '// complaints',
+      quejas_title: '// complaints or confessions',
       quejas_sub: '— They\'re anonymous, leave your mark.',
-      queja_form_title: '// leave your complaint',
+      queja_form_title: '// leave your complaint or confession',
+      cigarro_text: 'cigarettes smoked while coding',
       queja_name_ph: 'name',
       queja_text_ph: 'your complaint here...',
       queja_submit: 'send',
@@ -95,6 +104,7 @@
       contact_email_label: 'email',
       footer_sub: 'Unprofessional gamer · JS profaner · Experience builder · Compulsive commenter',
       footer_copy: '// GSAP · Three.js · CSS · love and thorns',
+      nnp_idle_label: 'idling',
       toggle_day: 'Dark mode lover? Touch me ~',
       toggle_night: 'Light mode lover? Touch me ~',
       phrases: [
@@ -119,11 +129,8 @@
   window.GDISCO_T = T;
   window.GDISCO_LANG = detectLang();
 
-  function applyLang(lang) {
-    if (lang !== 'es' && lang !== 'en') lang = 'es';
-    window.GDISCO_LANG = lang;
+  function doApply(lang) {
     var t = T[lang];
-
     document.querySelectorAll('[data-i18n]').forEach(function (el) {
       var key = el.dataset.i18n;
       if (key in t) el.innerHTML = t[key];
@@ -132,24 +139,33 @@
       var key = el.dataset.i18nPh;
       if (key in t) el.placeholder = t[key];
     });
-
     var btn = document.getElementById('lang-toggle');
     if (btn) btn.textContent = lang === 'es' ? 'EN' : 'ES';
-
     document.documentElement.lang = lang;
-
     if (typeof window.setPhrases === 'function') window.setPhrases(t.phrases);
     if (typeof window.updateToggleLabel === 'function') window.updateToggleLabel();
-
     localStorage.setItem('gdisco_lang', lang);
+  }
+
+  function applyLang(lang, animate) {
+    if (lang !== 'es' && lang !== 'en') lang = 'es';
+    window.GDISCO_LANG = lang;
+
+    if (animate && document.body) {
+      document.body.classList.add('lang-transition');
+      setTimeout(function () { doApply(lang); }, 130);
+      setTimeout(function () { document.body.classList.remove('lang-transition'); }, 320);
+    } else {
+      doApply(lang);
+    }
   }
 
   window.applyLang = applyLang;
   window.toggleLang = function () {
-    applyLang(window.GDISCO_LANG === 'es' ? 'en' : 'es');
+    applyLang(window.GDISCO_LANG === 'es' ? 'en' : 'es', true);
   };
 
   document.addEventListener('DOMContentLoaded', function () {
-    applyLang(window.GDISCO_LANG);
+    applyLang(window.GDISCO_LANG, false);
   });
 })();
