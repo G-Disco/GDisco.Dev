@@ -26,6 +26,15 @@
       tl_now_role: 'FS + Enc. Sistemas',
       tl_now_desc: 'Dos roles, un cigarro. <em class="tl-shade">Aún me pagan como practicante.</em>',
       games_label: '// cosas que me gusta jugar',
+      ls_steam_title: '// steam · jugando últimamente',
+      ls_spotify_title: '// spotify · escuchadas recientes',
+      ls_loading: '// cargando...',
+      ls_offline: '// offline',
+      ls_empty: '// sin datos',
+      ls_now_playing: 'sonando ahora',
+      ls_hours_2w: '{n}h estas 2sem',
+      ls_hours_total: '{n}h totales',
+      ls_total_games: '{n} juegos · {h}h',
       game_genshin_desc: 'Mi mayor adicción desde 2020. ~4000 horas registradas, catador de monas chinas profesional.',
       game_zzz_desc: 'Lo mismo que Genshin pero aquí se mueven más rico.',
       game_valorant_desc: 'La desgracia de mi paciencia y mi cordura.',
@@ -55,6 +64,19 @@
         'Builder de experiencias',
         'Player One',
       ],
+      title_phrases: [
+        '[Codeando]',
+        '[Fumando]',
+        '[En partida]',
+        '[Idle]',
+        '[Cazando bugs]',
+        '[Soñando]',
+      ],
+      time_now: 'ahora',
+      time_min: 'hace {n}m',
+      time_hour: 'hace {n}h',
+      time_day: 'hace {n}d',
+      time_week: 'hace {n}sem',
     },
     en: {
       nav_home: 'home',
@@ -82,6 +104,15 @@
       tl_now_role: 'FS + Systems Lead',
       tl_now_desc: 'Two roles, one cigarette. <em class="tl-shade">Still paid as an intern.</em>',
       games_label: '// things I like to play',
+      ls_steam_title: '// steam · recently played',
+      ls_spotify_title: '// spotify · recently listened',
+      ls_loading: '// loading...',
+      ls_offline: '// offline',
+      ls_empty: '// no data',
+      ls_now_playing: 'now playing',
+      ls_hours_2w: '{n}h last 2w',
+      ls_hours_total: '{n}h total',
+      ls_total_games: '{n} games · {h}h',
       game_genshin_desc: 'My biggest addiction since 2020. ~4000 hours logged, professional anime girl connoisseur.',
       game_zzz_desc: 'Same as Genshin but they move better here.',
       game_valorant_desc: 'The bane of my patience and sanity.',
@@ -111,6 +142,19 @@
         'Experience Builder',
         'Player One',
       ],
+      title_phrases: [
+        '[Coding]',
+        '[Smoking]',
+        '[In game]',
+        '[Idle]',
+        '[Bug hunting]',
+        '[Dreaming]',
+      ],
+      time_now: 'just now',
+      time_min: '{n}m ago',
+      time_hour: '{n}h ago',
+      time_day: '{n}d ago',
+      time_week: '{n}w ago',
     },
   };
 
@@ -121,7 +165,6 @@
     return nav.startsWith('en') ? 'en' : 'es';
   }
 
-  // Set globals synchronously so inline scripts can read them immediately
   window.GDISCO_T = T;
   window.GDISCO_LANG = detectLang();
 
@@ -140,6 +183,7 @@
     document.documentElement.lang = lang;
     if (typeof window.setPhrases === 'function') window.setPhrases(t.phrases);
     localStorage.setItem('gdisco_lang', lang);
+    try { window.dispatchEvent(new CustomEvent('gdisco:lang', { detail: { lang: lang } })); } catch (e) {}
   }
 
   function applyLang(lang, animate) {
@@ -158,6 +202,26 @@
   window.applyLang = applyLang;
   window.toggleLang = function () {
     applyLang(window.GDISCO_LANG === 'es' ? 'en' : 'es', true);
+  };
+
+  window.relativeTime = function (ts) {
+    if (!ts) return '';
+    var lang = window.GDISCO_LANG || 'es';
+    var t = T[lang];
+    var diff = Date.now() - ts;
+    if (diff < 0) diff = 0;
+    var s = Math.floor(diff / 1000);
+    var m = Math.floor(s / 60);
+    var h = Math.floor(m / 60);
+    var d = Math.floor(h / 24);
+    var w = Math.floor(d / 7);
+    function fmt(key, n) { return t[key].replace('{n}', n); }
+    if (s < 60)  return t.time_now;
+    if (m < 60)  return fmt('time_min', m);
+    if (h < 24)  return fmt('time_hour', h);
+    if (d < 7)   return fmt('time_day', d);
+    if (w < 5)   return fmt('time_week', w);
+    return new Date(ts).toLocaleDateString(lang === 'en' ? 'en-US' : 'es-MX', { month: 'short', day: 'numeric' });
   };
 
   document.addEventListener('DOMContentLoaded', function () {

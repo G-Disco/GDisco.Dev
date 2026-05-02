@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="night">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
@@ -139,12 +139,12 @@
       <span class="nav-dot" id="nav-status-dot"></span>
     </div>
     <div class="nav-now-playing" id="nav-now-playing">
-      <!-- Playing state -->
+
       <span class="nnp-icon" id="nnp-music-icon" style="display:none">♪</span>
       <div class="nnp-track-wrap" id="nnp-track-wrap" style="display:none">
         <span class="nnp-track" id="nnp-track"></span>
       </div>
-      <!-- Idle state -->
+
       <div class="nnp-idle" id="nnp-idle">
         <span class="nnp-cloud">☁</span>
         <span class="nnp-zchar">z</span>
@@ -161,10 +161,29 @@
       <li><a href="#contacto" data-i18n="nav_contact">contacto</a></li>
     </ul>
     <span class="nav-clock" id="nav-clock"></span>
+    <button class="term-toggle-nav" id="term-toggle" onclick="openTerminal()" title="terminal — atajo: ` o ~">[~_]</button>
     <button class="lang-toggle" id="lang-toggle" onclick="toggleLang()">EN</button>
     <div class="hamburger"><span></span><span></span><span></span></div>
   </nav>
 
+  <div class="term-overlay" id="term-overlay" aria-hidden="true">
+    <div class="term-window">
+      <div class="term-bar">
+        <span class="term-bar-dots">
+          <span class="term-dot term-dot--r"></span>
+          <span class="term-dot term-dot--y"></span>
+          <span class="term-dot term-dot--g"></span>
+        </span>
+        <span class="term-bar-title">gabriel@gdisco:~</span>
+        <button class="term-close" id="term-close" type="button" aria-label="close">✕</button>
+      </div>
+      <div class="term-body" id="term-body" tabindex="-1"></div>
+      <form class="term-prompt" id="term-prompt" autocomplete="off">
+        <span class="term-ps1">gabriel@gdisco:~$</span>
+        <input class="term-input" id="term-input" type="text" autocomplete="off" spellcheck="false" autocapitalize="off">
+      </form>
+    </div>
+  </div>
 
   <section id="inicio" class="sobre-mi">
 
@@ -274,7 +293,6 @@
 
   </section>
 
-
   <section id="stats" class="stats-section">
     <div class="section-header">
       <div class="sh-ornament">✦</div>
@@ -344,6 +362,28 @@
       </div>
     </div>
 
+    <div class="live-stats">
+      <div class="ls-panel ls-panel--steam g-card">
+        <div class="ls-header">
+          <span class="ls-icon">▶</span>
+          <span class="ls-title" data-i18n="ls_steam_title">// steam · jugando últimamente</span>
+          <span class="ls-foot" id="steam-foot"></span>
+        </div>
+        <ul class="ls-list" id="steam-list">
+          <li class="ls-loading" data-i18n="ls_loading">// cargando...</li>
+        </ul>
+      </div>
+      <div class="ls-panel ls-panel--spotify g-card">
+        <div class="ls-header">
+          <span class="ls-icon">♪</span>
+          <span class="ls-title" data-i18n="ls_spotify_title">// spotify · escuchadas recientes</span>
+          <span class="ls-foot" id="spotify-foot"></span>
+        </div>
+        <ul class="ls-list" id="spotify-list">
+          <li class="ls-loading" data-i18n="ls_loading">// cargando...</li>
+        </ul>
+      </div>
+    </div>
 
     <div class="games-area">
       <p class="games-label" data-i18n="games_label">// cosas que me gusta jugar</p>
@@ -353,7 +393,7 @@
 
           <div class="game-card game-genshin tilt">
             <div class="game-thumb">
-              <img src="assets/games/genshin.gif" alt="Genshin Impact" class="game-gif">
+              <video src="assets/games/mp4/genshin.mp4" class="game-gif" autoplay loop muted playsinline preload="metadata" aria-label="Genshin Impact"></video>
             </div>
             <div class="game-info">
               <span class="game-name">Genshin Impact</span>
@@ -364,7 +404,7 @@
 
           <div class="game-card game-zzz tilt">
             <div class="game-thumb">
-              <img src="assets/games/zzz.gif" alt="Zenless Zone Zero" class="game-gif">
+              <video src="assets/games/mp4/zzz.mp4" class="game-gif" autoplay loop muted playsinline preload="metadata" aria-label="Zenless Zone Zero"></video>
             </div>
             <div class="game-info">
               <span class="game-name">Zenless Zone Zero</span>
@@ -375,7 +415,7 @@
 
           <div class="game-card game-valorant tilt">
             <div class="game-thumb">
-              <img src="assets/games/valorant.gif" alt="Valorant" class="game-gif">
+              <video src="assets/games/mp4/valorant.mp4" class="game-gif" autoplay loop muted playsinline preload="metadata" aria-label="Valorant"></video>
             </div>
             <div class="game-info">
               <span class="game-name">Valorant</span>
@@ -386,7 +426,7 @@
 
           <div class="game-card game-lol tilt">
             <div class="game-thumb">
-              <img src="assets/games/lol.gif" alt="League of Legends" class="game-gif">
+              <video src="assets/games/mp4/lol.mp4" class="game-gif" autoplay loop muted playsinline preload="metadata" aria-label="League of Legends"></video>
             </div>
             <div class="game-info">
               <span class="game-name">League of Legends</span>
@@ -397,7 +437,7 @@
 
           <div class="game-card game-warframe tilt">
             <div class="game-thumb">
-              <img src="assets/games/warframe.gif" alt="Warframe" class="game-gif">
+              <video src="assets/games/mp4/warframe.mp4" class="game-gif" autoplay loop muted playsinline preload="metadata" aria-label="Warframe"></video>
             </div>
             <div class="game-info">
               <span class="game-name">Warframe</span>
@@ -408,7 +448,7 @@
 
           <div class="game-card game-vrchat tilt">
             <div class="game-thumb">
-              <img src="assets/games/vrchat.gif" alt="VRChat" class="game-gif">
+              <video src="assets/games/mp4/vrchat.mp4" class="game-gif" autoplay loop muted playsinline preload="metadata" aria-label="VRChat"></video>
             </div>
             <div class="game-info">
               <span class="game-name">VRChat</span>
@@ -419,7 +459,7 @@
 
           <div class="game-card game-gta tilt">
             <div class="game-thumb">
-              <img src="assets/games/gta.gif" alt="GTA V" class="game-gif">
+              <video src="assets/games/mp4/gta.mp4" class="game-gif" autoplay loop muted playsinline preload="metadata" aria-label="GTA V"></video>
             </div>
             <div class="game-info">
               <span class="game-name">GTA V</span>
@@ -430,7 +470,7 @@
 
           <div class="game-card game-halo tilt">
             <div class="game-thumb">
-              <img src="assets/games/halo.gif" alt="Halo" class="game-gif">
+              <video src="assets/games/mp4/halo.mp4" class="game-gif" autoplay loop muted playsinline preload="metadata" aria-label="Halo"></video>
             </div>
             <div class="game-info">
               <span class="game-name">Halo</span>
@@ -491,51 +531,51 @@
   </section>
 
   <footer class="footer" id="contacto">
-    <!-- Cherry blossom tree -->
+
     <div class="footer-sakura" aria-hidden="true">
       <div class="sakura-tree-wrap">
         <svg class="sakura-tree" width="90" height="100" viewBox="0 0 90 100" fill="none" xmlns="http://www.w3.org/2000/svg" overflow="visible">
-          <!-- Trunk -->
+
           <path d="M45 100 C44 86 43 76 44 66" stroke="#7a3848" stroke-width="5" stroke-linecap="round"/>
-          <!-- Main branches -->
+
           <path d="M44 66 C35 59 21 48 11 36" stroke="#7a3848" stroke-width="3.5" stroke-linecap="round"/>
           <path d="M44 66 C53 59 67 48 77 36" stroke="#7a3848" stroke-width="3.5" stroke-linecap="round"/>
           <path d="M44 66 C44 55 44 44 44 32" stroke="#7a3848" stroke-width="3" stroke-linecap="round"/>
-          <!-- Sub-branches -->
+
           <path d="M25 55 C17 48 9 42 5 32" stroke="#7a3848" stroke-width="2.2" stroke-linecap="round"/>
           <path d="M63 55 C71 48 79 42 83 32" stroke="#7a3848" stroke-width="2.2" stroke-linecap="round"/>
           <path d="M29 50 C27 43 25 36 24 28" stroke="#7a3848" stroke-width="1.6" stroke-linecap="round"/>
           <path d="M59 50 C61 43 63 36 64 28" stroke="#7a3848" stroke-width="1.6" stroke-linecap="round"/>
-          <!-- Blossom clusters — center -->
+
           <circle cx="44" cy="28" r="9"  fill="#f4c0d4" opacity="0.82"/>
           <circle cx="36" cy="24" r="7"  fill="#f0b4cc" opacity="0.78"/>
           <circle cx="52" cy="24" r="7"  fill="#ecacc6" opacity="0.78"/>
           <circle cx="44" cy="17" r="6"  fill="#f4c0d4" opacity="0.74"/>
           <circle cx="38" cy="36" r="4"  fill="#f0b4cc" opacity="0.68"/>
           <circle cx="50" cy="36" r="4"  fill="#f4c0d4" opacity="0.68"/>
-          <!-- Blossom clusters — left tip -->
+
           <circle cx="11" cy="34" r="8"  fill="#f0b4cc" opacity="0.80"/>
           <circle cx="4"  cy="30" r="6"  fill="#f4c0d4" opacity="0.75"/>
           <circle cx="18" cy="30" r="6"  fill="#ecacc6" opacity="0.75"/>
           <circle cx="9"  cy="42" r="3"  fill="#f0b4cc" opacity="0.62"/>
-          <!-- Blossom clusters — right tip -->
+
           <circle cx="77" cy="34" r="8"  fill="#f0b4cc" opacity="0.80"/>
           <circle cx="84" cy="30" r="6"  fill="#f4c0d4" opacity="0.75"/>
           <circle cx="70" cy="30" r="6"  fill="#ecacc6" opacity="0.75"/>
           <circle cx="79" cy="42" r="3"  fill="#f0b4cc" opacity="0.62"/>
-          <!-- Blossom clusters — left sub -->
+
           <circle cx="5"  cy="30" r="6"  fill="#f4c0d4" opacity="0.78"/>
           <circle cx="24" cy="26" r="5"  fill="#f0b4cc" opacity="0.74"/>
-          <!-- Blossom clusters — right sub -->
+
           <circle cx="83" cy="30" r="6"  fill="#f4c0d4" opacity="0.78"/>
           <circle cx="64" cy="26" r="5"  fill="#f0b4cc" opacity="0.74"/>
-          <!-- Stamen accents -->
+
           <circle cx="44" cy="28" r="3"  fill="#e0749a" opacity="0.70"/>
           <circle cx="44" cy="17" r="2"  fill="#e0749a" opacity="0.60"/>
           <circle cx="11" cy="34" r="2.5" fill="#e0749a" opacity="0.60"/>
           <circle cx="77" cy="34" r="2.5" fill="#e0749a" opacity="0.60"/>
         </svg>
-        <!-- Falling petals -->
+
         <span class="sk-petal" style="--dur:4.2s; --delay:0s;   --drift:14px;  left:40px; top:15px;"></span>
         <span class="sk-petal" style="--dur:3.6s; --delay:1.3s; --drift:-16px; left:9px;  top:26px;"></span>
         <span class="sk-petal" style="--dur:4.8s; --delay:2.6s; --drift:18px;  left:69px; top:26px;"></span>
@@ -685,7 +725,7 @@
         card.appendChild(wrap);
       }
 
-      function appendReply(card, text) {
+      function appendReply(card, text, ts) {
         let repliesWrap = card.querySelector('.queja-replies');
         if (!repliesWrap) {
           repliesWrap = document.createElement('div');
@@ -696,7 +736,9 @@
         }
         const r = document.createElement('div');
         r.className = 'queja-reply';
-        r.innerHTML = `<img class="queja-reply-avatar" src="/SGDaiGurren.webp" alt="Gabriel O."><span class="queja-reply-author">Gabriel O.</span><span class="queja-reply-text">${esc(text)}</span>`;
+        const replyTs = ts || Date.now();
+        const timeStr = window.relativeTime ? window.relativeTime(replyTs) : '';
+        r.innerHTML = `<img class="queja-reply-avatar" src="/SGDaiGurren.webp" alt="Gabriel O."><span class="queja-reply-author">Gabriel O.</span><span class="queja-reply-text">${esc(text)}</span><span class="queja-reply-time" data-ts="${replyTs}">${timeStr}</span>`;
         repliesWrap.appendChild(r);
       }
 
@@ -706,14 +748,20 @@
         const initial = (q.name[0] ?? '?').toUpperCase();
         const qId = q.id ?? q.ts ?? '';
         card.dataset.id = qId;
-        card.innerHTML = `<div class="qc-top"><div class="queja-avatar">${esc(initial)}</div><span class="queja-name">${esc(q.name)}</span></div><span class="queja-text">${esc(q.text)}</span>${adminKey ? `<button class="queja-del" data-id="${esc(qId)}">×</button>` : ''}`;
+        const ts = q.ts ?? q.id ?? null;
+        const timeStr = (ts && window.relativeTime) ? window.relativeTime(ts) : '';
+        const timeHtml = ts ? `<span class="queja-time" data-ts="${ts}">${timeStr}</span>` : '';
+        card.innerHTML = `<div class="qc-top"><div class="queja-avatar">${esc(initial)}</div><span class="queja-name">${esc(q.name)}</span>${timeHtml}</div><span class="queja-text">${esc(q.text)}</span>${adminKey ? `<button class="queja-del" data-id="${esc(qId)}">×</button>` : ''}`;
         if (q.replies && q.replies.length) {
           const repliesWrap = document.createElement('div');
           repliesWrap.className = 'queja-replies';
           q.replies.forEach(rep => {
             const r = document.createElement('div');
             r.className = 'queja-reply';
-            r.innerHTML = `<img class="queja-reply-avatar" src="/SGDaiGurren.webp" alt="Gabriel O."><span class="queja-reply-author">Gabriel O.</span><span class="queja-reply-text">${esc(rep.text)}</span>`;
+            const repTs = rep.ts || null;
+            const repTimeStr = (repTs && window.relativeTime) ? window.relativeTime(repTs) : '';
+            const repTimeHtml = repTs ? `<span class="queja-reply-time" data-ts="${repTs}">${repTimeStr}</span>` : '';
+            r.innerHTML = `<img class="queja-reply-avatar" src="/SGDaiGurren.webp" alt="Gabriel O."><span class="queja-reply-author">Gabriel O.</span><span class="queja-reply-text">${esc(rep.text)}</span>${repTimeHtml}`;
             repliesWrap.appendChild(r);
           });
           card.appendChild(repliesWrap);
@@ -739,6 +787,16 @@
           });
         });
       }
+
+      function refreshTimestamps() {
+        if (!window.relativeTime) return;
+        document.querySelectorAll('[data-ts]').forEach(el => {
+          const ts = Number(el.dataset.ts);
+          if (ts) el.textContent = window.relativeTime(ts);
+        });
+      }
+      setInterval(refreshTimestamps, 60_000);
+      window.addEventListener('gdisco:lang', refreshTimestamps);
 
       fetch('/api/quejas').then(r => r.json()).then(d => {
         (d.quejas ?? []).forEach(q => renderQueja(q));
@@ -869,6 +927,361 @@
           if (isNew) localStorage.setItem(KEY, '1');
         })
         .catch(() => { if (el) el.textContent = '—'; });
+    })();
+
+    (function () {
+      function tStr(key, fallback) {
+        const T = window.GDISCO_T;
+        const lang = window.GDISCO_LANG || 'es';
+        return (T && T[lang] && T[lang][key]) || fallback;
+      }
+      function fmt(s, vars) {
+        return s.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
+      }
+      function escAttr(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+
+      const steamList = document.getElementById('steam-list');
+      const steamFoot = document.getElementById('steam-foot');
+      const spotifyList = document.getElementById('spotify-list');
+      const spotifyFoot = document.getElementById('spotify-foot');
+
+      function steamItem(g, useFortnight) {
+        const meta = useFortnight && g.hours_2w > 0
+          ? fmt(tStr('ls_hours_2w', '{n}h last 2w'), { n: g.hours_2w })
+          : fmt(tStr('ls_hours_total', '{n}h total'), { n: g.hours_total });
+        const img = g.icon
+          ? `<img class="ls-icon-img" src="${escAttr(g.icon)}" alt="" loading="lazy">`
+          : '<span class="ls-icon-img" style="display:flex;align-items:center;justify-content:center;color:var(--dim);">▸</span>';
+        const url = `https://store.steampowered.com/app/${g.appid}/`;
+        return `<li class="ls-item">${img}<a class="ls-name" href="${url}" target="_blank" rel="noopener noreferrer">${escAttr(g.name)}</a><span class="ls-meta">${meta}</span></li>`;
+      }
+
+      function spotifyItem(t) {
+        const img = t.cover
+          ? `<img class="ls-icon-img" src="${escAttr(t.cover)}" alt="" loading="lazy">`
+          : '<span class="ls-icon-img" style="display:flex;align-items:center;justify-content:center;color:var(--dim);">♪</span>';
+        const link = t.url
+          ? `<a class="ls-name" href="${escAttr(t.url)}" target="_blank" rel="noopener noreferrer">${escAttr(t.name)}</a>`
+          : `<span class="ls-name">${escAttr(t.name)}</span>`;
+        return `<li class="ls-item">${img}${link}<span class="ls-meta">${escAttr(t.artists)}</span></li>`;
+      }
+
+      fetch('/api/steam').then(r => r.json()).then(d => {
+        if (!steamList) return;
+        if (d.error || (!d.recent?.length && !d.top?.length)) {
+          steamList.innerHTML = `<li class="ls-empty">${tStr('ls_offline', '// offline')}</li>`;
+          return;
+        }
+        const useRecent = d.recent && d.recent.length > 0;
+        const games = useRecent ? d.recent : d.top;
+        steamList.innerHTML = games.slice(0, 5).map(g => steamItem(g, useRecent)).join('');
+        if (steamFoot && d.totalGames) {
+          steamFoot.textContent = fmt(tStr('ls_total_games', '{n} games · {h}h'), { n: d.totalGames, h: d.totalHours });
+        }
+      }).catch(() => {
+        if (steamList) steamList.innerHTML = `<li class="ls-empty">${tStr('ls_offline', '// offline')}</li>`;
+      });
+
+      function renderSpotify(d) {
+        if (!spotifyList) return;
+        if (!d || d.error) {
+          spotifyList.innerHTML = `<li class="ls-empty">${tStr('ls_offline', '// offline')}</li>`;
+          return;
+        }
+        const list = (d.tracks && d.tracks.length) ? d.tracks : (d.recent || []);
+        if (!list.length && !d.now_playing) {
+          spotifyList.innerHTML = `<li class="ls-empty">${tStr('ls_empty', '// no data')}</li>`;
+          return;
+        }
+        let html = '';
+        if (d.now_playing) {
+          html += `<li class="ls-now-playing"><span class="ls-np-pulse"></span><span>${tStr('ls_now_playing', 'now playing')}: <strong>${escAttr(d.now_playing.name)}</strong> — ${escAttr(d.now_playing.artists)}</span></li>`;
+        }
+        html += list.slice(0, 5).map(spotifyItem).join('');
+        spotifyList.innerHTML = html;
+      }
+
+      function pullSpotify() {
+        fetch('/api/spotify')
+          .then(r => r.json())
+          .then(renderSpotify)
+          .catch(() => renderSpotify(null));
+      }
+
+      window.__lsRefresh = function () {
+        fetch('/api/steam').then(r => r.json()).then(d => {
+          if (steamFoot && d.totalGames) steamFoot.textContent = fmt(tStr('ls_total_games', '{n} games · {h}h'), { n: d.totalGames, h: d.totalHours });
+        }).catch(() => {});
+        pullSpotify();
+      };
+      window.addEventListener('gdisco:lang', window.__lsRefresh);
+
+      pullSpotify();
+      setInterval(() => {
+        if (document.hidden) return;
+        pullSpotify();
+      }, 60_000);
+    })();
+
+    (function () {
+      const overlay = document.getElementById('term-overlay');
+      const body    = document.getElementById('term-body');
+      const input   = document.getElementById('term-input');
+      const form    = document.getElementById('term-prompt');
+      const closeBtn = document.getElementById('term-close');
+      if (!overlay || !input) return;
+
+      const history = [];
+      let histIdx = -1;
+      let booted = false;
+
+      function lang() { return window.GDISCO_LANG || 'es'; }
+      function isEn() { return lang() === 'en'; }
+      function escHtml(s) {
+        return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      }
+
+      function out(html, cls) {
+        const line = document.createElement('div');
+        line.className = 'term-line' + (cls ? ' ' + cls : '');
+        line.innerHTML = html;
+        body.appendChild(line);
+        body.scrollTop = body.scrollHeight;
+      }
+
+      function open() {
+        overlay.classList.add('open');
+        overlay.setAttribute('aria-hidden', 'false');
+        if (!booted) { boot(); booted = true; }
+        setTimeout(() => input.focus(), 40);
+      }
+      function close() {
+        overlay.classList.remove('open');
+        overlay.setAttribute('aria-hidden', 'true');
+      }
+      function isOpen() { return overlay.classList.contains('open'); }
+
+      function isTypingElsewhere() {
+        const a = document.activeElement;
+        if (!a || a === input) return false;
+        const tag = a.tagName;
+        return tag === 'INPUT' || tag === 'TEXTAREA' || a.isContentEditable;
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.code === 'Backquote' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+          if (!isOpen() && isTypingElsewhere()) return;
+          e.preventDefault();
+          isOpen() ? close() : open();
+        } else if (e.key === 'Escape' && isOpen()) {
+          e.preventDefault();
+          close();
+        }
+      });
+      closeBtn.addEventListener('click', close);
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+
+      const C = {};
+      C.help = function () {
+        const en = isEn();
+        const items = [
+          ['help',         en ? 'show this'           : 'mostrar esto'],
+          ['whoami',       en ? 'who am I'            : 'sobre mí'],
+          ['contact',      en ? 'reach me'            : 'contactarme'],
+          ['socials',      en ? 'find me online'      : 'mis redes'],
+          ['games',        en ? 'what I play'         : 'qué juego'],
+          ['date',         en ? 'current date/time'   : 'fecha y hora'],
+          ['echo <text>',  en ? 'echo text'           : 'echo texto'],
+          ['clear',        'cls'],
+          ['exit',         en ? 'close terminal'      : 'cerrar terminal'],
+          ['gurren',       '???'],
+          ['coffee',       '???'],
+          ['cigarro',      '???'],
+          ['sudo *',       '???'],
+        ];
+        out('<span class="term-acc">// available commands</span>');
+        items.forEach(([c, d]) => {
+          const pad = c + ' '.repeat(Math.max(2, 16 - c.length));
+          out('  <span class="term-cmd">' + escHtml(pad) + '</span><span class="term-dim">' + escHtml(d) + '</span>');
+        });
+      };
+
+      C.whoami = function () {
+        const en = isEn();
+        out('<span class="term-pink">Gabriel Ortega</span> <span class="term-dim">— @g._disco</span>');
+        out(en ? 'Full Stack Developer · CSS Wizard nivel S+' : 'Full Stack Developer · CSS Wizard nivel S+');
+        out(en ? 'AviHel MRO — Two roles, one cigarette.'      : 'AviHel MRO — Dos roles, un cigarro.');
+        out('');
+        out(en ? 'Gamer since 13. Dev since 17.'                : 'Gamer desde los 13. Dev desde los 17.');
+        out(en ? 'If I can smoke while doing it, *maybe* I can do it.' : 'Si puedo fumar mientras lo hago, *tal vez* lo puedo hacer.');
+      };
+      C.about = C.whoami;
+
+      C.contact = function () {
+        out('<span class="term-acc">// contact</span>');
+        out('  email    <a href="mailto:gabriel16ortega@gmail.com" class="term-link">gabriel16ortega@gmail.com</a>');
+        out('  discord  <a href="https://discord.com/users/857777819324121098" target="_blank" rel="noopener" class="term-link">@gabriel</a>');
+      };
+
+      C.socials = function () {
+        out('<span class="term-acc">// find me online</span>');
+        out('  instagram  <a href="https://www.instagram.com/g._disco/" target="_blank" rel="noopener" class="term-link">@g._disco</a>');
+        out('  spotify    <a href="https://open.spotify.com/user/31mmoahummftq3u7u6xwl4xyp7ay?si=1bd5184f65b64962" target="_blank" rel="noopener" class="term-link">GDisco</a>');
+        out('  steam      <a href="https://steamcommunity.com/profiles/76561199206260941/" target="_blank" rel="noopener" class="term-link">GDisco</a>');
+      };
+
+      C.games = function () {
+        out('<span class="term-acc">// games</span>');
+        out('  Genshin Impact     · ~4000h · AR 60');
+        out('  Zenless Zone Zero  · Proxy · New Eridu');
+        out('  Valorant           · Bronce · Duelist');
+        out('  League of Legends  · Plata · Mid/Top');
+        out('  Warframe           · MR 16');
+        out('  VRChat             · Quest 2');
+        out('  GTA V              · Online');
+        out('  Halo               · MCC');
+      };
+
+      C.date = function () { out(new Date().toString()); };
+      C.pwd  = function () { out('/home/gabriel'); };
+
+      C.clear = function () { body.innerHTML = ''; };
+      C.cls = C.clear;
+
+      C.exit  = close;
+      C.quit  = close;
+      C.q     = close;
+      C.close = close;
+      C.bye   = close;
+
+      C.echo = function (...args) { out(escHtml(args.join(' '))); };
+
+      C.cat = function (file) {
+        if (!file) { out('cat: missing operand'); return; }
+        if (file.includes('secret') || file.includes('passwd') || file.startsWith('/etc')) {
+          out('cat: ' + escHtml(file) + ': permission denied');
+        } else {
+          out('cat: ' + escHtml(file) + ': nice try.');
+        }
+      };
+
+      C.sudo = function () {
+        out('<span class="term-err">// nice try.</span> <span class="term-dim">you\'re not in the sudoers file. this incident will be reported.</span>');
+      };
+
+      C.rm = function (...args) {
+        if (args[0] === '-rf' && (args[1] === '/' || args[1] === '/*' || args[1] === '~')) {
+          out('<span class="term-pink">// nope.</span>');
+        } else {
+          out('rm: ' + (isEn() ? 'permission denied. this is not your machine.' : 'permiso denegado. no es tu máquina.'));
+        }
+      };
+
+      C.gurren = function () {
+        out('<pre class="term-ascii">    \\\\\\|///');
+        out('   \\\\ - - //');
+        out('   ( @ @ )');
+        out('+oOOo-(_)-oOOo+</pre>');
+        out('<span class="term-pink">"Just who the hell do you think I am?!"</span>');
+        out('<span class="term-dim">— Kamina, Tengen Toppa Gurren Lagann</span>');
+      };
+
+      C.coffee = function () {
+        out('<pre class="term-ascii">     ( (');
+        out('      ) )');
+        out('   ........');
+        out('   |      |]');
+        out('    \\    /');
+        out('     `--\'</pre>');
+        out(isEn() ? '<span class="term-dim">// coffee dispensed. take a break.</span>' : '<span class="term-dim">// café servido. tómate un break.</span>');
+      };
+
+      C.cigarro = function () {
+        out(isEn() ? '<span class="term-err">// permission denied</span> <span class="term-dim">— out of stock.</span>' : '<span class="term-err">// permiso denegado</span> <span class="term-dim">— se acabaron.</span>');
+      };
+      C.cigarette = C.cigarro;
+      C.smoke = C.cigarro;
+
+      C.history = function () {
+        history.forEach((h, i) => out('  ' + (i + 1) + '  ' + escHtml(h)));
+      };
+
+      C.man = function (cmd) {
+        if (!cmd) { out('What manual page do you want?'); return; }
+        out('No manual entry for ' + escHtml(cmd) + '. ' + (isEn() ? 'Try ' : 'Prueba ') + '<span class="term-cmd">help</span>.');
+      };
+
+      function execute(line) {
+        const trimmed = line.trim();
+        if (!trimmed) return;
+        out('<span class="term-ps1">gabriel@gdisco:~$</span> <span class="term-input-echo">' + escHtml(trimmed) + '</span>');
+        history.push(trimmed);
+        histIdx = history.length;
+        const parts = trimmed.split(/\s+/);
+        const cmd = parts[0].toLowerCase();
+        const args = parts.slice(1);
+        if (typeof C[cmd] === 'function') {
+          try { C[cmd](...args); } catch (e) { out('<span class="term-err">// error: ' + escHtml(e.message) + '</span>'); }
+        } else {
+          out('<span class="term-err">' + escHtml(cmd) + ': command not found.</span> <span class="term-dim">try </span><span class="term-cmd">help</span>');
+        }
+      }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        execute(input.value);
+        input.value = '';
+      });
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (history.length === 0) return;
+          if (histIdx > 0) histIdx--;
+          input.value = history[histIdx] || '';
+          setTimeout(() => input.setSelectionRange(input.value.length, input.value.length), 0);
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (histIdx < history.length - 1) {
+            histIdx++;
+            input.value = history[histIdx];
+          } else {
+            histIdx = history.length;
+            input.value = '';
+          }
+        } else if (e.key === 'Tab') {
+          e.preventDefault();
+          const partial = input.value.toLowerCase().split(/\s+/)[0];
+          if (!partial) return;
+          const matches = Object.keys(C).filter(c => c.startsWith(partial));
+          if (matches.length === 1) input.value = matches[0] + ' ';
+          else if (matches.length > 1) out('  ' + matches.join('  '));
+        } else if (e.key === 'l' && e.ctrlKey) {
+          e.preventDefault();
+          C.clear();
+        } else if (e.key === 'c' && e.ctrlKey) {
+          e.preventDefault();
+          out('<span class="term-ps1">gabriel@gdisco:~$</span> <span class="term-input-echo">' + escHtml(input.value) + '</span>^C');
+          input.value = '';
+        }
+      });
+
+      function boot() {
+        const en = isEn();
+        out('<span class="term-dim">// booting gdisco shell v1.0...</span>');
+        out('<span class="term-dim">// loading modules</span> [<span class="term-cmd">OK</span>]');
+        out('<span class="term-dim">// auth as gabriel</span>   [<span class="term-cmd">OK</span>]');
+        out('');
+        out(en
+          ? 'welcome to <span class="term-acc">GDisco shell</span>. type <span class="term-cmd">help</span> to start, <span class="term-cmd">exit</span> or <kbd>esc</kbd> to leave.'
+          : 'bienvenido a <span class="term-acc">GDisco shell</span>. escribe <span class="term-cmd">help</span> para empezar, <span class="term-cmd">exit</span> o <kbd>esc</kbd> para salir.');
+        out('');
+      }
+
+      window.openTerminal  = open;
+      window.closeTerminal = close;
     })();
   </script>
 </body>

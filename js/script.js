@@ -115,7 +115,6 @@ window.addEventListener('scroll', () => {
   navbar.classList.toggle('scrolled', window.scrollY > 50);
 }, { passive: true });
 
-// ─── Navbar clock ──────────────────────────────────────────────────
 (function () {
   const el = document.getElementById('nav-clock');
   if (!el) return;
@@ -126,7 +125,6 @@ window.addEventListener('scroll', () => {
   setInterval(tick, 1000);
 })();
 
-// ─── Scrollspy ────────────────────────────────────────────────────
 (function () {
   const SECTION_IDS = ['inicio', 'stats', 'quejas', 'contacto'];
   const links = document.querySelectorAll('.nav-links a');
@@ -144,7 +142,6 @@ window.addEventListener('scroll', () => {
     setActive(current);
   }
 
-  // Actualización inmediata al hacer click
   links.forEach(a => {
     a.addEventListener('click', function () {
       const id = this.getAttribute('href').slice(1);
@@ -295,7 +292,6 @@ async function updateDiscord() {
     else if (custom?.state) actText = custom.state;
     else actText = DW_LABELS[data.discord_status] ?? 'offline';
 
-    // Activity thumbnail: Spotify album art or game icon
     let actImgUrl = '';
     if (data.spotify?.album_art_url) {
       actImgUrl = data.spotify.album_art_url;
@@ -313,7 +309,6 @@ async function updateDiscord() {
     const dot = document.getElementById('dw-status-dot');
     if (dot) dot.style.background = statusColor;
 
-    // Nav status dot
     const navDot = document.getElementById('nav-status-dot');
     if (navDot) navDot.style.background = statusColor;
 
@@ -336,7 +331,6 @@ async function updateDiscord() {
       }
     }
 
-    // Navbar now playing / idle
     const nowPlaying   = document.getElementById('nav-now-playing');
     const nnpTrack     = document.getElementById('nnp-track');
     const nnpIcon      = document.getElementById('nnp-music-icon');
@@ -365,7 +359,6 @@ async function updateDiscord() {
 updateDiscord();
 setInterval(updateDiscord, 30_000);
 
-// ─── Petal cursor effect ───────────────────────────────────────────
 const PETAL_COLORS = ['#f0b8d0', '#e91e8c', '#c084fc', '#f472b6', '#ff78b0'];
 
 document.addEventListener('click', function (e) {
@@ -393,7 +386,6 @@ function spawnPetal(x, y) {
   });
 }
 
-// ─── Konami code ──────────────────────────────────────────────────
 const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
 let konamiIdx = 0;
 document.addEventListener('keydown', function (e) {
@@ -410,7 +402,6 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-// ─── Cigarro counter ──────────────────────────────────────────────
 (function () {
   const START = new Date('2023-01-01').getTime();
   const MS_PER_CIGARRO = 72 * 60 * 1000;
@@ -425,7 +416,6 @@ document.addEventListener('keydown', function (e) {
     onUpdate: function () { el.textContent = Math.floor(this.targets()[0].val).toLocaleString(); },
   });
 
-  // Sarcastic tooltip on click
   const MSGS = {
     es: ['// sí, estoy consciente', '// no es tu problema', '// el doctor también lo sabe', '// feature, no bug', '// me ayuda a pensar', '// podría ser peor'],
     en: ['// yes, I\'m aware', '// not your problem', '// my doctor knows too', '// feature, not a bug', '// helps me think', '// could be worse'],
@@ -455,7 +445,6 @@ document.addEventListener('keydown', function (e) {
   });
 })();
 
-// ─── GO.exe crash animation ────────────────────────────────────────
 (function () {
   const logo = document.querySelector('.nav-logo');
   if (!logo) return;
@@ -471,7 +460,6 @@ document.addEventListener('keydown', function (e) {
     const text = 'GO.exe';
     let frame = 0;
 
-    // Phase 1: glitch (400ms)
     const glitchInterval = setInterval(function () {
       const glitched = text.split('').map(c =>
         Math.random() < 0.5 ? CHARS[Math.floor(Math.random() * CHARS.length)] : c
@@ -480,11 +468,9 @@ document.addEventListener('keydown', function (e) {
       frame++;
       if (frame > 10) {
         clearInterval(glitchInterval);
-        // Phase 2: crash message
         logo.textContent = 'FATAL_ERR';
         logo.style.color = '#e53935';
         setTimeout(function () {
-          // Phase 3: rebooting
           logo.textContent = '// rebooting';
           logo.style.color = '';
           let dots = 0;
@@ -492,7 +478,6 @@ document.addEventListener('keydown', function (e) {
             logo.textContent = '// rebooting' + '.'.repeat(++dots % 4);
             if (dots >= 9) {
               clearInterval(rebootInterval);
-              // Phase 4: restore with typewriter
               logo.textContent = '';
               const restore = 'GO.exe';
               let i = 0;
@@ -510,4 +495,15 @@ document.addEventListener('keydown', function (e) {
       }
     }, 40);
   });
+})();
+
+(function () {
+  let i = 0;
+  setInterval(function () {
+    const T = window.GDISCO_T;
+    const lang = window.GDISCO_LANG || 'es';
+    const phrases = (T && T[lang] && T[lang].title_phrases) || ['[Idle]'];
+    document.title = phrases[i % phrases.length];
+    i++;
+  }, 4500);
 })();

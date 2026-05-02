@@ -3,8 +3,6 @@ import * as THREE from 'three';
 const canvas = document.getElementById('tree-canvas');
 if (canvas) {
 
-  let IS_DAY = document.documentElement.dataset.theme === 'day';
-
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -17,15 +15,14 @@ if (canvas) {
   camera.position.set(0, 4, 32);
   camera.lookAt(0, 11, 0);
 
-  const ambientLight = new THREE.AmbientLight(IS_DAY ? 0xfff8d8 : 0xfce8f4, IS_DAY ? 5.0 : 2.2);
-  scene.add(ambientLight);
-  const dirLight = new THREE.DirectionalLight(IS_DAY ? 0xfffcf0 : 0xfff0f8, IS_DAY ? 9.0 : 4.0);
+  scene.add(new THREE.AmbientLight(0xfce8f4, 2.2));
+  const dirLight = new THREE.DirectionalLight(0xfff0f8, 4.0);
   dirLight.position.set(12, 26, 14);
   scene.add(dirLight);
-  const fill = new THREE.PointLight(IS_DAY ? 0xffcc66 : 0xff88cc, IS_DAY ? 5.0 : 3.0, 80);
+  const fill = new THREE.PointLight(0xff88cc, 3.0, 80);
   fill.position.set(-16, 14, 10);
   scene.add(fill);
-  const bounce = new THREE.PointLight(IS_DAY ? 0xffeecc : 0xffe0f0, IS_DAY ? 2.5 : 1.5, 60);
+  const bounce = new THREE.PointLight(0xffe0f0, 1.5, 60);
   bounce.position.set(6, -4, 16);
   scene.add(bounce);
 
@@ -55,7 +52,6 @@ if (canvas) {
   });
 
   const nodes = [];
-
 
   const TRUNK_H = 4.5, TRUNK_S = 10;
   for (let i = 0; i <= TRUNK_S; i++) {
@@ -152,7 +148,6 @@ if (canvas) {
   }
   computeR(0);
 
-
   const posArr = [], nrmArr = [], colArr = [], idxArr = [];
   let vOff = 0;
   const leafPositions = [];
@@ -219,11 +214,9 @@ if (canvas) {
   branchGeo.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colArr), 3));
   branchGeo.setIndex(new THREE.BufferAttribute(new Uint32Array(idxArr), 1));
 
-
   const treeGroup = new THREE.Group();
   scene.add(treeGroup);
   treeGroup.add(new THREE.Mesh(branchGeo, barkMat));
-
 
   const CLUSTERS = 5, PER_FLOWER = 5;
   const totP = leafPositions.length * CLUSTERS * PER_FLOWER;
@@ -257,7 +250,6 @@ if (canvas) {
   iFlwr.instanceMatrix.needsUpdate = true;
   treeGroup.add(iFlwr);
 
-
   const GROUND_Y = -2.5;
 
   const distBarkMat = new THREE.MeshStandardMaterial({ color: 0x150810, roughness: 0.96 });
@@ -290,7 +282,6 @@ if (canvas) {
     [16, -22, 0.48, 3.00],
     [52, -18, 0.46, 1.55],
     [-54, -20, 0.44, 2.95],
-
 
     [-15, -26, 0.50, 2.40],
     [12, -28, 0.42, 1.80],
@@ -352,30 +343,28 @@ if (canvas) {
     return m;
   });
 
-  const MOON_START_X = IS_DAY ? 22 : -22;
+  const MOON_START_X = -22;
   const MOON_Y = 17;
   const MOON_Z = 2;
 
-  const moonGeo = new THREE.SphereGeometry(1.6, 32, 24);
-  const moonMat = new THREE.MeshStandardMaterial(IS_DAY ? {
-    color: 0xfffce0, emissive: 0xffee22, emissiveIntensity: 2.4,
-    roughness: 0.05, metalness: 0.0,
-  } : {
-    color: 0xf0ecff, emissive: 0xddd8ff, emissiveIntensity: 1.1,
-    roughness: 0.10, metalness: 0.0,
-  });
-  const moonMesh = new THREE.Mesh(moonGeo, moonMat);
+  const moonMesh = new THREE.Mesh(
+    new THREE.SphereGeometry(1.6, 32, 24),
+    new THREE.MeshStandardMaterial({
+      color: 0xf0ecff, emissive: 0xddd8ff, emissiveIntensity: 1.1,
+      roughness: 0.10, metalness: 0.0,
+    })
+  );
   scene.add(moonMesh);
 
-  const haloGeo = new THREE.SphereGeometry(2.8, 24, 18);
-  const haloMat = new THREE.MeshBasicMaterial({
-    color: IS_DAY ? 0xffdd55 : 0xaabbff,
-    transparent: true, opacity: IS_DAY ? 0.16 : 0.10, side: THREE.BackSide,
-  });
-  const haloMesh = new THREE.Mesh(haloGeo, haloMat);
+  const haloMesh = new THREE.Mesh(
+    new THREE.SphereGeometry(2.8, 24, 18),
+    new THREE.MeshBasicMaterial({
+      color: 0xaabbff, transparent: true, opacity: 0.10, side: THREE.BackSide,
+    })
+  );
   scene.add(haloMesh);
 
-  const moonLight = new THREE.PointLight(IS_DAY ? 0xff9933 : 0x3366ff, IS_DAY ? 20 : 14, 90, IS_DAY ? 1.2 : 1.4);
+  const moonLight = new THREE.PointLight(0x3366ff, 14, 90, 1.4);
   scene.add(moonLight);
 
   let moonPosX = MOON_START_X;
@@ -384,6 +373,10 @@ if (canvas) {
   let isDraggingMoon = false;
   let dragOffsetX = 0, dragOffsetY = 0;
   let prevDragX = 0, prevDragY = 0;
+  let clickCandidate = false;
+  let clickT0 = 0;
+  let clickX0 = 0, clickY0 = 0;
+  let stormT = 0;
 
   const moonRay = new THREE.Raycaster();
   const moonMouse = new THREE.Vector2();
@@ -391,7 +384,7 @@ if (canvas) {
   const dragPoint = new THREE.Vector3();
   const moonOverlay = document.getElementById('moon-light-overlay');
 
-const TRAIL_MAX = 40;
+  const TRAIL_MAX = 40;
   const trailPoints = [];
   const trailGeo = new THREE.SphereGeometry(1.0, 8, 6);
   const trailPool = Array.from({ length: TRAIL_MAX }, () => {
@@ -409,6 +402,33 @@ const TRAIL_MAX = 40;
     moonMouse.y = -(clientY / window.innerHeight) * 2 + 1;
   }
 
+  function triggerPetalStorm() {
+    stormT = 1.0;
+    const burst = 60;
+    for (let i = 0; i < burst; i++) {
+      const m = new THREE.Mesh(fallGeo, fallMat);
+      const ang = Math.random() * Math.PI * 2;
+      const r = Math.random() * 1.6;
+      m.position.set(
+        moonPosX + Math.cos(ang) * r,
+        moonPosY + Math.sin(ang) * r,
+        MOON_Z - 0.05
+      );
+      m.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+      m.userData = {
+        vy: -(0.05 + Math.random() * 0.08),
+        vx: (Math.random() - 0.5) * 0.18,
+        drift: Math.random() * Math.PI * 2,
+        driftS: 0.014 + Math.random() * 0.014,
+        spin: (Math.random() - 0.5) * 0.10,
+        spinY: (Math.random() - 0.5) * 0.05,
+        ephemeral: true,
+      };
+      scene.add(m);
+      fallers.push(m);
+    }
+  }
+
   window.addEventListener('mousedown', e => {
     toNDC(e.clientX, e.clientY);
     moonRay.setFromCamera(moonMouse, camera);
@@ -419,12 +439,20 @@ const TRAIL_MAX = 40;
     dragOffsetX = moonPosX - dragPoint.x;
     dragOffsetY = moonPosY - dragPoint.y;
     prevDragX = moonPosX; prevDragY = moonPosY;
+    clickCandidate = true;
+    clickT0 = performance.now();
+    clickX0 = e.clientX; clickY0 = e.clientY;
     document.body.style.cursor = 'grabbing';
     e.preventDefault();
   }, { capture: true });
 
   window.addEventListener('mousemove', e => {
     toNDC(e.clientX, e.clientY);
+    if (clickCandidate) {
+      const dx = e.clientX - clickX0;
+      const dy = e.clientY - clickY0;
+      if (dx * dx + dy * dy > 25) clickCandidate = false;
+    }
     if (isDraggingMoon) {
       moonRay.setFromCamera(moonMouse, camera);
       if (moonRay.ray.intersectPlane(dragPlane, dragPoint)) {
@@ -445,6 +473,9 @@ const TRAIL_MAX = 40;
     if (!isDraggingMoon) return;
     isDraggingMoon = false;
     document.body.style.cursor = '';
+    const wasClick = clickCandidate && (performance.now() - clickT0) < 350;
+    clickCandidate = false;
+    if (wasClick) triggerPetalStorm();
   });
 
   let mx = 0, my = 0, tx = 0, ty = 0;
@@ -457,7 +488,6 @@ const TRAIL_MAX = 40;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
-
 
   let t = 0;
   function animate() {
@@ -477,10 +507,10 @@ const TRAIL_MAX = 40;
       moonPosY += moonVelY;
       moonVelX *= 0.93;
       moonVelY *= 0.93;
-      if (Math.abs(moonVelX) < 0.001) moonPosX += IS_DAY ? -0.00029 : 0.00029;
+      if (Math.abs(moonVelX) < 0.001) moonPosX += 0.00029;
     }
 
-    const trailColor = IS_DAY ? 0xffcc33 : 0x6699ff;
+    const trailColor = 0x6699ff;
     for (let i = trailPoints.length - 1; i >= 0; i--) {
       trailPoints[i].life -= 0.028;
       if (trailPoints[i].life <= 0) { trailPoints.splice(i, 1); }
@@ -499,26 +529,20 @@ const TRAIL_MAX = 40;
       }
     });
 
-    const baseGlow = IS_DAY ? 2.0 : 0.9;
-    const moonGlow = baseGlow + Math.sin(t * 0.38) * (IS_DAY ? 0.20 : 0.12);
     moonMesh.position.set(moonPosX, moonPosY, MOON_Z);
-    moonMesh.material.emissiveIntensity = moonGlow;
+    moonMesh.material.emissiveIntensity = 0.9 + Math.sin(t * 0.38) * 0.12;
     haloMesh.position.set(moonPosX, moonPosY, MOON_Z);
-    haloMesh.material.opacity = (IS_DAY ? 0.13 : 0.07) + Math.sin(t * 0.38) * 0.025;
+    haloMesh.material.opacity = 0.07 + Math.sin(t * 0.38) * 0.025;
     moonLight.position.set(moonPosX, moonPosY, MOON_Z);
-    moonLight.intensity = (IS_DAY ? 18 : 13) + Math.sin(t * 0.38) * 2.5;
+    moonLight.intensity = 13 + Math.sin(t * 0.38) * 2.5;
 
     if (moonOverlay) {
       const proj = moonMesh.position.clone().project(camera);
       const sx = ((proj.x + 1) / 2 * window.innerWidth) | 0;
       const sy = ((-proj.y + 1) / 2 * window.innerHeight) | 0;
       const alpha = (0.13 + Math.sin(t * 0.38) * 0.03).toFixed(3);
-      moonOverlay.style.background = IS_DAY
-        ? `radial-gradient(circle at ${sx}px ${sy}px,` +
-        `rgba(255,190,40,${alpha}) 0%,` +
-        `rgba(255,130,0,${(alpha * 0.4).toFixed(3)}) 18%,` +
-        `transparent 52%)`
-        : `radial-gradient(circle at ${sx}px ${sy}px,` +
+      moonOverlay.style.background =
+        `radial-gradient(circle at ${sx}px ${sy}px,` +
         `rgba(80,120,255,${alpha}) 0%,` +
         `rgba(40,60,200,${(alpha * 0.4).toFixed(3)}) 18%,` +
         `transparent 52%)`;
@@ -530,51 +554,31 @@ const TRAIL_MAX = 40;
       g.rotation.x = Math.sin(t * 0.30 + ph) * 0.007;
     });
 
+    if (stormT > 0) stormT = Math.max(0, stormT - 0.006);
+    const stormBoost = 1 + stormT * 2.2;
     const wind = Math.sin(t * 0.22) * 0.020 + Math.sin(t * 0.61) * 0.010;
-    fallers.forEach(p => {
+    const dead = [];
+    fallers.forEach((p, idx) => {
       p.userData.drift += p.userData.driftS;
-      p.position.y += p.userData.vy;
-      p.position.x += p.userData.vx + Math.sin(p.userData.drift) * 0.016 + wind;
+      p.position.y += p.userData.vy * stormBoost;
+      p.position.x += (p.userData.vx + Math.sin(p.userData.drift) * 0.016 + wind) * (p.userData.ephemeral ? stormBoost : 1);
       p.rotation.z += p.userData.spin;
       p.rotation.x += p.userData.spin * 0.5;
       p.rotation.y += p.userData.spinY;
       if (p.position.y < -9) {
-        p.position.y = 28;
-        p.position.x = (Math.random() - 0.5) * 54;
-        p.position.z = (Math.random() - 0.5) * 22;
+        if (p.userData.ephemeral) {
+          scene.remove(p);
+          dead.push(idx);
+        } else {
+          p.position.y = 28;
+          p.position.x = (Math.random() - 0.5) * 54;
+          p.position.z = (Math.random() - 0.5) * 22;
+        }
       }
     });
+    for (let i = dead.length - 1; i >= 0; i--) fallers.splice(dead[i], 1);
 
     renderer.render(scene, camera);
   }
   animate();
-
-
-  window.swapCelestial = function () {
-    IS_DAY = !IS_DAY;
-
-    ambientLight.color.setHex(IS_DAY ? 0xfff8d8 : 0xfce8f4);
-    ambientLight.intensity = IS_DAY ? 5.0 : 2.2;
-    dirLight.color.setHex(IS_DAY ? 0xfffcf0 : 0xfff0f8);
-    dirLight.intensity = IS_DAY ? 9.0 : 4.0;
-    fill.color.setHex(IS_DAY ? 0xffcc66 : 0xff88cc);
-    fill.intensity = IS_DAY ? 5.0 : 3.0;
-    bounce.color.setHex(IS_DAY ? 0xffeecc : 0xffe0f0);
-    bounce.intensity = IS_DAY ? 2.5 : 1.5;
-
-    moonMesh.material.color.setHex(IS_DAY ? 0xfffce0 : 0xf0ecff);
-    moonMesh.material.emissive.setHex(IS_DAY ? 0xffee22 : 0xddd8ff);
-    moonMesh.material.emissiveIntensity = IS_DAY ? 2.4 : 1.1;
-    moonMesh.material.roughness = IS_DAY ? 0.05 : 0.10;
-
-    haloMesh.material.color.setHex(IS_DAY ? 0xffdd55 : 0xaabbff);
-    haloMesh.material.opacity = IS_DAY ? 0.16 : 0.10;
-
-    moonLight.color.setHex(IS_DAY ? 0xff9933 : 0x3366ff);
-    moonLight.intensity = IS_DAY ? 20 : 14;
-    moonLight.decay = IS_DAY ? 1.2 : 1.4;
-
-    moonPosX = IS_DAY ? 22 : -22;
-    moonVelX = 0; moonVelY = 0;
-  };
 }
