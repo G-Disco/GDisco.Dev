@@ -7,6 +7,12 @@ const HEADERS = {
   'Cache-Control': 'public, max-age=1800',
 };
 
+const ERR_HEADERS = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+  'Cache-Control': 'no-store',
+};
+
 function iconUrl(appid, hash) {
   if (!appid || !hash) return null;
   return `https://media.steampowered.com/steamcommunity/public/images/apps/${appid}/${hash}.jpg`;
@@ -15,7 +21,7 @@ function iconUrl(appid, hash) {
 export async function onRequest(context) {
   const { env } = context;
   if (!env.STEAM_API_KEY || !env.STEAM_ID) {
-    return new Response(JSON.stringify({ error: 'not configured' }), { status: 503, headers: HEADERS });
+    return new Response(JSON.stringify({ error: 'not configured' }), { status: 503, headers: ERR_HEADERS });
   }
 
   try {
@@ -79,6 +85,6 @@ export async function onRequest(context) {
     await env.VISITORS.put(CACHE_KEY, body, { expirationTtl: CACHE_TTL });
     return new Response(body, { headers: HEADERS });
   } catch (e) {
-    return new Response(JSON.stringify({ error: e.message }), { status: 502, headers: HEADERS });
+    return new Response(JSON.stringify({ error: e.message }), { status: 502, headers: ERR_HEADERS });
   }
 }

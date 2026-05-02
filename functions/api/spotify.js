@@ -7,6 +7,12 @@ const HEADERS = {
   'Cache-Control': 'public, max-age=30',
 };
 
+const ERR_HEADERS = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+  'Cache-Control': 'no-store',
+};
+
 async function getAccessToken(env) {
   const auth = btoa(`${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`);
   const r = await fetch('https://accounts.spotify.com/api/token', {
@@ -49,7 +55,7 @@ function mapTrack(t) {
 export async function onRequest(context) {
   const { env } = context;
   if (!env.SPOTIFY_REFRESH_TOKEN || !env.SPOTIFY_CLIENT_ID) {
-    return new Response(JSON.stringify({ error: 'not configured' }), { status: 503, headers: HEADERS });
+    return new Response(JSON.stringify({ error: 'not configured' }), { status: 503, headers: ERR_HEADERS });
   }
 
   try {
@@ -107,6 +113,6 @@ export async function onRequest(context) {
     await env.VISITORS.put(CACHE_KEY, body, { expirationTtl: CACHE_TTL });
     return new Response(body, { headers: HEADERS });
   } catch (e) {
-    return new Response(JSON.stringify({ error: e.message }), { status: 502, headers: HEADERS });
+    return new Response(JSON.stringify({ error: e.message }), { status: 502, headers: ERR_HEADERS });
   }
 }

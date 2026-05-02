@@ -77,6 +77,78 @@
       time_hour: 'hace {n}h',
       time_day: 'hace {n}d',
       time_week: 'hace {n}sem',
+      cl_title: '// changelog',
+      cl_footer: '// fin del log · escrito entre cigarro y cigarro',
+      cl_current: 'actual',
+      cl_log: [
+        {
+          v: 'v2.5', date: '2026-05', current: true,
+          title: 'el update de la flojera productiva',
+          notes: [
+            'Spotify <em>en vivo</em> con polling cada 60s — ahora ven qué oigo aunque no se los pidan.',
+            'Steam stats reales — sí, llevo 4000h en Genshin, ya cállense.',
+            'Terminal flotante — tecla <kbd>~</kbd> para sentirme hacker.',
+            'Click en la luna = tormenta de pétalos. <em>Porque sí.</em>',
+            'GIFs → MP4: 30MB → 1.8MB. Su data móvil me lo agradece.',
+            'Limpieza de código: borré 100+ líneas de comentarios que nadie iba a leer.',
+          ],
+        },
+        {
+          v: 'v2.4', date: '2026-04',
+          title: 'el árbol que nadie pidió',
+          notes: [
+            'Cherry tree 3D con three.js — porque CSS no era suficiente sufrimiento.',
+            'Luna arrastrable. Pruébalo. <em>Ahora.</em>',
+            'Kanji flotantes 桜花散 de fondo — significa "flores de cerezo cayendo", muy poético.',
+            'Particles cursor con pétalos — más decoración inútil = más arte.',
+          ],
+        },
+        {
+          v: 'v2.3', date: '2026-03',
+          title: 'la sección de quejas',
+          notes: [
+            'Confesiones anónimas porque mis amigos necesitaban un lugar para insultarme.',
+            'Admin panel oculto al fondo — no es seguro pero <em>se ve cool</em>.',
+            'Replies como Gabriel O. — me sirve para tener la última palabra.',
+          ],
+        },
+        {
+          v: 'v2.2', date: '2026-02',
+          title: 'identidad rebrand',
+          notes: [
+            'Discord widget en vivo (Lanyard API) — para que sepan cuándo estoy en VRChat.',
+            'Social cards mini · Instagram · Spotify · Steam.',
+            'Logo <span class="cl-pink">G<b>O</b>.exe</span> con glitch on click — escondido.',
+          ],
+        },
+        {
+          v: 'v2.1', date: '2026-01',
+          title: 'la barra de XP que no hace nada',
+          notes: [
+            'XP bar puramente decorativa. <em>Nivel 12 desde hace 4 meses.</em>',
+            'Visitor counter real (KV de Cloudflare).',
+            'Cigarro counter — placebo. Solo sube si yo lo subo. <em>Nadie lo nota.</em>',
+          ],
+        },
+        {
+          v: 'v2.0', date: '2025-11',
+          title: 'rebuild gothic-cyber',
+          notes: [
+            'Borré todo el v1. <em>Vergüenza ajena de mí mismo.</em>',
+            'Paleta nueva: rosa, espinas, sakura. Nunca más volveré a usar Bootstrap.',
+            'Fonts: Pirata One, Cinzel Decorative, Share Tech Mono. <em>Diva.</em>',
+          ],
+        },
+        {
+          v: 'v1.0', date: '2024-04',
+          title: 'la era oscura',
+          notes: [
+            'Tabla HTML con marquee y un GIF de Naruto.',
+            '<em>No existe documentación de esta versión.</em>',
+            '<span class="cl-dim">// se hizo lo que se pudo</span>',
+          ],
+        },
+      ],
     },
     en: {
       nav_home: 'home',
@@ -155,6 +227,78 @@
       time_hour: '{n}h ago',
       time_day: '{n}d ago',
       time_week: '{n}w ago',
+      cl_title: '// changelog',
+      cl_footer: '// end of log · written between cigarettes',
+      cl_current: 'current',
+      cl_log: [
+        {
+          v: 'v2.5', date: '2026-05', current: true,
+          title: 'the productive-procrastination update',
+          notes: [
+            'Spotify <em>live</em> with 60s polling — now you see what I listen to whether you asked or not.',
+            'Real Steam stats — yes, 4000h in Genshin, shut up.',
+            'Floating terminal — hit <kbd>~</kbd> to feel like a hacker.',
+            'Click the moon = petal storm. <em>Just because.</em>',
+            'GIFs → MP4: 30MB → 1.8MB. Your mobile data thanks me.',
+            'Code cleanup: deleted 100+ lines of comments nobody was going to read.',
+          ],
+        },
+        {
+          v: 'v2.4', date: '2026-04',
+          title: 'the tree nobody asked for',
+          notes: [
+            '3D cherry tree with three.js — because CSS wasn\'t suffering enough.',
+            'Draggable moon. Try it. <em>Now.</em>',
+            'Floating kanji 桜花散 background — means "scattering cherry blossoms", very poetic.',
+            'Petal cursor particles — more useless decoration = more art.',
+          ],
+        },
+        {
+          v: 'v2.3', date: '2026-03',
+          title: 'the complaints section',
+          notes: [
+            'Anonymous confessions because my friends needed somewhere to insult me.',
+            'Hidden admin panel at the bottom — not secure but <em>looks cool</em>.',
+            'Replies as Gabriel O. — lets me have the last word.',
+          ],
+        },
+        {
+          v: 'v2.2', date: '2026-02',
+          title: 'identity rebrand',
+          notes: [
+            'Live Discord widget (Lanyard API) — so you know when I\'m in VRChat.',
+            'Mini social cards · Instagram · Spotify · Steam.',
+            'Logo <span class="cl-pink">G<b>O</b>.exe</span> with hidden glitch on click.',
+          ],
+        },
+        {
+          v: 'v2.1', date: '2026-01',
+          title: 'the XP bar that does nothing',
+          notes: [
+            'Purely decorative XP bar. <em>Level 12 for 4 months now.</em>',
+            'Real visitor counter (Cloudflare KV).',
+            'Cigarette counter — placebo. Only goes up if I bump it. <em>Nobody notices.</em>',
+          ],
+        },
+        {
+          v: 'v2.0', date: '2025-11',
+          title: 'gothic-cyber rebuild',
+          notes: [
+            'Deleted all of v1. <em>Secondhand embarrassment from myself.</em>',
+            'New palette: pink, thorns, sakura. Never touching Bootstrap again.',
+            'Fonts: Pirata One, Cinzel Decorative, Share Tech Mono. <em>Diva.</em>',
+          ],
+        },
+        {
+          v: 'v1.0', date: '2024-04',
+          title: 'the dark era',
+          notes: [
+            'HTML table with a marquee and a Naruto GIF.',
+            '<em>No documentation exists for this version.</em>',
+            '<span class="cl-dim">// did what we could</span>',
+          ],
+        },
+      ],
     },
   };
 

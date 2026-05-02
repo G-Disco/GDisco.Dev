@@ -135,7 +135,7 @@
   <nav class="navbar">
     <div class="nav-logo-wrap">
       <div class="nav-logo">G<span class="accent">O</span><span class="logo-sub">.exe</span></div>
-      <span class="nav-version">v2.5</span>
+      <button class="nav-version" id="nav-version" type="button" title="changelog · click">v2.5</button>
       <span class="nav-dot" id="nav-status-dot"></span>
     </div>
     <div class="nav-now-playing" id="nav-now-playing">
@@ -182,6 +182,24 @@
         <span class="term-ps1">gabriel@gdisco:~$</span>
         <input class="term-input" id="term-input" type="text" autocomplete="off" spellcheck="false" autocapitalize="off">
       </form>
+    </div>
+  </div>
+
+  <div class="cl-overlay" id="cl-overlay" aria-hidden="true">
+    <div class="cl-window">
+      <div class="cl-bar">
+        <span class="cl-bar-dots">
+          <span class="cl-dot cl-dot--r"></span>
+          <span class="cl-dot cl-dot--y"></span>
+          <span class="cl-dot cl-dot--g"></span>
+        </span>
+        <span class="cl-bar-title">~/CHANGELOG.md</span>
+        <button class="cl-close" id="cl-close" type="button" aria-label="close">✕</button>
+      </div>
+      <div class="cl-body" id="cl-body"></div>
+      <div class="cl-footer">
+        <span data-i18n="cl_footer">// fin del log · escrito entre cigarro y cigarro</span>
+      </div>
     </div>
   </div>
 
@@ -1282,6 +1300,67 @@
 
       window.openTerminal  = open;
       window.closeTerminal = close;
+    })();
+
+    (function () {
+      const trigger = document.getElementById('nav-version');
+      const overlay = document.getElementById('cl-overlay');
+      const body    = document.getElementById('cl-body');
+      const closeBtn = document.getElementById('cl-close');
+      if (!trigger || !overlay || !body) return;
+
+      function lang() { return window.GDISCO_LANG || 'es'; }
+      function tStr(key, fb) {
+        const T = window.GDISCO_T;
+        return (T && T[lang()] && T[lang()][key]) || fb;
+      }
+      function tArr(key) {
+        const T = window.GDISCO_T;
+        return (T && T[lang()] && T[lang()][key]) || [];
+      }
+
+      function render() {
+        const log = tArr('cl_log');
+        const currentLabel = tStr('cl_current', 'current');
+        body.innerHTML = log.map(e => {
+          const cls = 'cl-entry' + (e.current ? ' cl-entry--current' : '');
+          const badge = e.current ? `<span class="cl-badge">${currentLabel}</span>` : '';
+          const subtitle = e.title ? `<span class="cl-subtitle">${e.title}</span>` : '';
+          const notes = (e.notes || []).map(n => `<li>${n}</li>`).join('');
+          return `<article class="${cls}">
+            <header class="cl-entry-head">
+              <span class="cl-version">${e.v}</span>
+              <span class="cl-date">${e.date || ''}</span>
+              ${badge}
+              ${subtitle}
+            </header>
+            <ul class="cl-notes">${notes}</ul>
+          </article>`;
+        }).join('');
+        const footEl = overlay.querySelector('[data-i18n="cl_footer"]');
+        if (footEl) footEl.textContent = tStr('cl_footer', '// fin del log');
+      }
+
+      function open() {
+        if (!body.dataset.rendered) { render(); body.dataset.rendered = '1'; }
+        overlay.classList.add('open');
+        overlay.setAttribute('aria-hidden', 'false');
+        body.scrollTop = 0;
+      }
+      function close() {
+        overlay.classList.remove('open');
+        overlay.setAttribute('aria-hidden', 'true');
+      }
+
+      trigger.addEventListener('click', open);
+      closeBtn.addEventListener('click', close);
+      overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && overlay.classList.contains('open')) close();
+      });
+      window.addEventListener('gdisco:lang', () => {
+        if (body.dataset.rendered) render();
+      });
     })();
   </script>
 </body>
