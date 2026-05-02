@@ -14,17 +14,24 @@ const ERR_HEADERS = {
 };
 
 async function getAccessToken(env) {
-  const auth = btoa(`${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`);
+  const id     = String(env.SPOTIFY_CLIENT_ID).trim();
+  const secret = String(env.SPOTIFY_CLIENT_SECRET).trim();
+  const refresh = String(env.SPOTIFY_REFRESH_TOKEN).trim();
+  const auth = btoa(`${id}:${secret}`);
   const r = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
     headers: {
       Authorization: `Basic ${auth}`,
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-    body: `grant_type=refresh_token&refresh_token=${encodeURIComponent(env.SPOTIFY_REFRESH_TOKEN)}`,
+    body: `grant_type=refresh_token&refresh_token=${encodeURIComponent(refresh)}`,
   });
-  if (!r.ok) throw new Error(`token ${r.status}`);
+  if (!r.ok) {
+    const body = await r.text();
+    throw new Error(`token ${r.status}: ${body.slice(0, 200)}`);
+  }
   const d = await r.json();
+  if (!d.access_token) throw new Error('token: no access_token in response');
   return d.access_token;
 }
 
