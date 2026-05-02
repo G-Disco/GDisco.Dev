@@ -3444,7 +3444,8 @@ a.ls-name:hover {
   color: var(--pink);
   font-style: italic;
 }
-.cl-notes li kbd {
+.cl-notes li kbd,
+.cl-notes li code {
   font-family: var(--font-mono);
   font-size: .80rem;
   padding: .05rem .35rem;

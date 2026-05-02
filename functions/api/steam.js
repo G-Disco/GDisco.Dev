@@ -20,8 +20,16 @@ function iconUrl(appid, hash) {
 
 export async function onRequest(context) {
   const { env } = context;
-  if (!env.STEAM_API_KEY || !env.STEAM_ID) {
-    return new Response(JSON.stringify({ error: 'not configured' }), { status: 503, headers: ERR_HEADERS });
+  const missing = [];
+  if (!env.STEAM_API_KEY) missing.push('STEAM_API_KEY');
+  if (!env.STEAM_ID)      missing.push('STEAM_ID');
+  if (!env.VISITORS)      missing.push('VISITORS (KV binding)');
+  if (missing.length) {
+    return new Response(JSON.stringify({
+      error: 'not configured',
+      missing,
+      env_keys: Object.keys(env || {}).sort(),
+    }), { status: 503, headers: ERR_HEADERS });
   }
 
   try {

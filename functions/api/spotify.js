@@ -54,8 +54,17 @@ function mapTrack(t) {
 
 export async function onRequest(context) {
   const { env } = context;
-  if (!env.SPOTIFY_REFRESH_TOKEN || !env.SPOTIFY_CLIENT_ID) {
-    return new Response(JSON.stringify({ error: 'not configured' }), { status: 503, headers: ERR_HEADERS });
+  const missing = [];
+  if (!env.SPOTIFY_CLIENT_ID)     missing.push('SPOTIFY_CLIENT_ID');
+  if (!env.SPOTIFY_CLIENT_SECRET) missing.push('SPOTIFY_CLIENT_SECRET');
+  if (!env.SPOTIFY_REFRESH_TOKEN) missing.push('SPOTIFY_REFRESH_TOKEN');
+  if (!env.VISITORS)              missing.push('VISITORS (KV binding)');
+  if (missing.length) {
+    return new Response(JSON.stringify({
+      error: 'not configured',
+      missing,
+      env_keys: Object.keys(env || {}).sort(),
+    }), { status: 503, headers: ERR_HEADERS });
   }
 
   try {
