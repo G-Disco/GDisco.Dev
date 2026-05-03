@@ -35,13 +35,22 @@ async function getAccessToken(env) {
   return d.access_token;
 }
 
-async function spotifyGet(token, path) {
-  const r = await fetch(`https://api.spotify.com/v1${path}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  if (r.status === 204) return null;
-  if (!r.ok) return { __error: r.status };
-  return r.json();
+async function spotifyGet(token, path, timeoutMs = 5000) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const r = await fetch(`https://api.spotify.com/v1${path}`, {
+      headers: { Authorization: `Bearer ${token}` },
+      signal: ctrl.signal,
+    });
+    if (r.status === 204) return null;
+    if (!r.ok) return { __error: r.status };
+    return await r.json();
+  } catch (e) {
+    return { __error: e.name === 'AbortError' ? 'timeout' : e.message };
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 function pickImg(images) {
@@ -75,16 +84,19 @@ export async function onRequest(context) {
   }
 
   try {
-    const cached = await env.VISITORS.get(CACHE_KEY);
+    let cached = null;
+    try { cached = await env.VISITORS.get(CACHE_KEY); } catch (e) { /* fall through */ }
     if (cached) return new Response(cached, { headers: HEADERS });
 
     const token = await getAccessToken(env);
-    const [topT, topA, recent, current] = await Promise.all([
+    const settled = await Promise.allSettled([
       spotifyGet(token, '/me/top/tracks?time_range=short_term&limit=5'),
       spotifyGet(token, '/me/top/artists?time_range=short_term&limit=5'),
       spotifyGet(token, '/me/player/recently-played?limit=10'),
       spotifyGet(token, '/me/player/currently-playing'),
     ]);
+    const pick = i => settled[i].status === 'fulfilled' ? settled[i].value : { __error: settled[i].reason?.message || 'rejected' };
+    const topT = pick(0), topA = pick(1), recent = pick(2), current = pick(3);
 
     const tracks = (topT && !topT.__error)
       ? (topT.items || []).map(mapTrack).filter(Boolean)
@@ -126,7 +138,7 @@ export async function onRequest(context) {
     };
 
     const body = JSON.stringify(payload);
-    await env.VISITORS.put(CACHE_KEY, body, { expirationTtl: CACHE_TTL });
+    try { await env.VISITORS.put(CACHE_KEY, body, { expirationTtl: CACHE_TTL }); } catch (e) { /* serve anyway */ }
     return new Response(body, { headers: HEADERS });
   } catch (e) {
     return new Response(JSON.stringify({ error: e.message }), { status: 502, headers: ERR_HEADERS });
