@@ -1,5 +1,10 @@
-const CACHE_KEY = 'spotify_top_v6';
-const CACHE_TTL = 60;
+const CACHE_KEY = 'spotify_top_v7';
+const STALE_KEY = 'spotify_top_v7_stale';
+const COOLDOWN_KEY = 'spotify_top_v7_cooldown';
+const CACHE_TTL = 300;
+const STALE_TTL = 86400;
+const COOLDOWN_TTL = 180;
+const DISCORD_ID = '857777819324121098';
 
 const HEADERS = {
   'Content-Type': 'application/json',
@@ -68,68 +73,123 @@ function mapTrack(t) {
   };
 }
 
+async function getNowPlayingFromLanyard() {
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 3000);
+    const r = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`, { signal: ctrl.signal });
+    clearTimeout(timer);
+    if (!r.ok) return null;
+    const { data } = await r.json();
+    const sp = data?.spotify;
+    if (!sp) return null;
+    return {
+      name: sp.song,
+      artists: String(sp.artist || '').replace(/\s*;\s*/g, ', '),
+      url: sp.track_id ? `https://open.spotify.com/track/${sp.track_id}` : null,
+      cover: sp.album_art_url || null,
+    };
+  } catch {
+    return null;
+  }
+}
+
+async function getTopAndRecent(env) {
+  const token = await getAccessToken(env);
+  const settled = await Promise.allSettled([
+    spotifyGet(token, '/me/top/tracks?time_range=short_term&limit=5'),
+    spotifyGet(token, '/me/player/recently-played?limit=10'),
+  ]);
+  const pick = i => settled[i].status === 'fulfilled' ? settled[i].value : { __error: settled[i].reason?.message || 'rejected' };
+  const topT = pick(0), recent = pick(1);
+
+  const tracks = (topT && !topT.__error)
+    ? (topT.items || []).map(mapTrack).filter(Boolean)
+    : [];
+
+  const recentTracks = [];
+  if (recent && !recent.__error && recent.items) {
+    const seen = new Set();
+    for (const it of recent.items) {
+      const t = mapTrack(it.track);
+      if (!t) continue;
+      const key = (t.name + '|' + t.artists).toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      recentTracks.push({ ...t, played_at: it.played_at });
+      if (recentTracks.length >= 5) break;
+    }
+  }
+
+  return {
+    tracks,
+    recent: recentTracks,
+    _meta: {
+      top_tracks: topT?.__error ?? 'ok',
+      recent:     recent?.__error ?? 'ok',
+    },
+    _failed: !!(topT?.__error && recent?.__error),
+  };
+}
+
 export async function onRequest(context) {
   const { env } = context;
   if (!env.SPOTIFY_CLIENT_ID || !env.SPOTIFY_CLIENT_SECRET || !env.SPOTIFY_REFRESH_TOKEN || !env.VISITORS) {
     return new Response(JSON.stringify({ error: 'not configured' }), { status: 503, headers: ERR_HEADERS });
   }
 
+  const now_playing = await getNowPlayingFromLanyard();
+
   try {
     let cached = null;
-    try { cached = await env.VISITORS.get(CACHE_KEY); } catch (e) { /* fall through */ }
-    if (cached) return new Response(cached, { headers: HEADERS });
-
-    const token = await getAccessToken(env);
-    const settled = await Promise.allSettled([
-      spotifyGet(token, '/me/top/tracks?time_range=short_term&limit=5'),
-      spotifyGet(token, '/me/player/recently-played?limit=10'),
-      spotifyGet(token, '/me/player/currently-playing'),
-    ]);
-    const pick = i => settled[i].status === 'fulfilled' ? settled[i].value : { __error: settled[i].reason?.message || 'rejected' };
-    const topT = pick(0), recent = pick(1), current = pick(2);
-
-    const tracks = (topT && !topT.__error)
-      ? (topT.items || []).map(mapTrack).filter(Boolean)
-      : [];
-
-    const recentTracks = [];
-    if (recent && !recent.__error && recent.items) {
-      const seen = new Set();
-      for (const it of recent.items) {
-        const t = mapTrack(it.track);
-        if (!t) continue;
-        const key = (t.name + '|' + t.artists).toLowerCase();
-        if (seen.has(key)) continue;
-        seen.add(key);
-        recentTracks.push({ ...t, played_at: it.played_at });
-        if (recentTracks.length >= 5) break;
-      }
+    try { cached = await env.VISITORS.get(CACHE_KEY); } catch {}
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      parsed.now_playing = now_playing;
+      return new Response(JSON.stringify(parsed), { headers: HEADERS });
     }
 
-    const playing = (current && !current.__error && current.is_playing && current.item)
-      ? mapTrack(current.item)
-      : null;
+    let cooling = null;
+    try { cooling = await env.VISITORS.get(COOLDOWN_KEY); } catch {}
+    if (cooling) {
+      let stale = null;
+      try { stale = await env.VISITORS.get(STALE_KEY); } catch {}
+      const base = stale ? JSON.parse(stale) : { tracks: [], recent: [], _meta: { top_tracks: 'cooldown', recent: 'cooldown' } };
+      base.now_playing = now_playing;
+      base.cached_at = Date.now();
+      base._meta = { ...base._meta, source: 'cooldown_stale' };
+      return new Response(JSON.stringify(base), { headers: HEADERS });
+    }
 
+    const fresh = await getTopAndRecent(env);
     const payload = {
-      tracks,
-      recent: recentTracks,
-      now_playing: playing,
+      tracks: fresh.tracks,
+      recent: fresh.recent,
+      now_playing,
       cached_at: Date.now(),
-      _meta: {
-        top_tracks: topT?.__error ?? 'ok',
-        recent:     recent?.__error ?? 'ok',
-        currently:  current?.__error ?? (current === null ? 'no_content' : 'ok'),
-      },
+      _meta: fresh._meta,
     };
-
     const body = JSON.stringify(payload);
-    const allFailed = topT?.__error && recent?.__error;
-    if (!allFailed) {
-      try { await env.VISITORS.put(CACHE_KEY, body, { expirationTtl: CACHE_TTL }); } catch (e) { /* serve anyway */ }
-      return new Response(body, { headers: HEADERS });
+
+    if (fresh._failed) {
+      try { await env.VISITORS.put(COOLDOWN_KEY, '1', { expirationTtl: COOLDOWN_TTL }); } catch {}
+      let stale = null;
+      try { stale = await env.VISITORS.get(STALE_KEY); } catch {}
+      if (stale) {
+        const base = JSON.parse(stale);
+        base.now_playing = now_playing;
+        base.cached_at = Date.now();
+        base._meta = { ...fresh._meta, source: 'stale_after_fail' };
+        return new Response(JSON.stringify(base), { headers: HEADERS });
+      }
+      return new Response(body, { headers: ERR_HEADERS });
     }
-    return new Response(body, { headers: ERR_HEADERS });
+
+    const cacheBody = JSON.stringify({ tracks: fresh.tracks, recent: fresh.recent, cached_at: Date.now(), _meta: fresh._meta });
+    try { await env.VISITORS.put(CACHE_KEY, cacheBody, { expirationTtl: CACHE_TTL }); } catch {}
+    try { await env.VISITORS.put(STALE_KEY, cacheBody, { expirationTtl: STALE_TTL }); } catch {}
+    return new Response(body, { headers: HEADERS });
   } catch (e) {
-    return new Response(JSON.stringify({ error: e.message }), { status: 502, headers: ERR_HEADERS });
+    return new Response(JSON.stringify({ error: e.message, now_playing }), { status: 502, headers: ERR_HEADERS });
   }
 }
