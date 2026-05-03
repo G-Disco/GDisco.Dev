@@ -135,7 +135,7 @@
   <nav class="navbar">
     <div class="nav-logo-wrap">
       <div class="nav-logo">G<span class="accent">O</span><span class="logo-sub">.exe</span></div>
-      <button class="nav-version" id="nav-version" type="button" title="changelog · click">v3.0</button>
+      <button class="nav-version" id="nav-version" type="button" title="changelog · click">v3.1</button>
       <span class="nav-dot" id="nav-status-dot"></span>
     </div>
     <div class="nav-now-playing" id="nav-now-playing">
@@ -538,14 +538,14 @@
       <p class="queja-feedback" id="queja-feedback"></p>
     </form>
 
-    <div class="admin-panel" id="admin-panel">
+    <form class="admin-panel" id="admin-panel" autocomplete="off">
       <div class="admin-key-wrap">
-        <input class="queja-input admin-key-input" id="admin-key" type="password" placeholder="// admin key" autocomplete="off">
+        <input class="queja-input admin-key-input" id="admin-key" type="password" placeholder="// admin key" autocomplete="current-password">
         <button class="admin-eye" id="admin-eye" type="button" title="mostrar/ocultar">👁</button>
       </div>
-      <button class="btn btn-ghost admin-key-btn" id="admin-key-btn" data-i18n="admin_enter">entrar</button>
+      <button class="btn btn-ghost admin-key-btn" id="admin-key-btn" type="submit" data-i18n="admin_enter">entrar</button>
       <span class="admin-flag" id="admin-flag"></span>
-    </div>
+    </form>
   </section>
 
   <footer class="footer" id="contacto">
@@ -858,7 +858,8 @@
         eyeBtn.textContent = show ? '🙈' : '👁';
       });
 
-      document.getElementById('admin-key-btn').addEventListener('click', () => {
+      document.getElementById('admin-panel').addEventListener('submit', (e) => {
+        e.preventDefault();
         const key = keyInput.value.trim();
         if (!key) return;
         flag.textContent = '...';

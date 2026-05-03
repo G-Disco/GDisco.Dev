@@ -82,7 +82,15 @@
       cl_current: 'actual',
       cl_log: [
         {
-          v: 'v3.0', date: '2026-05', current: true,
+          v: 'v3.1', date: '2026-05', current: true,
+          title: 'pequeños fixes',
+          notes: [
+            'El panel de Spotify ahora prioriza realmente las escuchadas recientes sobre el top mensual.',
+            'El input del admin key vive dentro de un <code>&lt;form&gt;</code>: submit con Enter, mejor con password managers, sin warning de Chrome.',
+          ],
+        },
+        {
+          v: 'v3.0', date: '2026-05',
           title: 'estabilización y pulido',
           notes: [
             'Changelog modal — el que estás leyendo.',
@@ -242,7 +250,15 @@
       cl_current: 'current',
       cl_log: [
         {
-          v: 'v3.0', date: '2026-05', current: true,
+          v: 'v3.1', date: '2026-05', current: true,
+          title: 'small fixes',
+          notes: [
+            'The Spotify panel now actually prioritizes recently played over the monthly top.',
+            'Admin key input lives inside a <code>&lt;form&gt;</code>: Enter to submit, plays nice with password managers, no more Chrome warning.',
+          ],
+        },
+        {
+          v: 'v3.0', date: '2026-05',
           title: 'stabilization and polish',
           notes: [
             'Changelog modal — what you\'re reading.',
