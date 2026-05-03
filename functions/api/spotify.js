@@ -69,7 +69,16 @@ function mapTrack(t) {
 }
 
 export async function onRequest(context) {
-  const { env } = context;
+  const { env, request } = context;
+  const url = new URL(request.url);
+  if (url.searchParams.has('ping')) {
+    return new Response(JSON.stringify({
+      ok: true,
+      commit: env.CF_PAGES_COMMIT_SHA || 'local',
+      branch: env.CF_PAGES_BRANCH || 'local',
+      now: Date.now(),
+    }), { headers: ERR_HEADERS });
+  }
   const missing = [];
   if (!env.SPOTIFY_CLIENT_ID)     missing.push('SPOTIFY_CLIENT_ID');
   if (!env.SPOTIFY_CLIENT_SECRET) missing.push('SPOTIFY_CLIENT_SECRET');
