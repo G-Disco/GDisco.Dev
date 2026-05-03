@@ -1013,7 +1013,7 @@
           spotifyList.innerHTML = `<li class="ls-empty">${tStr('ls_offline', '// offline')}</li>`;
           return;
         }
-        const list = (d.tracks && d.tracks.length) ? d.tracks : (d.recent || []);
+        const list = (d.recent && d.recent.length) ? d.recent : (d.tracks || []);
         if (!list.length && !d.now_playing) {
           spotifyList.innerHTML = `<li class="ls-empty">${tStr('ls_empty', '// no data')}</li>`;
           return;
