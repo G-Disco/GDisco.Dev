@@ -1,4 +1,4 @@
-const CACHE_KEY = 'spotify_top_v4';
+const CACHE_KEY = 'spotify_top_v5';
 const CACHE_TTL = 60;
 
 const HEADERS = {
@@ -126,6 +126,12 @@ export async function onRequest(context) {
       recent: recentTracks,
       now_playing: playing,
       cached_at: Date.now(),
+      _meta: {
+        top_tracks:  topT?.__error ?? 'ok',
+        top_artists: topA?.__error ?? 'ok',
+        recent:      recent?.__error ?? 'ok',
+        currently:   current?.__error ?? (current === null ? 'no_content' : 'ok'),
+      },
     };
 
     const body = JSON.stringify(payload);
