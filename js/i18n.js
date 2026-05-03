@@ -82,13 +82,15 @@
       cl_current: 'actual',
       cl_log: [
         {
-          v: 'v2.6', date: '2026-05', current: true,
-          title: 'pulido y este changelog',
+          v: 'v3.0', date: '2026-05', current: true,
+          title: 'estabilización y pulido',
           notes: [
             'Changelog modal — el que estás leyendo.',
+            'Endpoints de Spotify y Steam endurecidos: timeouts por request, <code>Promise.allSettled</code> y trimming de env vars.',
             'Las APIs ya no cachean respuestas de error (no más 503 pegados en el browser).',
+            'Eliminado el doble fetch de Steam al cargar la página.',
             'Normalización de colores: paleta unificada con vars <code>--*-rgb</code>.',
-            'Limpieza general: eliminado el day-mode muerto, comentarios sobrantes y código sin uso.',
+            'Limpieza general: borrado el day-mode muerto, comentarios sobrantes y código sin uso.',
           ],
         },
         {
@@ -240,11 +242,13 @@
       cl_current: 'current',
       cl_log: [
         {
-          v: 'v2.6', date: '2026-05', current: true,
-          title: 'polish and this changelog',
+          v: 'v3.0', date: '2026-05', current: true,
+          title: 'stabilization and polish',
           notes: [
             'Changelog modal — what you\'re reading.',
+            'Hardened Spotify and Steam endpoints: per-request timeouts, <code>Promise.allSettled</code>, env var trimming.',
             'APIs no longer cache error responses (no more 503s stuck in your browser).',
+            'Removed duplicate Steam fetch on page load.',
             'Color normalization: unified palette using <code>--*-rgb</code> vars.',
             'General cleanup: removed dead day-mode code, leftover comments, unused selectors.',
           ],

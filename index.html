@@ -135,7 +135,7 @@
   <nav class="navbar">
     <div class="nav-logo-wrap">
       <div class="nav-logo">G<span class="accent">O</span><span class="logo-sub">.exe</span></div>
-      <button class="nav-version" id="nav-version" type="button" title="changelog · click">v2.6</button>
+      <button class="nav-version" id="nav-version" type="button" title="changelog · click">v3.0</button>
       <span class="nav-dot" id="nav-status-dot"></span>
     </div>
     <div class="nav-now-playing" id="nav-now-playing">
@@ -986,21 +986,26 @@
         return `<li class="ls-item">${img}${link}<span class="ls-meta">${escAttr(t.artists)}</span></li>`;
       }
 
-      fetch('/api/steam').then(r => r.json()).then(d => {
+      let steamData = null;
+      function renderSteam() {
         if (!steamList) return;
-        if (d.error || (!d.recent?.length && !d.top?.length)) {
+        if (!steamData || steamData.error || (!steamData.recent?.length && !steamData.top?.length)) {
           steamList.innerHTML = `<li class="ls-empty">${tStr('ls_offline', '// offline')}</li>`;
+          if (steamFoot) steamFoot.textContent = '';
           return;
         }
-        const useRecent = d.recent && d.recent.length > 0;
-        const games = useRecent ? d.recent : d.top;
+        const useRecent = steamData.recent && steamData.recent.length > 0;
+        const games = useRecent ? steamData.recent : steamData.top;
         steamList.innerHTML = games.slice(0, 5).map(g => steamItem(g, useRecent)).join('');
-        if (steamFoot && d.totalGames) {
-          steamFoot.textContent = fmt(tStr('ls_total_games', '{n} games · {h}h'), { n: d.totalGames, h: d.totalHours });
+        if (steamFoot && steamData.totalGames) {
+          steamFoot.textContent = fmt(tStr('ls_total_games', '{n} games · {h}h'), { n: steamData.totalGames, h: steamData.totalHours });
         }
-      }).catch(() => {
-        if (steamList) steamList.innerHTML = `<li class="ls-empty">${tStr('ls_offline', '// offline')}</li>`;
-      });
+      }
+
+      fetch('/api/steam').then(r => r.json()).then(d => {
+        steamData = d;
+        renderSteam();
+      }).catch(() => { renderSteam(); });
 
       function renderSpotify(d) {
         if (!spotifyList) return;
@@ -1028,13 +1033,10 @@
           .catch(() => renderSpotify(null));
       }
 
-      window.__lsRefresh = function () {
-        fetch('/api/steam').then(r => r.json()).then(d => {
-          if (steamFoot && d.totalGames) steamFoot.textContent = fmt(tStr('ls_total_games', '{n} games · {h}h'), { n: d.totalGames, h: d.totalHours });
-        }).catch(() => {});
+      window.addEventListener('gdisco:lang', () => {
+        renderSteam();
         pullSpotify();
-      };
-      window.addEventListener('gdisco:lang', window.__lsRefresh);
+      });
 
       pullSpotify();
       setInterval(() => {
