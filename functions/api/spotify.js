@@ -1,4 +1,4 @@
-const CACHE_KEY = 'spotify_top_v5';
+const CACHE_KEY = 'spotify_top_v6';
 const CACHE_TTL = 60;
 
 const HEADERS = {
@@ -123,8 +123,12 @@ export async function onRequest(context) {
     };
 
     const body = JSON.stringify(payload);
-    try { await env.VISITORS.put(CACHE_KEY, body, { expirationTtl: CACHE_TTL }); } catch (e) { /* serve anyway */ }
-    return new Response(body, { headers: HEADERS });
+    const allFailed = topT?.__error && recent?.__error;
+    if (!allFailed) {
+      try { await env.VISITORS.put(CACHE_KEY, body, { expirationTtl: CACHE_TTL }); } catch (e) { /* serve anyway */ }
+      return new Response(body, { headers: HEADERS });
+    }
+    return new Response(body, { headers: ERR_HEADERS });
   } catch (e) {
     return new Response(JSON.stringify({ error: e.message }), { status: 502, headers: ERR_HEADERS });
   }
