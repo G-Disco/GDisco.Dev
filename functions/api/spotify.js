@@ -69,69 +69,9 @@ function mapTrack(t) {
 }
 
 export async function onRequest(context) {
-  const { env, request } = context;
-  const url = new URL(request.url);
-  if (url.searchParams.has('ping')) {
-    return new Response(JSON.stringify({
-      ok: true,
-      commit: env.CF_PAGES_COMMIT_SHA || 'local',
-      branch: env.CF_PAGES_BRANCH || 'local',
-      now: Date.now(),
-    }), { headers: ERR_HEADERS });
-  }
-  if (url.searchParams.has('diag')) {
-    const diag = { steps: [] };
-    try {
-      const id = String(env.SPOTIFY_CLIENT_ID);
-      const secret = String(env.SPOTIFY_CLIENT_SECRET);
-      const refresh = String(env.SPOTIFY_REFRESH_TOKEN);
-      diag.lengths = { id: id.length, secret: secret.length, refresh: refresh.length };
-      diag.id_trimmed_eq    = id === id.trim();
-      diag.secret_trimmed_eq = secret === secret.trim();
-      diag.refresh_trimmed_eq = refresh === refresh.trim();
-      const idTrim = id.trim(), secretTrim = secret.trim(), refreshTrim = refresh.trim();
-      diag.lengths_trimmed = { id: idTrim.length, secret: secretTrim.length, refresh: refreshTrim.length };
-      diag.id_charcodes_first10 = Array.from(idTrim.slice(0, 10)).map(c => c.charCodeAt(0));
-      diag.secret_charcodes_first10 = Array.from(secretTrim.slice(0, 10)).map(c => c.charCodeAt(0));
-      diag.steps.push('inputs read');
-      try {
-        diag.btoa_ok = btoa(`${idTrim}:${secretTrim}`).length;
-        diag.steps.push('btoa ok');
-      } catch (e) {
-        diag.btoa_error = e.message;
-      }
-      try {
-        const r = await fetch('https://accounts.spotify.com/api/token', {
-          method: 'POST',
-          headers: {
-            Authorization: 'Basic ' + btoa(`${idTrim}:${secretTrim}`),
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: `grant_type=refresh_token&refresh_token=${encodeURIComponent(refreshTrim)}`,
-        });
-        diag.token_status = r.status;
-        const text = await r.text();
-        diag.token_body_preview = text.slice(0, 300);
-        diag.steps.push('token fetch ok');
-      } catch (e) {
-        diag.token_error = e.message;
-      }
-    } catch (e) {
-      diag.fatal = e.message;
-    }
-    return new Response(JSON.stringify(diag, null, 2), { headers: ERR_HEADERS });
-  }
-  const missing = [];
-  if (!env.SPOTIFY_CLIENT_ID)     missing.push('SPOTIFY_CLIENT_ID');
-  if (!env.SPOTIFY_CLIENT_SECRET) missing.push('SPOTIFY_CLIENT_SECRET');
-  if (!env.SPOTIFY_REFRESH_TOKEN) missing.push('SPOTIFY_REFRESH_TOKEN');
-  if (!env.VISITORS)              missing.push('VISITORS (KV binding)');
-  if (missing.length) {
-    return new Response(JSON.stringify({
-      error: 'not configured',
-      missing,
-      env_keys: Object.keys(env || {}).sort(),
-    }), { status: 503, headers: ERR_HEADERS });
+  const { env } = context;
+  if (!env.SPOTIFY_CLIENT_ID || !env.SPOTIFY_CLIENT_SECRET || !env.SPOTIFY_REFRESH_TOKEN || !env.VISITORS) {
+    return new Response(JSON.stringify({ error: 'not configured' }), { status: 503, headers: ERR_HEADERS });
   }
 
   try {
