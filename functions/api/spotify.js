@@ -82,24 +82,14 @@ export async function onRequest(context) {
     const token = await getAccessToken(env);
     const settled = await Promise.allSettled([
       spotifyGet(token, '/me/top/tracks?time_range=short_term&limit=5'),
-      spotifyGet(token, '/me/top/artists?time_range=short_term&limit=5'),
       spotifyGet(token, '/me/player/recently-played?limit=10'),
       spotifyGet(token, '/me/player/currently-playing'),
     ]);
     const pick = i => settled[i].status === 'fulfilled' ? settled[i].value : { __error: settled[i].reason?.message || 'rejected' };
-    const topT = pick(0), topA = pick(1), recent = pick(2), current = pick(3);
+    const topT = pick(0), recent = pick(1), current = pick(2);
 
     const tracks = (topT && !topT.__error)
       ? (topT.items || []).map(mapTrack).filter(Boolean)
-      : [];
-
-    const artists = (topA && !topA.__error)
-      ? (topA.items || []).map(a => ({
-        name: a.name,
-        url: a.external_urls?.spotify || null,
-        cover: pickImg(a.images),
-        genres: (a.genres || []).slice(0, 2),
-      }))
       : [];
 
     const recentTracks = [];
@@ -122,15 +112,13 @@ export async function onRequest(context) {
 
     const payload = {
       tracks,
-      artists,
       recent: recentTracks,
       now_playing: playing,
       cached_at: Date.now(),
       _meta: {
-        top_tracks:  topT?.__error ?? 'ok',
-        top_artists: topA?.__error ?? 'ok',
-        recent:      recent?.__error ?? 'ok',
-        currently:   current?.__error ?? (current === null ? 'no_content' : 'ok'),
+        top_tracks: topT?.__error ?? 'ok',
+        recent:     recent?.__error ?? 'ok',
+        currently:  current?.__error ?? (current === null ? 'no_content' : 'ok'),
       },
     };
 
