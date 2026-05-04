@@ -1,6 +1,6 @@
-const CACHE_KEY = 'spotify_top_v7';
-const STALE_KEY = 'spotify_top_v7_stale';
-const COOLDOWN_KEY = 'spotify_top_v7_cooldown';
+const CACHE_KEY = 'spotify_top_v9';
+const STALE_KEY = 'spotify_top_v9_stale';
+const COOLDOWN_KEY = 'spotify_top_v9_cooldown';
 const CACHE_TTL = 300;
 const STALE_TTL = 86400;
 const COOLDOWN_TTL = 180;
@@ -116,7 +116,7 @@ async function getTopAndRecent(env) {
       const key = (t.name + '|' + t.artists).toLowerCase();
       if (seen.has(key)) continue;
       seen.add(key);
-      recentTracks.push({ ...t, played_at: it.played_at });
+      recentTracks.push(t);
       if (recentTracks.length >= 5) break;
     }
   }
@@ -124,11 +124,7 @@ async function getTopAndRecent(env) {
   return {
     tracks,
     recent: recentTracks,
-    _meta: {
-      top_tracks: topT?.__error ?? 'ok',
-      recent:     recent?.__error ?? 'ok',
-    },
-    _failed: !!(topT?.__error && recent?.__error),
+    failed: !!(topT?.__error && recent?.__error),
   };
 }
 
@@ -141,54 +137,38 @@ export async function onRequest(context) {
   const now_playing = await getNowPlayingFromLanyard();
 
   try {
-    let cached = null;
-    try { cached = await env.VISITORS.get(CACHE_KEY); } catch {}
+    const cached = await env.VISITORS.get(CACHE_KEY).catch(() => null);
     if (cached) {
       const parsed = JSON.parse(cached);
       parsed.now_playing = now_playing;
       return new Response(JSON.stringify(parsed), { headers: HEADERS });
     }
 
-    let cooling = null;
-    try { cooling = await env.VISITORS.get(COOLDOWN_KEY); } catch {}
+    const cooling = await env.VISITORS.get(COOLDOWN_KEY).catch(() => null);
     if (cooling) {
-      let stale = null;
-      try { stale = await env.VISITORS.get(STALE_KEY); } catch {}
-      const base = stale ? JSON.parse(stale) : { tracks: [], recent: [], _meta: { top_tracks: 'cooldown', recent: 'cooldown' } };
+      const stale = await env.VISITORS.get(STALE_KEY).catch(() => null);
+      const base = stale ? JSON.parse(stale) : { tracks: [], recent: [] };
       base.now_playing = now_playing;
-      base.cached_at = Date.now();
-      base._meta = { ...base._meta, source: 'cooldown_stale' };
       return new Response(JSON.stringify(base), { headers: HEADERS });
     }
 
     const fresh = await getTopAndRecent(env);
-    const payload = {
-      tracks: fresh.tracks,
-      recent: fresh.recent,
-      now_playing,
-      cached_at: Date.now(),
-      _meta: fresh._meta,
-    };
-    const body = JSON.stringify(payload);
 
-    if (fresh._failed) {
-      try { await env.VISITORS.put(COOLDOWN_KEY, '1', { expirationTtl: COOLDOWN_TTL }); } catch {}
-      let stale = null;
-      try { stale = await env.VISITORS.get(STALE_KEY); } catch {}
+    if (fresh.failed) {
+      await env.VISITORS.put(COOLDOWN_KEY, '1', { expirationTtl: COOLDOWN_TTL }).catch(() => {});
+      const stale = await env.VISITORS.get(STALE_KEY).catch(() => null);
       if (stale) {
         const base = JSON.parse(stale);
         base.now_playing = now_playing;
-        base.cached_at = Date.now();
-        base._meta = { ...fresh._meta, source: 'stale_after_fail' };
         return new Response(JSON.stringify(base), { headers: HEADERS });
       }
-      return new Response(body, { headers: ERR_HEADERS });
+      return new Response(JSON.stringify({ tracks: [], recent: [], now_playing }), { headers: ERR_HEADERS });
     }
 
-    const cacheBody = JSON.stringify({ tracks: fresh.tracks, recent: fresh.recent, cached_at: Date.now(), _meta: fresh._meta });
-    try { await env.VISITORS.put(CACHE_KEY, cacheBody, { expirationTtl: CACHE_TTL }); } catch {}
-    try { await env.VISITORS.put(STALE_KEY, cacheBody, { expirationTtl: STALE_TTL }); } catch {}
-    return new Response(body, { headers: HEADERS });
+    const cacheBody = JSON.stringify({ tracks: fresh.tracks, recent: fresh.recent });
+    await env.VISITORS.put(CACHE_KEY, cacheBody, { expirationTtl: CACHE_TTL }).catch(() => {});
+    await env.VISITORS.put(STALE_KEY, cacheBody, { expirationTtl: STALE_TTL }).catch(() => {});
+    return new Response(JSON.stringify({ tracks: fresh.tracks, recent: fresh.recent, now_playing }), { headers: HEADERS });
   } catch (e) {
     return new Response(JSON.stringify({ error: e.message, now_playing }), { status: 502, headers: ERR_HEADERS });
   }
