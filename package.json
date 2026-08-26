@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "wrangler pages dev . --kv VISITORS --port 8080"
+    "dev": "wrangler pages dev . --kv VISITORS --port 8080 --compatibility-date=2026-05-03"
   },
   "devDependencies": {
     "wrangler": "^4.86.0"
