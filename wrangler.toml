@@ -1,0 +1,6 @@
+name = "gdisco-dev"
+compatibility_date = "2024-09-23"
+
+[[kv_namespaces]]
+binding = "VISITORS"
+id = "local-dev-placeholder"

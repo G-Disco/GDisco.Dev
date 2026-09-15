@@ -1,11 +1,19 @@
 {
   "name": "gdisco",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "type": "module",
   "private": true,
+  "engines": { "node": ">=22.12.0" },
   "scripts": {
-    "dev": "wrangler pages dev . --kv VISITORS --port 8080 --compatibility-date=2026-05-03"
+    "dev": "astro dev --port 8080",
+    "build": "astro build",
+    "preview": "wrangler pages dev dist --kv VISITORS --port 8080 --compatibility-date=2026-05-03"
+  },
+  "dependencies": {
+    "astro": "^7.3.2",
+    "@astrojs/cloudflare": "^14.3.1"
   },
   "devDependencies": {
-    "wrangler": "^4.86.0"
+    "wrangler": "^4.131.1"
   }
 }

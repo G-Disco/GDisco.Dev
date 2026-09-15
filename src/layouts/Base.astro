@@ -1,0 +1,138 @@
+---
+interface Props { title?: string }
+const { title = 'Nice to meet you.' } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="theme-color" content="#080608">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Pirata+One&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Loading screen -->
+  <div id="loading-screen">
+    <svg id="loading-spiral" viewBox="-50 -50 100 100" width="60" height="60">
+      <path d="M0,0 C2,-8 10,-14 18,-14 C28,-14 34,-6 34,4 C34,18 20,28 6,28 C-12,28 -24,16 -24,0 C-24,-20 -8,-36 12,-36 C36,-36 48,-16 48,8" fill="none" stroke="url(#spiral-grad)" stroke-width="2.5" stroke-linecap="round"/>
+      <defs>
+        <linearGradient id="spiral-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#c4a35a"/>
+          <stop offset="100%" stop-color="#cc2222"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <canvas id="bg-canvas"></canvas>
+  <div class="scanlines"></div>
+  <div class="cursor"></div>
+  <div class="cursor-trail"></div>
+
+  <slot />
+
+  <!-- Terminal overlay -->
+  <div class="term-overlay" id="term-overlay" aria-hidden="true">
+    <div class="term-window">
+      <div class="term-bar">
+        <span class="term-bar-dots">
+          <span class="term-dot term-dot--r"></span>
+          <span class="term-dot term-dot--y"></span>
+          <span class="term-dot term-dot--g"></span>
+        </span>
+        <span class="term-bar-title">gabriel@gdisco:~</span>
+        <button class="term-close" id="term-close" type="button" aria-label="close">&times;</button>
+      </div>
+      <div class="term-body" id="term-body" tabindex="-1"></div>
+      <form class="term-prompt" id="term-prompt" autocomplete="off">
+        <span class="term-ps1">gabriel@gdisco:~$</span>
+        <input class="term-input" id="term-input" type="text" autocomplete="off" spellcheck="false" autocapitalize="off">
+      </form>
+    </div>
+  </div>
+
+  <!-- Changelog overlay -->
+  <div class="cl-overlay" id="cl-overlay" aria-hidden="true">
+    <div class="cl-window">
+      <div class="cl-bar">
+        <span class="cl-bar-dots">
+          <span class="cl-dot cl-dot--r"></span>
+          <span class="cl-dot cl-dot--y"></span>
+          <span class="cl-dot cl-dot--g"></span>
+        </span>
+        <span class="cl-bar-title">~/CHANGELOG.md</span>
+        <button class="cl-close" id="cl-close" type="button" aria-label="close">&times;</button>
+      </div>
+      <div class="cl-body" id="cl-body"></div>
+      <div class="cl-footer">
+        <span data-i18n="cl_footer">// fin del log · escrito entre cigarro y cigarro</span>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script is:inline src="/js/i18n.js"></script>
+  <script is:inline src="/js/app.js"></script>
+
+  <script>
+    import { initSacredBg } from '../scripts/sacred-bg.js';
+    import { initColorCycle } from '../scripts/color-cycle.js';
+    initSacredBg();
+    initColorCycle();
+
+    // Custom cursor
+    const cursor = document.querySelector('.cursor');
+    const trail = document.querySelector('.cursor-trail');
+    if (cursor && trail) {
+      document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+        trail.style.left = e.clientX + 'px';
+        trail.style.top = e.clientY + 'px';
+      });
+    }
+  </script>
+
+  <script is:inline>
+    setTimeout(function () {
+      var el = document.getElementById('loading-screen');
+      if (el) {
+        el.style.opacity = '0';
+        setTimeout(function () { el.style.display = 'none'; }, 500);
+      }
+    }, 1500);
+  </script>
+</body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+
+  /* Loading screen */
+  #loading-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #0a0606;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+  }
+  #loading-spiral {
+    animation: spin 1.2s linear infinite;
+    filter: drop-shadow(0 0 8px #c4a35a) drop-shadow(0 0 16px #cc2222);
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+</style>

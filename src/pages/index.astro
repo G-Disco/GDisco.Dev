@@ -1,0 +1,1866 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Nice to meet you.">
+  <nav class="navbar">
+    <div class="nav-logo-wrap">
+      <div class="nav-logo">G<span class="accent">O</span><span class="logo-sub">.exe</span></div>
+      <button class="nav-version" id="nav-version" type="button" title="changelog">v3.1</button>
+      <span class="nav-dot" id="nav-status-dot"></span>
+    </div>
+    <div class="nav-now-playing" id="nav-now-playing">
+      <span class="nnp-icon" id="nnp-music-icon" style="display:none">&#9835;</span>
+      <div class="nnp-track-wrap" id="nnp-track-wrap" style="display:none">
+        <span class="nnp-track" id="nnp-track"></span>
+      </div>
+      <div class="nnp-idle" id="nnp-idle">
+        <span class="nnp-cloud">&#9729;</span>
+        <span class="nnp-zchar">z</span>
+        <span class="nnp-zchar nnp-z2">z</span>
+        <span class="nnp-zchar nnp-z3">Z</span>
+        <span class="nnp-cloud nnp-cloud2">&#9729;</span>
+        <span class="nnp-idle-label" data-i18n="nnp_idle_label">durmiendo</span>
+      </div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#inicio" data-i18n="nav_home">inicio</a></li>
+      <li><a href="#stats" data-i18n="nav_stats">stats</a></li>
+      <li><a href="#quejas" data-i18n="nav_quejas">quejas</a></li>
+      <li><a href="#contacto" data-i18n="nav_contact">contacto</a></li>
+    </ul>
+    <span class="nav-clock" id="nav-clock"></span>
+    <button class="bgm-toggle" id="bgm-toggle" type="button" title="Libera ME from Hell">♪</button>
+    <button class="term-toggle-nav" id="term-toggle" onclick="openTerminal()" title="terminal">[~_]</button>
+    <button class="lang-toggle" id="lang-toggle" onclick="toggleLang()">EN</button>
+    <div class="hamburger"><span></span><span></span><span></span></div>
+  </nav>
+  <section id="inicio" class="hero">
+    <div class="hero-header">
+      <p class="greeting" data-i18n="greeting">// hola, soy</p>
+      <h1 class="hero-name glitch" data-text="Gabriel Ortega">Gabriel Ortega</h1>
+      <h2 class="hero-subtitle">
+        <span class="typewriter">Full Stack Developer</span><span class="cursor-blink">_</span>
+      </h2>
+      <div class="hero-socials">
+        <a href="https://discord.com/users/857777819324121098" target="_blank" rel="noopener noreferrer" class="social-pill">
+          <img class="social-pip" id="social-discord-avatar" alt="" src=""><span>GDisco</span>
+        </a>
+        <a href="https://www.instagram.com/g._disco/" target="_blank" rel="noopener noreferrer" class="social-pill">
+          <img class="social-pip" src="/assets/social/instagram.jpg" alt=""><span>g._disco</span>
+        </a>
+        <a href="https://open.spotify.com/user/31mmoahummftq3u7u6xwl4xyp7ay" target="_blank" rel="noopener noreferrer" class="social-pill">
+          <img class="social-pip" src="/assets/social/spotify.jpg" alt=""><span>GDisco</span>
+        </a>
+        <a href="https://steamcommunity.com/profiles/76561199206260941/" target="_blank" rel="noopener noreferrer" class="social-pill">
+          <img class="social-pip" id="social-steam-avatar" alt="" src=""><span>GDisco</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-grid">
+      <div class="about-card g-card tarot-frame">
+        <span class="about-tag" data-i18n="about_tag">// sobre_mi.exe</span>
+        <p class="about-text" data-i18n="about_text">
+          Desarrollador fullstack con <em>obsesión por el CSS, comentar código y el tabaco</em>.<br>
+          Gamer no-profesional desde los 13, Dev desde los 17.<br>
+          Si puedo fumar mientras lo hago <em>*tal vez*</em> lo puedo hacer.
+        </p>
+        <div class="about-tags">
+          <span class="tag">JavaScript</span>
+          <span class="tag">PHP</span>
+          <span class="tag">MySQL</span>
+          <span class="tag">CSS</span>
+          <span class="tag">HTML</span>
+          <span class="tag">Git</span>
+          <span class="tag">Linux</span>
+          <span class="tag">Servers</span>
+        </div>
+      </div>
+
+      <div class="clock-card g-card tarot-frame">
+        <canvas id="goth-clock" width="260" height="260"></canvas>
+        <span class="gc-tz">CST</span>
+      </div>
+
+      <div class="discord-card g-card tarot-frame">
+        <div class="about-status">
+          <span class="status-dot" id="about-discord-dot"></span>
+          <span class="status-text" data-i18n="status_current">rediseñando esta página</span>
+        </div>
+        <div class="discord-presence" id="discord-presence">
+          <img class="dp-avatar" id="dp-avatar" alt="">
+          <div class="dp-body">
+            <div class="dp-info">
+              <span class="dp-name" id="dp-name">GDisco</span>
+              <span class="dp-status" id="dp-status">offline</span>
+            </div>
+            <p class="dp-quote" id="dp-quote"></p>
+            <span class="dp-activity" id="dp-activity"></span>
+          </div>
+        </div>
+        <p class="kamina-quote" id="kamina-quote"></p>
+      </div>
+
+      <div class="bounty-board g-card tarot-frame">
+        <span class="bounty-title">◈ <span data-i18n="bounty_title">tablón de misiones</span></span>
+        <ul class="bounty-list">
+          <li class="bounty bounty--done"><span class="bounty-check">✓</span> <span data-i18n="bounty_1">Sobrevivir a legacy PHP</span></li>
+          <li class="bounty bounty--done"><span class="bounty-check">✓</span> <span data-i18n="bounty_2">4000hrs en Genshin</span></li>
+          <li class="bounty bounty--fail"><span class="bounty-check">✗</span> <span data-i18n="bounty_3">Dejar de fumar</span></li>
+          <li class="bounty bounty--active"><span class="bounty-check">☐</span> <span data-i18n="bounty_4">Terminar este rediseño</span></li>
+          <li class="bounty bounty--active"><span class="bounty-check">☐</span> <span data-i18n="bounty_5">Dormir 8 horas</span></li>
+          <li class="bounty bounty--locked"><span class="bounty-check">🔒</span> <span data-i18n="bounty_6">Que me paguen bien</span></li>
+        </ul>
+        <div class="bounty-footer">
+          <a href="#stats" class="btn btn-primary" data-i18n="btn_stats">▶ ver stats</a>
+          <button class="btn btn-ghost d20-btn" id="d20-btn" type="button">🎲 D20</button>
+          <a href="mailto:gabriel16ortega@gmail.com" class="btn btn-ghost" data-i18n="btn_contact">escribeme</a>
+        </div>
+        <div class="d20-result" id="d20-result" aria-live="polite"></div>
+        <div class="bounty-counters">
+          <div class="bounty-counter">
+            <span class="counter-smile" data-i18n="visitor_smile">Sonríe~</span>
+            <span class="counter-label" data-i18n="visitor_text">Eres el visitante no:</span>
+            <span class="counter-num" id="visitor-count">&mdash;</span>
+          </div>
+          <div class="bounty-counter">
+            <span class="counter-smile">&#x1F6AC;</span>
+            <span class="counter-label" data-i18n="cigarro_text">cigarros fumados codeando</span>
+            <span class="counter-num" id="cigarro-count">&mdash;</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <section id="stats" class="stats-section">
+    <div class="section-header">
+      <div class="sh-ornament">&#10022;</div>
+      <h2 data-i18n="stats_title">// mas_detalles</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stats-col-timeline g-card tarot-frame">
+        <div class="timeline">
+          <div class="tl-items-row">
+            <div class="tl-item">
+              <div class="tl-year">2023</div>
+              <div class="tl-dot"></div>
+              <div class="tl-body">
+                <span class="tl-role" data-i18n="tl_2023_role">Creciendo</span>
+                <span class="tl-desc" data-i18n="tl_2023_desc">Puro HTML al principio, ni sabia lo que habia afuera. Luego PHP, apenas volviendome un don.</span>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-year">2024</div>
+              <div class="tl-dot tl-dot--company"></div>
+              <div class="tl-body">
+                <span class="tl-company">AviHel MRO</span>
+                <span class="tl-role" data-i18n="tl_2024_role">Practicante</span>
+                <span class="tl-desc" data-i18n="tl_2024_desc">Mantener lo que habia y construir sobre ello.</span>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-year">2025</div>
+              <div class="tl-dot tl-dot--company"></div>
+              <div class="tl-body">
+                <span class="tl-company">AviHel</span>
+                <span class="tl-role" data-i18n="tl_2025_role">Full Stack Dev</span>
+                <span class="tl-desc" data-i18n="tl_2025_desc">Reconstrui <a href="https://avihel.com.mx" target="_blank" rel="noopener noreferrer" class="tl-link">&#8599; avihel.com.mx</a> desde cero. Ese si es mio. <em class="tl-shade">Me siguen pagando como practicante.</em></span>
+              </div>
+            </div>
+            <div class="tl-item tl-item--active">
+              <div class="tl-year" data-i18n="tl_now_year">ahora</div>
+              <div class="tl-dot tl-dot--active"></div>
+              <div class="tl-body">
+                <span class="tl-company">AviHel MRO</span>
+                <span class="tl-role" data-i18n="tl_now_role">FS + Enc. Sistemas</span>
+                <span class="tl-desc" data-i18n="tl_now_desc">Dos roles, un cigarro. <em class="tl-shade">Aun me pagan como practicante.</em></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-col-live">
+        <div class="ls-panel ls-panel--steam g-card">
+          <div class="ls-header">
+            <span class="ls-icon">&#9654;</span>
+            <span class="ls-title" data-i18n="ls_steam_title">// steam &middot; jugando ultimamente</span>
+            <span class="ls-foot" id="steam-foot"></span>
+          </div>
+          <ul class="ls-list" id="steam-list">
+            <li class="ls-loading" data-i18n="ls_loading">// cargando...</li>
+          </ul>
+        </div>
+        <div class="ls-panel ls-panel--spotify g-card">
+          <div class="ls-header">
+            <span class="ls-icon">&#9835;</span>
+            <span class="ls-title" data-i18n="ls_spotify_title">// spotify &middot; escuchadas recientes</span>
+            <span class="ls-foot" id="spotify-foot"></span>
+          </div>
+          <ul class="ls-list" id="spotify-list">
+            <li class="ls-loading" data-i18n="ls_loading">// cargando...</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="stats-col-bio">
+        <div class="bio-text-card g-card tarot-frame">
+          <div class="brujo-bio">
+            <p data-i18n="bio_p1">Me pagan con un cigarro — <em>A veces la mitad de uno.</em></p>
+            <p data-i18n="bio_p2">Paso la mayor parte del tiempo jugando o rediseñando esta pagina.</p>
+            <p data-i18n="bio_p3">Me apasiona ser naco — hablar corriente es mi don. Disfruto de la musica, mi anime favorito (y el mejor) es Gurren Lagann. <span class="no-negociable">No negociable.</span></p>
+            <p data-i18n="bio_p4">Tambien administro servidores. Por amor al arte — y me defiendo con todo esto:</p>
+            <div class="about-tags">
+              <span class="tag">JavaScript</span>
+              <span class="tag">PHP</span>
+              <span class="tag">MySQL</span>
+              <span class="tag">CSS</span>
+              <span class="tag">HTML</span>
+              <span class="tag">Git</span>
+              <span class="tag">Linux</span>
+              <span class="tag">Servers</span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="gurren-card g-card">
+          <video src="/assets/gurren-lagann.mp4" class="gurren-img" autoplay loop muted playsinline></video>
+          <span class="gurren-quote">"Just who the hell do you think I am?!"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="games-area">
+      <p class="games-label" data-i18n="games_label">// cosas que me gusta jugar</p>
+      <div class="games-carousel-wrap">
+        <button class="carousel-btn carousel-btn--prev" id="carousel-prev" aria-label="anterior">&#8249;</button>
+        <div class="games-carousel" id="games-carousel">
+
+          <div class="game-card game-genshin tilt">
+            <div class="game-thumb">
+              <video src="/assets/games/mp4/genshin.mp4" class="game-gif" autoplay loop muted playsinline preload="metadata" aria-label="Genshin Impact"></video>
+            </div>
+            <div class="game-info">
+              <span class="game-name">Genshin Impact</span>
+              <span class="game-detail">AR 60 &middot; Scenery enjoyer</span>
+              <span class="game-desc" data-i18n="game_genshin_desc">Mi mayor adiccion desde 2020. ~4000 horas registradas, catador de monas chinas profesional.</span>
+            </div>
+          </div>
+
+          <div class="game-card game-zzz tilt">
+            <div class="game-thumb">
+              <video src="/assets/games/mp4/zzz.mp4" class="game-gif" autoplay loop muted playsinline preload="metadata" aria-label="Zenless Zone Zero"></video>
+            </div>
+            <div class="game-info">
+              <span class="game-name">Zenless Zone Zero</span>
+              <span class="game-detail">Proxy &middot; New Eridu</span>
+              <span class="game-desc" data-i18n="game_zzz_desc">Lo mismo que Genshin pero aqui se mueven mas rico.</span>
+            </div>
+          </div>
+
+          <div class="game-card game-valorant tilt">
+            <div class="game-thumb">
+              <video src="/assets/games/mp4/valorant.mp4" class="game-gif" autoplay loop muted playsinline preload="metadata" aria-label="Valorant"></video>
+            </div>
+            <div class="game-info">
+              <span class="game-name">Valorant</span>
+              <span class="game-detail">Bronce &middot; Duelist</span>
+              <span class="game-desc" data-i18n="game_valorant_desc">La desgracia de mi paciencia y mi cordura.</span>
+            </div>
+          </div>
+
+
+          <div class="game-card game-lol tilt">
+            <div class="game-thumb">
+              <video src="/assets/games/mp4/lol.mp4" class="game-gif" autoplay loop muted playsinline preload="metadata" aria-label="League of Legends"></video>
+            </div>
+            <div class="game-info">
+              <span class="game-name">League of Legends</span>
+              <span class="game-detail">Plata &middot; Mid / Top</span>
+              <span class="game-desc" data-i18n="game_lol_desc">Lo mismo que Valorant, pero esto es mas como una relacion abusiva.</span>
+            </div>
+          </div>
+
+          <div class="game-card game-warframe tilt">
+            <div class="game-thumb">
+              <video src="/assets/games/mp4/warframe.mp4" class="game-gif" autoplay loop muted playsinline preload="metadata" aria-label="Warframe"></video>
+            </div>
+            <div class="game-info">
+              <span class="game-name">Warframe</span>
+              <span class="game-detail">Tenno &middot; MR 16</span>
+              <span class="game-desc" data-i18n="game_warframe_desc">El grind eterno. Lo dejo y vuelvo cada 3 meses como si nada.</span>
+            </div>
+          </div>
+
+          <div class="game-card game-vrchat tilt">
+            <div class="game-thumb">
+              <video src="/assets/games/mp4/vrchat.mp4" class="game-gif" autoplay loop muted playsinline preload="metadata" aria-label="VRChat"></video>
+            </div>
+            <div class="game-info">
+              <span class="game-name">VRChat</span>
+              <span class="game-detail">Quest 2</span>
+              <span class="game-desc" data-i18n="game_vrchat_desc">El lugar mas extrano de internet y aun asi me quedo.</span>
+            </div>
+          </div>
+
+          <div class="game-card game-gta tilt">
+            <div class="game-thumb">
+              <video src="/assets/games/mp4/gta.mp4" class="game-gif" autoplay loop muted playsinline preload="metadata" aria-label="GTA V"></video>
+            </div>
+            <div class="game-info">
+              <span class="game-name">GTA V</span>
+              <span class="game-detail">Online</span>
+              <span class="game-desc" data-i18n="game_gta_desc">Clasico. Nunca se va, nunca se va.</span>
+            </div>
+          </div>
+
+          <div class="game-card game-halo tilt">
+            <div class="game-thumb">
+              <video src="/assets/games/mp4/halo.mp4" class="game-gif" autoplay loop muted playsinline preload="metadata" aria-label="Halo"></video>
+            </div>
+            <div class="game-info">
+              <span class="game-name">Halo</span>
+              <span class="game-detail">MCC</span>
+              <span class="game-desc" data-i18n="game_halo_desc">El shooter que me hizo amar los shooters antes que Valorant los arruinara.</span>
+            </div>
+          </div>
+
+        </div>
+        <button class="carousel-btn carousel-btn--next" id="carousel-next" aria-label="siguiente">&#8250;</button>
+      </div>
+      <div class="carousel-dots" id="carousel-dots"></div>
+    </div>
+  </section>
+  <section class="quejas-section" id="quejas">
+    <div class="section-header">
+      <div class="sh-ornament">&#10022;</div>
+      <h2 data-i18n="quejas_title">// quejas</h2>
+      <span class="quejas-sub" data-i18n="quejas_sub">&mdash; Son anonimas, deja tu huella.</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="quejas-carousel-wrap">
+      <button class="carousel-btn carousel-btn--prev" id="quejas-prev" aria-label="anterior">&#8249;</button>
+      <div class="quejas-carousel" id="quejas-list">
+        <div class="queja-card g-card">
+          <div class="qc-top">
+            <div class="queja-avatar">C</div>
+            <span class="queja-name">Chiriwillo</span>
+          </div>
+          <span class="queja-text">Borra tu mamada</span>
+        </div>
+      </div>
+      <button class="carousel-btn carousel-btn--next" id="quejas-next" aria-label="siguiente">&#8250;</button>
+    </div>
+    <div class="carousel-dots" id="quejas-dots"></div>
+
+    <form class="queja-form g-card" id="queja-form">
+      <p class="queja-form-title" data-i18n="queja_form_title">// deja tu queja</p>
+      <div class="queja-form-fields">
+        <input class="queja-input" id="queja-name" type="text" placeholder="nombre" maxlength="32" autocomplete="off" data-i18n-ph="queja_name_ph">
+        <input class="queja-input queja-input--msg" id="queja-text" type="text" placeholder="tu queja aqui..." maxlength="280" autocomplete="off" data-i18n-ph="queja_text_ph">
+        <button class="btn btn-primary queja-submit" type="submit" data-i18n="queja_submit">enviar</button>
+      </div>
+      <p class="queja-feedback" id="queja-feedback"></p>
+    </form>
+
+    <form class="admin-panel" id="admin-panel" autocomplete="off">
+      <div class="admin-key-wrap">
+        <input class="queja-input admin-key-input" id="admin-key" type="password" placeholder="// admin key" autocomplete="current-password">
+        <button class="admin-eye" id="admin-eye" type="button" title="mostrar/ocultar">&#x1F441;</button>
+      </div>
+      <button class="btn btn-ghost admin-key-btn" id="admin-key-btn" type="submit" data-i18n="admin_enter">entrar</button>
+      <span class="admin-flag" id="admin-flag"></span>
+    </form>
+  </section>
+  <footer class="footer footer-bar" id="contacto">
+    <p class="footer-name">GABRIEL<span class="footer-accent">ORTEGA</span></p>
+    <div class="footer-links">
+      <a href="mailto:gabriel16ortega@gmail.com" class="footer-link">
+        <span class="fl-icon">&#9993;</span>gabriel16ortega@gmail.com
+      </a>
+      <span class="fl-sep">&#10022;</span>
+      <a href="https://discord.com/users/857777819324121098" target="_blank" rel="noopener noreferrer" class="footer-link">
+        <span class="fl-icon">&#9670;</span>discord
+      </a>
+    </div>
+    <p class="footer-copy" data-i18n="footer_copy">// Astro &middot; CSS &middot; amor y espinas</p>
+  </footer>
+
+</Base>
+
+<style>
+  /* ─── Navbar ─── */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 2vw;
+    background: rgba(8, 6, 8, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--c-border);
+    box-shadow: 0 1px 8px rgb(var(--gold-rgb) / .15);
+  }
+
+  .nav-logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .nav-logo {
+    font-family: var(--font-gothic);
+    font-size: 1.4rem;
+    color: var(--pink);
+    text-shadow: var(--ts-soft);
+    letter-spacing: 0.04em;
+  }
+
+  .logo-sub {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--c-text-mute);
+    vertical-align: super;
+  }
+
+  .nav-version {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 0.15rem 0.45rem;
+    background: rgb(var(--violet-rgb) / .5);
+    border: 1px solid rgb(var(--gold-rgb) / .2);
+    border-radius: 4px;
+    color: var(--gold);
+    cursor: pointer;
+  }
+
+  .nav-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--dim);
+  }
+
+  .nav-now-playing {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-left: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--c-text-mute);
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .nnp-icon { color: var(--pink); }
+
+  .nnp-track-wrap {
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .nnp-track {
+    display: inline-block;
+    animation: marquee 12s linear infinite;
+    color: var(--pink);
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  .nnp-idle {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  .nnp-cloud { color: var(--dim); font-size: 0.9rem; }
+  .nnp-cloud2 { font-size: 0.7rem; }
+
+  .nnp-zchar {
+    font-family: var(--font-mono);
+    color: var(--c-text-mute);
+    font-size: 0.65rem;
+    animation: zzz 2s ease-in-out infinite;
+    opacity: 0.6;
+  }
+  .nnp-z2 { animation-delay: 0.4s; font-size: 0.55rem; }
+  .nnp-z3 { animation-delay: 0.8s; font-size: 0.75rem; }
+
+  @keyframes zzz {
+    0%, 100% { transform: translateY(0); opacity: 0.4; }
+    50% { transform: translateY(-3px); opacity: 0.9; }
+  }
+
+  .nnp-idle-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--dim);
+    margin-left: 0.2rem;
+  }
+
+  .nav-links {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+  }
+
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--c-text-mute);
+    text-decoration: none;
+    transition: color .3s;
+  }
+  .nav-links a:hover {
+    color: var(--pink);
+    text-shadow: 0 0 10px rgb(var(--pink-rgb) / .5);
+  }
+
+  .nav-clock {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--gold);
+    text-shadow: var(--ts-gold);
+    margin-left: 0.5rem;
+  }
+
+  .term-toggle-nav {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    background: none;
+    border: 1px solid var(--c-border);
+    color: var(--c-text-mute);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: color .3s, border-color .3s;
+  }
+  .term-toggle-nav:hover { color: var(--pink); border-color: rgb(var(--pink-rgb) / .3); }
+
+  .lang-toggle {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background: rgb(var(--violet-rgb) / .4);
+    border: 1px solid var(--c-border);
+    color: var(--gold);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background .3s;
+  }
+  .lang-toggle:hover { background: rgb(var(--violet-rgb) / .7); }
+
+  .bgm-toggle {
+    font-size: 0.85rem;
+    background: rgb(var(--violet-rgb) / .4);
+    border: 1px solid var(--c-border);
+    color: var(--gold);
+    padding: 0.2rem 0.45rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background .3s, color .3s;
+    line-height: 1;
+  }
+  .bgm-toggle:hover { background: rgb(var(--violet-rgb) / .7); }
+  .bgm-toggle.playing {
+    color: var(--pink);
+    border-color: rgb(var(--pink-rgb) / .4);
+    animation: bgm-pulse 2s ease-in-out infinite;
+  }
+  @keyframes bgm-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgb(var(--pink-rgb) / .3); }
+    50% { box-shadow: 0 0 8px 2px rgb(var(--pink-rgb) / .2); }
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+    padding: 0.3rem;
+  }
+  .hamburger span {
+    width: 20px;
+    height: 2px;
+    background: var(--pink);
+    border-radius: 2px;
+    transition: transform .3s;
+  }
+
+  /* ─── Hero ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 8rem 2rem 4rem 3rem;
+    position: relative;
+    z-index: 10;
+  }
+
+  .hero-header {
+    max-width: 780px;
+    margin-bottom: 1rem;
+    text-align: left;
+  }
+
+  .hero-socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.8rem;
+    justify-content: flex-start;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    width: min(1100px, 55vw);
+  }
+
+  .hero-grid > .about-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+
+  .greeting {
+    font-family: var(--font-mono);
+    color: var(--c-text-mute);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-name {
+    font-family: var(--font-gothic);
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    color: var(--pink);
+    text-shadow: var(--ts-hero);
+    line-height: 1.1;
+    position: relative;
+  }
+
+  /* Glitch effect */
+  .glitch {
+    animation: glitch-skew 4s infinite linear alternate-reverse;
+  }
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    overflow: hidden;
+    mix-blend-mode: screen;
+    opacity: 0.6;
+  }
+  .glitch::before {
+    color: var(--rose);
+    animation: glitch-1 2s infinite linear alternate-reverse;
+    clip-path: inset(0 0 50% 0);
+  }
+  .glitch::after {
+    color: var(--magenta);
+    animation: glitch-2 3s infinite linear alternate-reverse;
+    clip-path: inset(50% 0 0 0);
+  }
+
+  @keyframes glitch-1 {
+    0%, 90% { transform: translate(0); }
+    92% { transform: translate(-3px, 1px); }
+    94% { transform: translate(3px, -1px); }
+    96% { transform: translate(-2px, 2px); }
+    98% { transform: translate(1px, -1px); }
+    100% { transform: translate(0); }
+  }
+  @keyframes glitch-2 {
+    0%, 88% { transform: translate(0); }
+    90% { transform: translate(2px, -1px); }
+    93% { transform: translate(-3px, 2px); }
+    96% { transform: translate(1px, 1px); }
+    100% { transform: translate(0); }
+  }
+  @keyframes glitch-skew {
+    0%, 95% { transform: skew(0deg); }
+    96% { transform: skew(0.5deg); }
+    98% { transform: skew(-0.3deg); }
+    100% { transform: skew(0deg); }
+  }
+
+  .hero-subtitle {
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    color: var(--gold);
+    text-shadow: var(--ts-gold);
+    margin-top: 0.5rem;
+  }
+
+  .cursor-blink {
+    animation: blink 1s step-end infinite;
+    color: var(--gold);
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .bounty-board {
+    padding: 1.5rem;
+  }
+
+  .bounty-title {
+    font-family: var(--font-cin);
+    font-size: 0.95rem;
+    color: var(--gold);
+    text-shadow: var(--ts-gold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 0.8rem;
+  }
+
+  .bounty-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .bounty {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .bounty-check {
+    flex-shrink: 0;
+    width: 1.2em;
+    text-align: center;
+  }
+
+  .bounty--done {
+    color: var(--c-text-mute);
+    text-decoration: line-through;
+    text-decoration-color: rgb(var(--pink-rgb) / .3);
+  }
+  .bounty--done .bounty-check { color: var(--pink); }
+
+  .bounty--fail {
+    color: var(--c-text-dim);
+    text-decoration: line-through;
+    text-decoration-color: rgba(242, 63, 67, .4);
+  }
+  .bounty--fail .bounty-check { color: #f23f43; }
+
+  .bounty--active { color: var(--white); }
+  .bounty--active .bounty-check { color: var(--gold); }
+
+  .bounty--locked {
+    color: var(--c-text-dim);
+    font-style: italic;
+    opacity: 0.6;
+  }
+
+  .bounty-footer {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 1rem;
+  }
+
+  .d20-btn { cursor: pointer; }
+  .d20-spin {
+    animation: d20-roll 0.4s ease-out;
+  }
+  @keyframes d20-roll {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.2); }
+    100% { transform: rotate(360deg) scale(1); }
+  }
+
+  .d20-result {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--pink);
+    min-height: 1.4em;
+    margin-top: 0.5rem;
+    text-shadow: 0 0 8px rgb(var(--pink-rgb) / .4);
+  }
+  .d20-result:empty { display: none; }
+
+
+  .about-card {
+    padding: 1.5rem;
+  }
+  .clock-card {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+  }
+  .discord-card {
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .about-tag {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--gold);
+    text-shadow: var(--ts-gold);
+    display: block;
+    margin-bottom: 0.8rem;
+  }
+  .about-text {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--c-text-dim);
+  }
+  .about-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .about-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .discord-presence {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgb(var(--violet-rgb) / .3);
+    border: 1px solid rgb(var(--pink-rgb) / .2);
+    border-radius: 6px;
+    box-shadow: 0 0 12px rgb(var(--pink-rgb) / .1), 0 0 30px rgb(var(--pink-rgb) / .05);
+  }
+
+  .dp-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 2.5px solid rgb(var(--discord-rgb) / .3);
+    transition: border-color .3s, box-shadow .3s;
+  }
+  .dp-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    min-width: 0;
+  }
+  .dp-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+  .dp-name {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: var(--white);
+  }
+  .dp-status {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--c-text-mute);
+  }
+  .dp-quote {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--c-text-dim);
+    font-style: italic;
+    line-height: 1.4;
+  }
+  .dp-quote:empty { display: none; }
+  .dp-activity {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--purple-light);
+  }
+  .dp-activity:empty { display: none; }
+
+  .about-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #1db954;
+    box-shadow: 0 0 6px rgba(29, 185, 84, .5);
+    animation: heartbeat 2s ease-in-out infinite;
+  }
+  .status-text {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--c-text-mute);
+    font-style: italic;
+  }
+
+  #goth-clock {
+    display: block;
+  }
+  .gc-tz {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--c-text-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+    background: rgb(var(--purple-deep-rgb) / .15);
+    border: 1px solid rgb(var(--gold-rgb) / .2);
+    border-radius: 2px;
+    color: var(--purple-light);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: border-color .3s, text-shadow .3s, color .3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .tag::before {
+    content: '◈';
+    color: var(--gold);
+    font-size: 0.6rem;
+  }
+  .tag:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    text-shadow: 0 0 8px rgb(var(--gold-rgb) / .5);
+  }
+
+  /* Social links — vertical in sidebar */
+  .social-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 1.2rem;
+    background: rgb(var(--violet-rgb) / .35);
+    border: 1px solid rgb(var(--pink-rgb) / .15);
+    border-radius: 999px;
+    text-decoration: none;
+    transition: border-color .3s, transform .15s, box-shadow .3s;
+    white-space: nowrap;
+  }
+  .social-pill:hover {
+    border-color: rgb(var(--pink-rgb) / .4);
+    transform: translateY(-1px);
+    box-shadow: 0 0 10px rgb(var(--pink-rgb) / .15);
+  }
+  .social-pill span {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--pink);
+  }
+  .social-pip {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .social-pip[src=""],
+  .social-pip:not([src]) {
+    display: none;
+  }
+
+  /* Counter cards */
+  .bounty-counters {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-top: 1rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgb(var(--gold-rgb) / .1);
+  }
+  .bounty-counter {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .counter-smile {
+    font-size: 1rem;
+  }
+  .counter-label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--c-text-mute);
+  }
+  .counter-num {
+    font-family: var(--font-cin);
+    font-size: 1.6rem;
+    color: var(--gold);
+    text-shadow: var(--ts-gold);
+    margin-left: 0.3rem;
+  }
+
+
+  /* ─── Stats Section ─── */
+  .stats-section {
+    padding: 3rem 5vw;
+    position: relative;
+    z-index: 10;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .sh-ornament {
+    font-size: 1.2rem;
+    color: var(--gold);
+    text-shadow: var(--ts-gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-header h2 {
+    font-family: var(--font-gothic);
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    color: var(--pink);
+    text-shadow: var(--ts-hero);
+    letter-spacing: 0.12em;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-line {
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0.8rem auto 0;
+    box-shadow: 0 0 8px var(--glow-gold);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .stats-grid > * {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .stats-col-timeline {
+    padding: 1.8rem;
+  }
+
+  .stats-col-live {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .stats-col-bio {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .bio-text-card {
+    padding: 1.5rem;
+  }
+
+  /* Gurren card */
+  .gurren-card {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+  }
+  .gurren-img {
+    width: 100%;
+    height: 180px;
+    display: block;
+    object-fit: cover;
+    object-position: center 30%;
+    opacity: 0.75;
+    transition: opacity .4s, filter .4s;
+    filter: saturate(0.8) brightness(0.85);
+  }
+  .gurren-card:hover .gurren-img {
+    opacity: 1;
+    filter: saturate(1) brightness(1);
+  }
+  .gurren-quote {
+    font-family: var(--font-cin);
+    font-size: 0.75rem;
+    color: var(--gold);
+    text-shadow: var(--ts-gold);
+    padding: 0.8rem 1rem;
+    text-align: center;
+    letter-spacing: 0.05em;
+    font-style: italic;
+  }
+
+  .brujo-bio p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--c-text-dim);
+    margin-bottom: 0.5rem;
+  }
+
+  .no-negociable {
+    color: #e53935;
+    font-weight: bold;
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+  }
+
+  .tl-items-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+    position: relative;
+    padding-left: 2.2rem;
+  }
+
+  .tl-items-row::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--gold), var(--purple-mid), transparent);
+    opacity: 0.5;
+  }
+
+  .tl-item {
+    position: relative;
+  }
+
+  .tl-year {
+    font-family: var(--font-cin);
+    font-size: 1.05rem;
+    color: var(--gold);
+    text-shadow: var(--ts-gold);
+    margin-bottom: 0.3rem;
+  }
+
+  .tl-dot {
+    position: absolute;
+    left: -2rem;
+    top: 4px;
+    width: 8px;
+    height: 14px;
+    border-radius: 50% 50% 20% 20%;
+    background: var(--dim);
+    border: none;
+    box-shadow: 0 0 6px var(--dim);
+  }
+
+  .tl-dot--company {
+    background: var(--rose);
+    box-shadow: 0 0 10px var(--rose), 0 0 20px rgb(var(--rose-rgb) / .3);
+    animation: flicker 0.8s infinite alternate;
+  }
+
+  .tl-dot--active {
+    background: #ff7e00;
+    box-shadow: 0 0 10px #ff3c00, 0 0 20px #ff7e00;
+    animation: flicker 0.5s infinite alternate;
+  }
+
+  @keyframes flicker {
+    0% { transform: scale(1) rotate(-2deg); opacity: 0.8; }
+    100% { transform: scale(1.15) rotate(2deg); opacity: 1; }
+  }
+
+  .tl-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tl-company {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tl-role {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    color: var(--pink);
+    font-weight: 600;
+  }
+
+  .tl-desc {
+    font-size: 1rem;
+    color: var(--c-text-mute);
+    line-height: 1.55;
+    margin-top: 0.3rem;
+  }
+
+  .tl-link {
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid rgb(var(--gold-rgb) / .3);
+    transition: border-color .3s;
+  }
+  .tl-link:hover {
+    border-color: var(--gold);
+    text-shadow: 0 0 10px rgb(var(--gold-rgb) / .5);
+  }
+
+  .tl-shade {
+    color: var(--c-text-mute);
+    font-style: italic;
+  }
+
+  .tl-item--active .tl-year {
+    color: var(--gold);
+    text-shadow: var(--ts-gold);
+  }
+
+  /* Live stats panels */
+  .ls-panel {
+    padding: 1.5rem;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .ls-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .ls-icon {
+    color: var(--pink);
+    font-size: 0.9rem;
+  }
+
+  .ls-title {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--gold);
+    text-shadow: var(--ts-gold);
+  }
+
+  .ls-foot {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--c-text-mute);
+    margin-left: auto;
+  }
+
+  .ls-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  :global(.ls-item) {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.25rem 0;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--white);
+    min-width: 0;
+  }
+
+  :global(.ls-icon-img) {
+    width: 32px;
+    height: 32px;
+    border-radius: 3px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid rgb(var(--pink-rgb) / .15);
+    box-shadow: 0 0 8px rgb(var(--pink-rgb) / .08);
+  }
+
+  :global(.ls-name) {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--white);
+    letter-spacing: 0.3px;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+
+  :global(a.ls-name:hover) {
+    color: var(--pink);
+    text-shadow: 0 0 8px rgb(var(--pink-rgb) / .55);
+  }
+
+  :global(.ls-meta) {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--c-text-dim);
+    letter-spacing: 0.6px;
+    flex-shrink: 0;
+    max-width: 45%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-left: auto;
+  }
+
+  .ls-loading {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--c-text-mute);
+    animation: heartbeat 2s ease-in-out infinite;
+  }
+
+  @keyframes heartbeat {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.9; }
+  }
+
+  /* Games area */
+  .games-area {
+    margin-top: 1rem;
+  }
+
+  .games-label {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--gold);
+    text-shadow: var(--ts-gold);
+    text-align: center;
+    margin-bottom: 1.2rem;
+  }
+
+  .games-carousel-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .games-carousel {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    flex: 1;
+  }
+  .games-carousel::-webkit-scrollbar { display: none; }
+
+  .carousel-btn {
+    background: rgba(var(--violet-rgb) / .6);
+    border: 1px solid var(--c-border);
+    color: var(--pink);
+    font-size: 1.6rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background .3s, border-color .3s;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  .carousel-btn:hover {
+    background: rgba(var(--violet-rgb) / .9);
+    border-color: rgb(var(--pink-rgb) / .3);
+  }
+
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 1rem;
+  }
+
+  .game-card {
+    flex: 0 0 260px;
+    background: var(--c-card);
+    border: 1px solid var(--c-border);
+    border-radius: var(--corner);
+    overflow: hidden;
+    position: relative;
+    transition: border-color .3s, transform .2s, box-shadow .3s;
+    --gc-accent: var(--pink);
+    --gc-dim: rgb(var(--pink-rgb) / .35);
+    --gc-glow: rgb(var(--pink-rgb) / .20);
+  }
+  /* Spiral energy border sweep on hover */
+  .game-card::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: var(--corner);
+    background: conic-gradient(
+      from var(--spiral-angle, 0deg),
+      transparent 0%,
+      var(--gc-accent) 10%,
+      var(--gold) 20%,
+      transparent 35%
+    );
+    z-index: -1;
+    opacity: 0;
+    transition: opacity .4s;
+    animation: spiral-sweep 1.5s linear infinite;
+  }
+  .game-card:hover::after {
+    opacity: 1;
+  }
+  @keyframes spiral-sweep {
+    from { --spiral-angle: 0deg; }
+    to { --spiral-angle: 360deg; }
+  }
+  @property --spiral-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+  .game-card:hover {
+    border-color: transparent;
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px -10px rgba(0,0,0,.8), 0 15px 25px -5px var(--purple-deep), 0 0 22px var(--gc-glow);
+  }
+  .game-card:hover .game-gif { transform: scale(1.05); }
+  .game-gif { transition: transform .5s cubic-bezier(.4, 0, .2, 1); }
+
+  /* Per-game accent colors */
+  .game-genshin {
+    background: linear-gradient(160deg, #0a0808 0%, #1a0d0d 55%, #080606 100%);
+    --gc-accent: #e8a060; --gc-dim: rgba(232, 160, 96, .35); --gc-glow: rgba(232, 160, 96, .20);
+  }
+  .game-zzz {
+    background: linear-gradient(160deg, #0c0808 0%, #1a0a0a 55%, #090606 100%);
+    --gc-accent: #f0a080; --gc-dim: rgb(var(--pink-rgb) / .35); --gc-glow: rgb(var(--pink-rgb) / .20);
+  }
+  .game-valorant {
+    background: linear-gradient(160deg, #100808 0%, #200a0a 55%, #0c0606 100%);
+    --gc-accent: #e87060; --gc-dim: rgba(232, 112, 96, .35); --gc-glow: rgba(232, 112, 96, .20);
+  }
+  .game-lol {
+    background: linear-gradient(160deg, #0a0808 0%, #181010 55%, #080606 100%);
+    --gc-accent: #e8b060; --gc-dim: rgba(232, 176, 96, .35); --gc-glow: rgba(232, 176, 96, .20);
+  }
+  .game-warframe {
+    background: linear-gradient(160deg, #080c0c 0%, #0a1818 55%, #060e0e 100%);
+    --gc-accent: #40c8e0; --gc-dim: rgba(64, 200, 224, .35); --gc-glow: rgba(64, 200, 224, .20);
+  }
+  .game-vrchat {
+    background: linear-gradient(160deg, #0e0808 0%, #1a0a0a 55%, #080606 100%);
+    --gc-accent: #e08050; --gc-dim: rgba(224, 128, 80, .35); --gc-glow: rgba(224, 128, 80, .20);
+  }
+  .game-gta {
+    background: linear-gradient(160deg, #060e06 0%, #0c1a0c 55%, #040a04 100%);
+    --gc-accent: #78c850; --gc-dim: rgba(120, 200, 80, .35); --gc-glow: rgba(120, 200, 80, .20);
+  }
+  .game-halo {
+    background: linear-gradient(160deg, #0c0a06 0%, #1a1408 55%, #0a0804 100%);
+    --gc-accent: #e8a030; --gc-dim: rgba(232, 160, 48, .35); --gc-glow: rgba(232, 160, 48, .20);
+  }
+
+  .game-thumb {
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+  }
+
+  .game-gif {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .game-info {
+    padding: 0.7rem 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .game-name {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--pink);
+    font-weight: 600;
+  }
+
+  .game-detail {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--gold);
+    text-shadow: var(--ts-gold);
+  }
+
+  .game-desc {
+    font-size: 0.85rem;
+    color: var(--c-text-mute);
+    line-height: 1.4;
+    margin-top: 0.2rem;
+  }
+
+  /* ─── Quejas Section ─── */
+  .quejas-section {
+    padding: 3rem 4vw;
+    position: relative;
+    z-index: 10;
+  }
+
+  .quejas-sub {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--c-text-mute);
+    display: block;
+    margin-top: 0.3rem;
+  }
+
+  .quejas-carousel-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .quejas-carousel {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    flex: 1;
+    padding: 0.5rem 0;
+  }
+  .quejas-carousel::-webkit-scrollbar { display: none; }
+
+  .queja-card {
+    flex: 0 0 260px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+  }
+
+  .qc-top {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .queja-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgb(var(--violet-rgb) / .7);
+    border: 1px solid rgb(var(--pink-rgb) / .2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--pink);
+    flex-shrink: 0;
+  }
+
+  .queja-name {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--gold);
+  }
+
+  .queja-text {
+    font-size: 1rem;
+    color: var(--c-text-dim);
+    line-height: 1.5;
+  }
+
+  .queja-time {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--dim);
+    margin-left: auto;
+  }
+
+  /* Queja form */
+  .queja-form {
+    padding: 1rem;
+    margin-top: 1rem;
+  }
+
+  .queja-form-title {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--gold);
+    text-shadow: var(--ts-gold);
+    margin-bottom: 0.8rem;
+  }
+
+  .queja-form-fields {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .queja-input {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    padding: 0.5rem 0.8rem;
+    background: rgba(var(--violet-rgb) / .3);
+    border: 1px solid var(--c-border);
+    border-radius: 6px;
+    color: var(--white);
+    outline: none;
+    transition: border-color .3s;
+  }
+  .queja-input:focus { border-color: rgb(var(--pink-rgb) / .4); }
+  .queja-input--msg { flex: 1; min-width: 180px; }
+
+  .queja-feedback {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--pink);
+    margin-top: 0.5rem;
+    min-height: 1.2em;
+  }
+
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    transition: transform .2s, box-shadow .3s;
+    text-decoration: none;
+  }
+  .btn:hover { transform: translateY(-1px); }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--rose), var(--magenta));
+    color: var(--white);
+    box-shadow: 0 4px 16px rgb(var(--rose-rgb) / .4), 0 0 12px rgb(var(--pink-rgb) / .2);
+    transition: transform .2s, box-shadow .3s;
+  }
+  .btn-primary:hover {
+    box-shadow: 0 6px 24px rgb(var(--rose-rgb) / .5), 0 0 20px rgb(var(--pink-rgb) / .3);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--c-border);
+    color: var(--c-text-mute);
+  }
+  .btn-ghost:hover { border-color: rgb(var(--pink-rgb) / .3); color: var(--pink); }
+
+  /* Admin panel */
+  .admin-panel {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .admin-key-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .admin-key-input {
+    max-width: 200px;
+  }
+
+  .admin-eye {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.2rem;
+  }
+
+  .admin-flag {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--c-text-mute);
+  }
+  .admin-flag--ok { color: #4caf50; }
+  .admin-flag--err { color: #e53935; }
+
+  .queja-del {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    color: #e53935;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity .3s;
+  }
+  .queja-del:hover { opacity: 1; }
+
+  /* ─── Footer (single bar) ─── */
+  .footer {
+    position: relative;
+    z-index: 10;
+    border-top: 1px solid var(--c-border);
+  }
+
+  .footer-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 4vw;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-name {
+    font-family: var(--font-gothic);
+    font-size: 1.2rem;
+    color: var(--pink);
+    text-shadow: var(--ts-hero);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .footer-accent {
+    color: var(--gold);
+    text-shadow: var(--ts-gold);
+  }
+
+  .footer-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-link {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--c-text-dim);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: color .3s;
+  }
+  .footer-link:hover {
+    color: var(--pink);
+    text-shadow: 0 0 10px rgb(var(--pink-rgb) / .5);
+  }
+
+  .fl-icon { color: var(--gold); }
+  .fl-sep { color: var(--gold); text-shadow: var(--ts-gold); font-size: 0.7rem; }
+
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--dim);
+    white-space: nowrap;
+  }
+
+  .kamina-quote {
+    font-family: var(--font-cin);
+    font-size: 0.8rem;
+    color: var(--gold);
+    text-shadow: 0 0 12px rgb(var(--gold-rgb) / .3);
+    font-style: italic;
+    letter-spacing: 0.03em;
+    margin-top: 0.3rem;
+    opacity: 0.7;
+  }
+
+  /* ─── Responsive: tablet ─── */
+  @media (max-width: 1024px) {
+    .stats-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* ─── Responsive: mobile ─── */
+  @media (max-width: 768px) {
+    .hero {
+      padding: 5.5rem 5% 3rem;
+    }
+
+    .hero-header {
+      max-width: 100%;
+    }
+
+    .hero-grid {
+      grid-template-columns: 1fr;
+      width: 100%;
+    }
+
+    #goth-clock {
+      width: 160px;
+      height: 80px;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .nav-links { display: none; }
+    .nav-clock { display: none; }
+    .nav-now-playing { display: none; }
+    .hamburger { display: flex; }
+
+    .game-card { flex: 0 0 180px; }
+    .queja-card { flex: 0 0 220px; }
+
+    .queja-form-fields {
+      flex-direction: column;
+    }
+    .queja-input--msg { min-width: unset; width: 100%; }
+
+    .footer-bar {
+      flex-direction: column;
+      text-align: center;
+      gap: 0.5rem;
+    }
+
+    .footer-links {
+      justify-content: center;
+    }
+  }
+</style>
